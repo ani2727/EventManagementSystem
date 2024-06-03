@@ -1,0 +1,21 @@
+.carousel-item img{
+    margin-left: 62px;
+    margin-top: 4.6em;
+    border-radius: 1em;
+    width: 80%;
+}
+.carousel{
+    background:#535457;
+    height: 506px;
+    border-top-left-radius: 15em;
+    border-bottom-left-radius: 15em;
+    border: 1px solid #0A174E;
+    box-shadow: 0 0px 2px 3px rgba(0,0,0,0.5);
+}
+.slidecaption{
+    margin-top: 100px;
+    color:black;
+}
+.slidecaption p{
+    font-weight: bold;
+}

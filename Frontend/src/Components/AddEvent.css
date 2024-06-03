@@ -1,0 +1,130 @@
+
+
+.addevent-submit-btn {
+    font-size: larger;
+    padding: 0.2em;
+    background: #2c2c2e;
+    width: 18em;
+    color: #fff;
+    border-radius: 0.5em;
+    transition: 0.3s;
+    font-weight: bold;
+    margin-left: 4em;
+}
+
+.addevent-submit-btn:hover {
+    background: #414142;
+}
+
+.addevent {
+    display: flex;
+    justify-content: center;
+    align-items: start; 
+    flex-direction: column;
+    gap: 1em;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-top: 0.5em;
+    color: #535457;
+    font-weight: bold;
+    font-size: 18px;
+    box-shadow: 4px -1px 10px 8px rgba(0,0,0,0.5);
+    border-radius: 2em;
+    padding: 5px;
+}
+.addevent h1{
+    margin-left: 4em;
+}
+.addevent label {
+    width: 10em; 
+    text-align: right;
+    margin-right: 1em; 
+}
+
+.addevent .eventname label, 
+.addevent div label {
+    display: inline-block;
+}
+
+.addevent .eventname,
+.addevent div {
+    display: flex;
+    align-items: center; 
+}
+
+.addevent .add-event-input {
+    flex: 1; 
+    margin-left: 1em; 
+    width: 300px;
+    border-radius: 0.2em;
+}
+
+.delete-event {
+    margin: auto;
+    font-weight: normal;
+}
+
+.delete-event button{
+    background: #2c2c2e;
+    padding: 3px 10px;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 0.3em;
+    margin-left: 20px;
+}
+
+.deleteevent{
+    display: flex;
+    justify-content: center;
+    align-items: start; 
+    flex-direction: column;
+    gap: 1em;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-top:8em;
+    color: #535457;
+    font-weight: bold;
+    font-size: 18px;
+    box-shadow: 4px -1px 10px 8px rgba(0,0,0,0.5);
+    border-radius: 2em;
+    padding: 5px;
+
+}
+
+.deleteevent label {
+    width: 10em; 
+    text-align: right;
+    margin-right: 1em; 
+}
+.deleteevent .eventname label, 
+.deleteevent div label {
+    display: inline-block;
+}
+
+.deleteevent .eventname,
+.deleteevent div {
+    display: flex;
+    align-items: center; 
+}
+.deleteevent h1{
+    margin-left: 4em;
+}
+
+.deleteevent-submit-btn{
+    font-size: larger;
+    padding: 0.2em;
+    background: #2c2c2e;
+    width: 18em;
+    color: #fff;
+    border-radius: 0.5em;
+    transition: 0.3s;
+    font-weight: bold;
+    margin-left: 4em;
+}
+
+.deleteevent .delete-event-input {
+    flex: 1; 
+    margin-left: 1em; 
+    width: 300px;
+    border-radius: 0.2em;
+}

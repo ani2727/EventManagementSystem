@@ -1,0 +1,219 @@
+.home{
+    background: #f8f6f6;
+}
+
+.home-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    background:  #fff;
+    box-shadow: 4px -6px 10px 8px rgba(0,0,0,0.5);
+    border-radius: 0.2em;
+}
+.logo{
+    width: 5%;
+    border-radius: 2em;
+}
+.search-events-container{
+    margin-left: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgb(192, 180, 180);
+    height: 35px;
+    padding:5px 8px;
+    border-radius: 0.5em;
+    color: black;
+    box-shadow: 0 0px 1px 1px rgba(0,0,0,0.5);
+}
+.search-bar{
+    border: 0;
+    background: transparent;
+}
+.search-btn{
+    background: #535457;
+    border-radius: 0.3em;
+    color: white;
+    font-weight: bold;
+    padding: 4px 10px;
+    margin-left: -50px;
+}
+
+.search-bar::placeholder{
+    color: black;
+}
+.signin-btn{
+    width: 100px;
+    height: 40px;
+    display: block;
+    color: #fff;
+    background:#535457;
+    font-size: 1em;
+    font-weight: 800;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    transition: 0.3s ease-in;
+    cursor: pointer;
+    margin-left: 600px;
+}
+.signin-btn:hover{
+    background: #68696b;
+}
+
+.home-body{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.eventos{
+    width: 50%;
+    height: 80vh;
+    color: #535457;
+    margin: 1em;
+}
+
+.eventos img{
+    text-align: center;
+    border-radius: 50%;
+    padding: 1em;
+    
+}
+
+.carousal{
+    width: 50%;
+}
+.contact-us {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.contact-us div {
+    margin: 5px; 
+}
+
+.contact-us button {
+    background: #0A174E;
+    color: white;
+    border-radius: 0.5em;
+    padding: 5px 55px;
+    font-weight: bold;
+}
+
+.contact-us label {
+    color: #031766;
+}
+
+.footer-section{
+    display: flex;
+    justify-content: space-evenly;
+    text-align: center;
+    background: #535457;
+    color: #fff;
+}
+.footer-section ul{
+    list-style-type: none;
+    margin: 30px;
+}
+.followus {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.upcoming-events-posters, .online-events-posters{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-wrap: wrap;
+}
+
+
+.upcomingevents,.online-events{
+    margin: 0.5em;
+    border-radius: 1em;
+}
+
+.upcomingevents h1{
+    color: #535457;
+    padding:  1em;
+    text-align: center;
+}
+.online-events h1{
+    color: #535457;
+    padding:  1em;
+    text-align: center;
+}
+.poster-card{
+    width: 220px;
+    height: 300px;
+    border-radius: 1em;
+    transition: 0.8s;
+    margin: 1em;
+    cursor: pointer;
+    transition: transform 1s ease;
+}
+.poster-card img{
+    width: 100%;
+    height: 100%;
+    border-radius: 0.5em;
+}
+.poster-card:hover{
+    transform: scale(1.2);
+    box-shadow: 3px -2px 5px 2px rgba(82, 71, 71, 0.5);
+
+}
+
+.next img{  
+    width: 50%;
+}
+.poster-card:nth-child(5):hover{
+    scale:1;
+    transition: 0s;
+    box-shadow: 0px;
+}
+.clubs{
+    margin: 1.5em;
+}
+.clubs-header{
+    text-align: center;
+    color: #535457;
+}
+.club-items{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-wrap: wrap;
+}
+.club{
+    margin: 0.5em;
+    width: 8em;
+    height: 6em;
+    background: white;
+    box-shadow: -1px -1px 2px 3px rgba(136, 133, 133, 0.5);
+    border-radius: 2px;
+    padding: 5px 10px;
+    font-weight: bold;
+    transition: 0.4s;
+    text-decoration: none;
+    color: inherit;
+}
+.club img{
+    width: 50%;
+}
+.club:hover{
+    scale: 1.1;
+    cursor: pointer;
+}
+.linkcss{
+    text-decoration: none;
+    color:rgb(48, 46, 46);
+}

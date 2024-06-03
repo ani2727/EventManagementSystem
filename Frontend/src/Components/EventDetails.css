@@ -1,0 +1,26 @@
+.event-details-container{
+    width: 500px;
+    height:90vh ;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    background: #f1eded;
+    margin-top: 30px;
+    border-radius: 0.5em;
+    box-shadow: 2px -1px 5px 6px rgba(94, 91, 91, 0.5);
+}
+
+.event-details ul li {
+    list-style: none;
+    font-size: 1.8em;
+    color: #535457;
+}
+.event-details button{
+    background: #535457;
+    padding: 2px 8px;
+    font-weight: bold;
+    border-radius: 0.2em;
+    color: #fff;
+    align-self: center;
+}
