@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect,useRef } from 'react';
 import "./Ecell.css"
 import { FaUserCircle } from "react-icons/fa";
 import {Link} from "react-router-dom"
@@ -9,6 +9,10 @@ import { FaTwitter } from 'react-icons/fa';
 import { MdEmail } from "react-icons/md";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Spinner } from 'react-bootstrap';
+import emailjs from '@emailjs/browser';
+
+
 
 const CodeClub = () => 
 {
@@ -16,12 +20,96 @@ const CodeClub = () =>
     const [galleryImages,setGalleryImages] = useState([]);
     const [posters,setPosters] = useState([]);
     const navigate = useNavigate();
+    const form = useRef();
+    const forms = useRef();
+
+    const fileInputRef = useRef();
+
+   const [uploading,setUploading] = useState(false);
+   const [selectedFile,setSelectedFile] = useState(null);
+
+   const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+    };
+
+   const handleUpload = async() => 
+   {
+        const ClubName = 'CodeClub';
+        if(selectedFile != null)
+        {
+            try
+            {
+
+            setUploading(true);
+            const formData = new FormData();
+            formData.append('image',selectedFile);
+            await axios.post(`http://localhost:3001/api/image`,formData)
+            .then(async(res) =>
+            {
+                console.log(res.data,"Resultdata");
+                const imageUrl = res.data;
+                await axios.post(`http://localhost:3001/post/gallery`,{ClubName,imageUrl})
+                .then(res=>{
+                    setUploading(false);
+                    alert("Image added Successfully")
+                })
+                .catch(err=>alert("Failed to add Image"))
+                setSelectedFile(null);
+                fileInputRef.current.value = null;
+            })
+
+
+            }
+            catch(err) {
+            console.log("Error thrown")
+            console.log(err);
+            }
+            
+        }
+        else alert("Please choose a photo");
+    }
+
+    const sendEmail = (e) => {
+        e.preventDefault();
+    
+        emailjs
+          .sendForm('service_nmfnxej', 'template_mdb3nra', form.current, {
+            publicKey: 'SP7Vld6f5wytgRVLm',
+          })
+          .then(
+            () => {
+              alert('SUCCESS!');
+              e.target.reset();
+            },
+            (error) => {
+             alert('FAILED...', error.text);
+            },
+          );
+      };
+
+      const sendEmails = (e) => {
+        e.preventDefault();
+    
+        emailjs
+          .sendForm('service_nmfnxej', 'template_mdb3nra', forms.current, {
+            publicKey: 'SP7Vld6f5wytgRVLm',
+          })
+          .then(
+            () => {
+              alert('SUCCESS!');
+              e.target.reset();
+            },
+            (error) => {
+             alert('FAILED...', error.text);
+            },
+          );
+      };
 
 
     useEffect(() => {
     const fetch = async ()=> 
     {
-        const ClubName = 'Code Club';
+        const ClubName = 'CodeClub';
         try{
             await axios.get('http://localhost:3001/teammembers',{ params: { ClubName } })
             .then(res=>{
@@ -43,7 +131,7 @@ const CodeClub = () =>
         }
 
         try{
-            await axios.get(`http://localhost:3001/gallery?ClubName=${ClubName}`)
+            await axios.get(`http://localhost:3001/get/gallery?ClubName=${ClubName}`)
             .then(res=>{
                 setGalleryImages(res.data.gallery);
             })
@@ -105,7 +193,7 @@ const CodeClub = () =>
                 </div>
             </div>
             <div className="ecell-events">
-                <div><h1>Code Club Events</h1></div>
+                <div><h1>CodeClub Events</h1></div>
                     <div className="ecell-events-posters">
                     {posters.length > 0 ? 
                     (
@@ -141,6 +229,7 @@ const CodeClub = () =>
                             )}
                             <div class="member-name">
                                 <span>{member.MemberName}</span>
+                                <span>{member.MemberPosition}</span>
                                 <span>{member.MemberId}</span>
                                 <span>{member.MemberDept}</span>
                             </div>
@@ -152,6 +241,16 @@ const CodeClub = () =>
             </div>
             <div>
                 <h1 style={{textAlign:'center'}}>Our Gallery</h1>
+                <span class="gallery-upload"><input ref={fileInputRef} onChange={handleFileChange} type="file" required />
+                {uploading ? (
+                        <Spinner animation='border' role="status">
+                            <span className="sr-only">Uploading...</span>
+                        </Spinner>
+                ):
+                (
+                    <button onClick={handleUpload}>Upload</button>
+                )}
+               </span>
             <Carousel class="carousel" style={{width:'100%',borderRadius:'0px',height:'600px'}}>
             {galleryImages.length > 0 ? 
                 (
@@ -169,21 +268,45 @@ const CodeClub = () =>
             </Carousel>
             </div>
             <div class="ecell-footer">
-                <div>
+                <div class="follow-us">
+                    <h4>Follow us</h4>
                     <ul>
-                        <h4>Follow us</h4>
                         <li><FaInstagram size={30}/></li>
                         <li><FaWhatsapp size={30}/></li>
                         <li><FaTwitter size={30}/></li>
                     </ul>
                 </div>
                 <div class="ecell-contactus">
+                    <h4>Contact Us</h4>
                     <ul>
-                        <h4 >Contact Us</h4>
                         <li><MdEmail size={30}/></li>
                     </ul>
                 </div>
+                <div class="share-thoughts">
+                    <h4>Share Your Thoughts</h4>
+                    <span>Please provide your thoughts on Ecell development and innovation to explore more</span>
+                    <form ref={form} onSubmit={sendEmail}>
+                        <textarea name="message" />
+                        <input type="email" name="user_email" placeholder='Enter your Email' />
+                        <button type="submit" value="Send">Submit</button>
+                    </form>
+                </div>
+                
+                <div class="interview-openings">
+                    <h4>Interview Openings</h4>
+                    <span>Register here to attend Interview and become a part of E-cell</span>
+                    <form ref={forms} onSubmit={sendEmails}>
+                        
+                        <label>Email</label>
+                        <input type="email" name="user_email" />
+                        <label>Phone</label>
+                        <input type="text" name="user_contact" />                        
+                        <button type="submit" value="Send" >Send</button>
+                    </form>
+                    
+                </div>
             </div>
+
         </div>
     )
 }

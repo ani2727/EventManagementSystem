@@ -17,7 +17,7 @@ const EventDetails = () =>
         const Email = email.current.value;
         const ClubName = posterData.ClubName;
         const EventName = posterData.EventName;
-        if(Email.length > 0)
+        if(Email.length > 0 && Email.endsWith("@rgukt.ac.in"))
         {
             try{
                 const res = await axios.post('http://localhost:3001/event/register',{Email,EventName,ClubName})
@@ -35,7 +35,7 @@ const EventDetails = () =>
                 console.log(err);
             }
         }
-        else alert("Please Enter your Email")
+        else alert("Please Enter your Domain Email Properly")
     }
 
     
@@ -50,7 +50,7 @@ const EventDetails = () =>
                     <li>Time:{posterData.Time}</li>
                 </ul>
                 
-                <input ref={email} value={Email} onChange={(e)=>setEmail(e.target.value)} type="email" placeholder="Enter your Email"/><button onClick={handleRegister}>Register</button>
+                <input ref={email} value={Email} onChange={(e)=>setEmail(e.target.value)} type="email" placeholder="Enter your Email" required/><button onClick={handleRegister}>Register</button>
             </div>
             
         </div>

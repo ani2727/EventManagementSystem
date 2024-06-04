@@ -2,9 +2,12 @@ import "./AddMember.css";
 import { useRef,useState } from "react";
 import { Spinner } from "react-bootstrap";
 import axios from "axios";
+import { useNavigate, useParams } from 'react-router-dom';
+
 
 const AddMember = () => 
 {
+    let { clubname} = useParams();
 
     const [name,setName] = useState('');
     const [id,setId] = useState('');
@@ -14,12 +17,16 @@ const AddMember = () =>
     const [uploading,setUploading] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
     const [deleteID,setDeleteID] = useState('');
+    const [memberPosition,setMemberPosition] = useState('');
+
 
     const Name = useRef();
     const Id = useRef();
     const Branch = useRef();
     const Club = useRef();
     const deleteId = useRef();
+    const Position = useRef();
+    const navigate = useNavigate();
 
     const fileInputRef = useRef(null);
 
@@ -55,22 +62,24 @@ const AddMember = () =>
         const MemberName = Name.current.value;
         const MemberId = Id.current.value;
         const MemberDept = Branch.current.value;
+        const MemberPosition = Position.current.value;
+
         if(ClubName.length > 0 && MemberName.length>0 && MemberId.length>0 && MemberDept.length>0 && imageUrl.length>0)
         {
             try{
-                await axios.post("http://localhost:3001/addmember",{ClubName,MemberName,MemberId,MemberDept,imageUrl})
+                await axios.post("http://localhost:3001/addmember",{ClubName,MemberName,MemberId,MemberPosition,MemberDept,imageUrl})
                 .then(res=>
                     {
                         if(res.data.message === "Failure") alert("User already exists")
                         else 
                         {   
                             alert("Member Added Successfully")
-                            console.log(res.data)
                             setName('');
                             setId('');
                             setBranch('');
                             setClub('');
                             setImageUrl('');
+                            setMemberPosition('');
                         }
                     });
             }
@@ -88,8 +97,8 @@ const AddMember = () =>
     const handleDeleteMember = async() => {
             let Id = deleteId.current.value;
             Id = Id.trim();
-            const ClubName = 'Math Club'
-            if(Id.length == 7) 
+            const ClubName = clubname;
+            if(Id.length === 7) 
             {
 
                 try{
@@ -117,14 +126,20 @@ const AddMember = () =>
 
     return (
         <div className="addmember-container">
+            
             <div className="addmember">
+                <div><h1>Add Member</h1></div>
                 <div>
                     <label>Name</label>
-                    <input ref={Name} value={name} onChange={(e)=>setName(e.target.value)} type="text" required=""></input>
+                    <input ref={Name} placeholder="Enter Member Name" value={name} onChange={(e)=>setName(e.target.value)} type="text" required=""></input>
                 </div>
                 <div>
                     <label>ID</label>
-                    <input ref={Id} value={id} onChange={(e)=>setId(e.target.value)} type="text" required=""></input>
+                    <input ref={Id} placeholder="Enter Member ID" value={id} onChange={(e)=>setId(e.target.value)} type="text" required=""></input>
+                </div>
+                <div>
+                    <label>Position</label>
+                    <input ref={Position} placeholder="Enter Member Position" value={memberPosition} onChange={(e)=>setMemberPosition(e.target.value)} type="text" required=""></input>
                 </div>
                 <div>
                     <label>Branch</label>
@@ -154,7 +169,7 @@ const AddMember = () =>
                 </div>
                 <button onClick={handleSubmit}>Submit</button>
                 <div class="deletemember">
-                    <input ref={deleteId} value={deleteID} onChange={(e)=>setDeleteID(e.target.value)} type="text" placeholder="Enter Member Id:eg.B190000"/>
+                    <input ref={deleteId} value={deleteID} onChange={(e)=>setDeleteID(e.target.value)} type="text" placeholder="Ex: B190000"/>
                     <button onClick={handleDeleteMember}>Delete Member</button>
                 </div>
             </div>

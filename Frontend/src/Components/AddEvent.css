@@ -1,130 +1,161 @@
 
-
-.addevent-submit-btn {
-    font-size: larger;
-    padding: 0.2em;
-    background: #2c2c2e;
-    width: 18em;
-    color: #fff;
-    border-radius: 0.5em;
-    transition: 0.3s;
-    font-weight: bold;
-    margin-left: 4em;
-}
-
-.addevent-submit-btn:hover {
-    background: #414142;
-}
-
-.addevent {
-    display: flex;
-    justify-content: center;
-    align-items: start; 
-    flex-direction: column;
-    gap: 1em;
-    margin-left: 30%;
-    margin-right: 30%;
-    margin-top: 0.5em;
-    color: #535457;
-    font-weight: bold;
-    font-size: 18px;
-    box-shadow: 4px -1px 10px 8px rgba(0,0,0,0.5);
-    border-radius: 2em;
-    padding: 5px;
-}
-.addevent h1{
-    margin-left: 4em;
-}
-.addevent label {
-    width: 10em; 
-    text-align: right;
-    margin-right: 1em; 
-}
-
-.addevent .eventname label, 
-.addevent div label {
-    display: inline-block;
-}
-
-.addevent .eventname,
-.addevent div {
-    display: flex;
-    align-items: center; 
-}
-
-.addevent .add-event-input {
-    flex: 1; 
-    margin-left: 1em; 
-    width: 300px;
-    border-radius: 0.2em;
-}
-
-.delete-event {
+.addEvent {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    width: 400px;
     margin: auto;
-    font-weight: normal;
 }
 
-.delete-event button{
-    background: #2c2c2e;
-    padding: 3px 10px;
+.addEvent div {
+    margin-bottom: 10px;
+}
+
+.addEvent label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.addEvent input[type="text"],
+.addEvent input[type="file"],
+.addEvent input[type="date"],
+.addEvent input[type="time"],
+.addEvent textarea,
+.addEvent select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+.addEvent button {
+    width: calc(50% - 15px); /* Adjust width to accommodate the cross mark icon */
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    background-color: #5b5d5f;
     color: #fff;
-    font-weight: bold;
-    border-radius: 0.3em;
-    margin-left: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.deleteevent{
+.addEvent button:hover {
+    background-color: #424446;
+}
+
+.file-input-container {
+    position: relative;
+}
+
+.clear-file-input {
+    position: absolute;
+    top: 50%; 
+    right: 5px; /* Adjust to align the cross mark near the upload button */
+    transform: translateY(-50%); 
+    cursor: pointer;
+}
+
+.delete-event{
+    margin-top: 30px;
+}
+
+  
+
+ /* Event Details Css File */
+.event-details-container {
     display: flex;
     justify-content: center;
-    align-items: start; 
-    flex-direction: column;
-    gap: 1em;
-    margin-left: 30%;
-    margin-right: 30%;
-    margin-top:8em;
-    color: #535457;
-    font-weight: bold;
-    font-size: 18px;
-    box-shadow: 4px -1px 10px 8px rgba(0,0,0,0.5);
-    border-radius: 2em;
-    padding: 5px;
+    align-items: center;
+    height: 100vh; 
+    background-color: #f9f9f9; 
+  }
+  
+  .event-details {
+    background-color: #fff; 
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .event-details ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .event-details ul li {
+    margin-bottom: 10px;
+    color: #474a4e;
+  }
+  
+  .event-details input[type="email"] {
+    padding: 8px;
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ccc; 
+    border-radius: 5px;
+  }
+  
+  .event-details button {
+    padding: 8px 20px;
+    background-color: #5a5d61; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; 
+  }
+  
+  .event-details button:hover {
+    background-color: #424446; 
+  }
+  
 
-}
-
-.deleteevent label {
-    width: 10em; 
-    text-align: right;
-    margin-right: 1em; 
-}
-.deleteevent .eventname label, 
-.deleteevent div label {
-    display: inline-block;
-}
-
-.deleteevent .eventname,
-.deleteevent div {
-    display: flex;
-    align-items: center; 
-}
-.deleteevent h1{
-    margin-left: 4em;
-}
-
-.deleteevent-submit-btn{
-    font-size: larger;
-    padding: 0.2em;
-    background: #2c2c2e;
-    width: 18em;
-    color: #fff;
-    border-radius: 0.5em;
-    transition: 0.3s;
-    font-weight: bold;
-    margin-left: 4em;
-}
-
-.deleteevent .delete-event-input {
-    flex: 1; 
-    margin-left: 1em; 
-    width: 300px;
-    border-radius: 0.2em;
-}
+  /* Delete Event CSS */
+.deleteevent {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .deleteevent h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .deleteevent label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .delete-event-input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  .deleteevent-submit-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #454a4e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .deleteevent-submit-btn:hover {
+    background-color: #363638;
+  }
+  
+  

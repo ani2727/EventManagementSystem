@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect,useRef } from 'react';
 import "./Ecell.css"
 import { FaUserCircle } from "react-icons/fa";
 import {Link} from "react-router-dom"
@@ -8,52 +8,136 @@ import { FaInstagram } from 'react-icons/fa';
 import { FaTwitter } from 'react-icons/fa';
 import { MdEmail } from "react-icons/md";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { Spinner } from 'react-bootstrap';
+import emailjs from '@emailjs/browser';
+
+
 
 const MathClub = () => 
 {
     const [members,setMembers] = useState([]);
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [imageUrl, setImageUrl] = useState('');
-    const [uploading, setUploading] = useState(false);
+    const [galleryImages,setGalleryImages] = useState([]);
+    const [posters,setPosters] = useState([]);
+    const navigate = useNavigate();
+    const form = useRef();
+    const forms = useRef();
 
+    const fileInputRef = useRef();
 
-    const handleFileChange = (e) => {
-        setSelectedFile(e.target.files[0]);
+   const [uploading,setUploading] = useState(false);
+   const [selectedFile,setSelectedFile] = useState(null);
+
+   const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
     };
 
-    const handleUpload = async () => {
-        const ClubName = 'Ecell';
-        try {
+   const handleUpload = async() => 
+   {
+        const ClubName = 'MathClub';
+        if(selectedFile != null)
+        {
+            try
+            {
+
             setUploading(true);
-          const formData = new FormData();
-          formData.append('image', selectedFile);
-          formData.append('ClubName', ClubName);
-          const res = await axios.post('http://localhost:3001/upload', formData);
-          setImageUrl(res.data.imageUrl);
-          setSelectedFile(null);
-        } catch (err) {
-          console.error('Error uploading image:', err);
-        } finally{
+            const formData = new FormData();
+            formData.append('image',selectedFile);
+            await axios.post(`http://localhost:3001/api/image`,formData)
+            .then(async(res) =>
+            {
+                const imageUrl = res.data;
+                await axios.post(`http://localhost:3001/post/gallery`,{ClubName,imageUrl})
+                .then(res=>alert("Image added Successfully"))
+                .catch(err=>alert("Failed to add Image"))
+                setSelectedFile(null);
+                fileInputRef.current.value = null;
+            })
+
+
+            }
+            catch(err) {
+            console.log("Error thrown")
+            console.log(err);
+            }
+            finally{
             setUploading(false);
+            }
         }
+        else alert("Please choose a photo");
+    }
+
+    const sendEmail = (e) => {
+        e.preventDefault();
+    
+        emailjs
+          .sendForm('service_nmfnxej', 'template_mdb3nra', form.current, {
+            publicKey: 'SP7Vld6f5wytgRVLm',
+          })
+          .then(
+            () => {
+              alert('SUCCESS!');
+              e.target.reset();
+            },
+            (error) => {
+             alert('FAILED...', error.text);
+            },
+          );
       };
 
+      const sendEmails = (e) => {
+        e.preventDefault();
+    
+        emailjs
+          .sendForm('service_nmfnxej', 'template_mdb3nra', forms.current, {
+            publicKey: 'SP7Vld6f5wytgRVLm',
+          })
+          .then(
+            () => {
+              alert('SUCCESS!');
+              e.target.reset();
+            },
+            (error) => {
+             alert('FAILED...', error.text);
+            },
+          );
+      };
 
 
     useEffect(() => {
     const fetch = async ()=> 
     {
-        const ClubName = 'Ecell';
+        const ClubName = 'MathClub';
         try{
             await axios.get('http://localhost:3001/teammembers',{ params: { ClubName } })
             .then(res=>{
-                console.log(res.data);
                 setMembers(res.data.teammember);
             })
         }
         catch(err) {
             console.error('Error Fetching Images');
         }
+
+        try{
+            await axios.get(`http://localhost:3001/club/posters?ClubName=${ClubName}`)
+            .then(res => {
+                setPosters(res.data);
+            })
+        }
+        catch(err) {
+            console.log(err);
+        }
+
+        try{
+            await axios.get(`http://localhost:3001/get/gallery?ClubName=${ClubName}`)
+            .then(res=>{
+                setGalleryImages(res.data.gallery);
+            })
+        }
+        catch(err) {
+            console.log(err);
+        }
+
     }
     fetch();
     },[]);
@@ -78,6 +162,11 @@ const MathClub = () =>
             setEndIndex(newEndIndex);
         }
     };
+
+    const handlePoster = (poster) => 
+    {
+        navigate("/eventdetails",{state: {posterData:poster}});
+    }
     
     return (
         <div class="ecell">
@@ -86,42 +175,43 @@ const MathClub = () =>
                 <div class="ecell-nav-list-items">
                     <ul>
                         <li><Link to="/" class="linkcss"><button>Home</button></Link></li>
-                        <li><input type="file" multiple onChange={handleFileChange} /><button onClick={handleUpload}>Upload</button></li>
+                        <li><Link to="/addevent" class="linkcss" ><button>Add Event</button></Link></li>
+                        <li><Link to="/addmember" class="linkcss"><button>Add Member</button></Link></li>
                         <li><FaUserCircle size={40}/></li>
                     </ul>
                 </div>
             </nav>
-            <div class="ecell-basar">
+            <div className="ecell-basar">
                 <img src="Slide2.JPG" alt="" />
-                <div class="ecell-basar-text">
-                    <h1>E-Cell IIIT Basar</h1>
+                <div className="ecell-basar-text">
+                    <h1>Math Club IIIT Basar</h1>
                     <p>Checking the network cables, modem and router. Reconnecting to Wi-Fi.
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                     </p>
                 </div>
             </div>
             <div className="ecell-events">
-                <div><h1>Ecell Events</h1></div>
-                <div className="ecell-events-posters">
-                    <div className="poster-card"><img src="Sehari.jpeg" alt="" /></div>
-                    <div className="poster-card"><img src="Finsara.jpeg" alt="" /></div>
-                    <div className="poster-card"><img src="Aloha.jpeg" alt="" /></div>
-                    <div className="poster-card"><img src="Anantrya.jpeg" alt="" /></div>
-                    <div className="poster-card"><img src="Sehari.jpeg" alt="" /></div>
-                    <div className="poster-card"><img src="Finsara.jpeg" alt="" /></div>
-                    <div className="poster-card"><img src="Aloha.jpeg" alt="" /></div>
-                    <div className="poster-card"><img src="Anantrya.jpeg" alt="" /></div>
-                    
+                <div><h1>Math Club Events</h1></div>
+                    <div className="ecell-events-posters">
+                    {posters.length > 0 ? 
+                    (
+                        posters.map((poster) => (
+                            <div className="poster-card" onClick={()=>handlePoster(poster)}><img src={poster.PosterUrl} alt="" /></div>
+                        ))
+                    ):
+                    (
+                        <div style={{margin:'auto',fontWeight:'bold'}}>No Events Available</div>
+                    )
+                    }
                 </div>
             </div>
-
             <div class="whatsecell">
-                <h1>What is ECell</h1>
+                <h1>What is Math Club</h1>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
             </div>
             
-            <div class="team-ecells">
-                <div class="team-ecell-header"><h1>Team E-Cell</h1></div>
+            <div className="team-ecells">
+                <div className="team-ecell-header"><h1>Team Math Club</h1></div>
                 <div className="team-ecell">
                     <button onClick={prevMembers} disabled={startIndex === 0}>Previous</button>
 
@@ -137,6 +227,8 @@ const MathClub = () =>
                             )}
                             <div class="member-name">
                                 <span>{member.MemberName}</span>
+                                <span>{member.MemberPosition}</span>
+                                <span>{member.MemberId}</span>
                                 <span>{member.MemberDept}</span>
                             </div>
                         </div>
@@ -147,37 +239,72 @@ const MathClub = () =>
             </div>
             <div>
                 <h1 style={{textAlign:'center'}}>Our Gallery</h1>
+                <span class="gallery-upload"><input ref={fileInputRef} onChange={handleFileChange} type="file" required />
+                {uploading ? (
+                        <Spinner animation='border' role="status">
+                            <span className="sr-only">Uploading...</span>
+                        </Spinner>
+                ):
+                (
+                    <button onClick={handleUpload}>Upload</button>
+                )}
+               </span>
             <Carousel class="carousel" style={{width:'100%',borderRadius:'0px',height:'600px'}}>
-                <Carousel.Item class="carousel-item">
-                    <img class="gallery-image"  src="./Slide1.JPG" alt="First slide" style={{ width: '58%',marginLeft: '300px',marginTop:'30px'}}/>
-                    
-                </Carousel.Item>
-                <Carousel.Item class="carousel-item"> 
-                <img class="gallery-image" src="./Slide2.JPG" alt="Second slide" style={{ width: '58%' ,marginLeft: '300px',marginTop:'30px'}}/>
-                    
-                </Carousel.Item>
-                <Carousel.Item class="carousel-item">
-                    <img class="gallery-image" src="./Slide3.JPG" alt="Third slide" style={{ width: '58%',marginLeft: '300px',marginTop:'30px' }}/>
-
-                </Carousel.Item>
+            {galleryImages.length > 0 ? 
+                (
+                    galleryImages.map((image, index) => (
+                        <Carousel.Item key={index} className="carousel-item">
+                            <img className="gallery-image" src={image.imageUrl} alt={`Slide ${index + 1}`} style={{ width: '600px',height:'500px',marginLeft: '380px',marginTop:'30px'}}/>
+                        </Carousel.Item>
+                    ))
+                ) : 
+                (
+                        <Carousel.Item className="carousel-item">
+                            <img className="gallery-image"  src="./defaultImage.jpg" alt="No images available" style={{ width: '58%',marginLeft: '300px',marginTop:'30px'}}/>
+                        </Carousel.Item>
+                )}
             </Carousel>
             </div>
             <div class="ecell-footer">
-                <div>
+                <div class="follow-us">
+                    <h4>Follow us</h4>
                     <ul>
-                        <h4>Follow us</h4>
                         <li><FaInstagram size={30}/></li>
                         <li><FaWhatsapp size={30}/></li>
                         <li><FaTwitter size={30}/></li>
                     </ul>
                 </div>
                 <div class="ecell-contactus">
+                    <h4>Contact Us</h4>
                     <ul>
-                        <h4 >Contact Us</h4>
                         <li><MdEmail size={30}/></li>
                     </ul>
                 </div>
+                <div class="share-thoughts">
+                    <h4>Share Your Thoughts</h4>
+                    <span>Please provide your thoughts on Ecell development and innovation to explore more</span>
+                    <form ref={form} onSubmit={sendEmail}>
+                        <textarea name="message" />
+                        <input type="email" name="user_email" placeholder='Enter your Email' />
+                        <button type="submit" value="Send">Submit</button>
+                    </form>
+                </div>
+                
+                <div class="interview-openings">
+                    <h4>Interview Openings</h4>
+                    <span>Register here to attend Interview and become a part of E-cell</span>
+                    <form ref={forms} onSubmit={sendEmails}>
+                        
+                        <label>Email</label>
+                        <input type="email" name="user_email" />
+                        <label>Phone</label>
+                        <input type="text" name="user_contact" />                        
+                        <button type="submit" value="Send" >Send</button>
+                    </form>
+                    
+                </div>
             </div>
+
         </div>
     )
 }

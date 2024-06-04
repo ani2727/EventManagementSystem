@@ -61,12 +61,12 @@ app.post("/signin", async (req, res) => {
 
 app.post("/addmember",async(req,res)=>{
     try{
-        const {ClubName,MemberName,MemberId,MemberDept,imageUrl} = req.body;
+        const {ClubName,MemberName,MemberId,MemberPosition,MemberDept,imageUrl} = req.body;
 
         const user = await TeamMembersModel.findOne({MemberId});
         if(user) return res.send({message:"Failure"});
 
-        await TeamMembersModel.create({ClubName,MemberName,MemberId,MemberDept,ImageURL:imageUrl})
+        await TeamMembersModel.create({ClubName,MemberName,MemberId,MemberPosition,MemberDept,ImageURL:imageUrl})
         return res.send({message:"Success"});
     }
     catch(err) {

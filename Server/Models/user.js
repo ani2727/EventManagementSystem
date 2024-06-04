@@ -38,6 +38,10 @@ const TeamMembersSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
+    MemberPosition:{
+        type:String,
+        required:true,
+    },
     MemberDept:{
         type: String,
         required: true,

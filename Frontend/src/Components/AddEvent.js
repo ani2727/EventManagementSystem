@@ -78,6 +78,10 @@ const AddEvent = () =>
     
     }
     
+    const clearFileInput = () => {
+        const fileInput = document.getElementById("file-input");
+        fileInput.value = ""; 
+    };
 
     return (
         <div className="addEvent">
@@ -89,8 +93,8 @@ const AddEvent = () =>
                 <div>
                     <label>Club Name</label>
                     <select className="add-event-input" value={clubname} ref={clubName} onChange={(e)=>setClubName(e.target.value)}>
-                        <option>Select</option><option >Code Club</option><option >Ecell</option><option >Math Club</option><option >TNP</option>
-                        <option >Dept</option><option >Hope House</option>
+                        <option>Select</option><option >CodeClub</option><option >Ecell</option><option >MathClub</option><option >TNP</option>
+                        <option >Dept</option><option >HopeHouse</option>
                     </select>
                 </div>
                 <div>
@@ -102,12 +106,17 @@ const AddEvent = () =>
                 <div>
                 <label>Time</label><input className="add-event-input" type="time"  ref={times} value={Time} onChange={e => setTime(e.target.value)} />
                 </div>
-                <div>
-                <label>Poster</label> <input ref={fileInputRef} onChange={handleFileChange} className="add-event-input" type="file"/>
-                {uploading ? (<Spinner style={{marginLeft:'-40px'}} animation="border" role="status">
+                <div className="file-input-container">
+                    <label>Photo</label>
+                    <div>
+                        <input ref={fileInputRef} onChange={handleFileChange} id="file-input" type="file" required></input>
+                        <span onClick={clearFileInput} className="clear-file-input">&#10006;</span>
+
+                        {uploading ? (<Spinner animation="border" role="status">
                                     <span className="sr-only">Uploading...</span>
                                 </Spinner>) : 
-                        (<button style={{marginLeft:'-60px',background:'#535457',color:'white',fontWeight:'bold',borderRadius:'0.3em'}} onClick={handleUpload}>Upload</button>)}
+                        (<button  onClick={handleUpload}>Upload</button>)}
+                    </div>
                 </div>
                 <div>
                 <label>Description</label><textarea ref={desc} onChange={(e)=>setDescription(e.target.value)} value={description} className="add-event-input"  />

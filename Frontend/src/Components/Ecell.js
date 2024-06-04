@@ -10,6 +10,9 @@ import { MdEmail } from "react-icons/md";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Spinner } from 'react-bootstrap';
+import emailjs from '@emailjs/browser';
+
+
 
 const Ecell = () => 
 {
@@ -17,6 +20,8 @@ const Ecell = () =>
     const [galleryImages,setGalleryImages] = useState([]);
     const [posters,setPosters] = useState([]);
     const navigate = useNavigate();
+    const form = useRef();
+    const forms = useRef();
 
     const fileInputRef = useRef();
 
@@ -30,35 +35,74 @@ const Ecell = () =>
    const handleUpload = async() => 
    {
         const ClubName = 'Ecell';
-    try
-    {
-
-        setUploading(true);
-        const formData = new FormData();
-        formData.append('image',selectedFile);
-        await axios.post(`http://localhost:3001/api/image`,formData)
-        .then(async(res) =>
+        if(selectedFile != null)
         {
-            console.log(res.data,"Resultdata");
-            const imageUrl = res.data;
-            await axios.post(`http://localhost:3001/post/gallery`,{ClubName,imageUrl})
-            .then(res=>alert("Success"))
-            .catch(err=>alert("Failure"))
-            setSelectedFile(null);
-            fileInputRef.current.value = null;
-        })
-        
+            try
+            {
 
-        
+            setUploading(true);
+            const formData = new FormData();
+            formData.append('image',selectedFile);
+            await axios.post(`http://localhost:3001/api/image`,formData)
+            .then(async(res) =>
+            {
+                console.log(res.data,"Resultdata");
+                const imageUrl = res.data;
+                await axios.post(`http://localhost:3001/post/gallery`,{ClubName,imageUrl})
+                .then(res=>alert("Image added Successfully"))
+                .catch(err=>alert("Failed to add Image"))
+                setSelectedFile(null);
+                fileInputRef.current.value = null;
+            })
+
+
+            }
+            catch(err) {
+            console.log("Error thrown")
+            console.log(err);
+            }
+            finally{
+            setUploading(false);
+            }
+        }
+        else alert("Please choose a photo");
     }
-    catch(err) {
-        console.log("Error thrown")
-        console.log(err);
-    }
-    finally{
-        setUploading(false);
-    }
-   }
+
+    const sendEmail = (e) => {
+        e.preventDefault();
+    
+        emailjs
+          .sendForm('service_nmfnxej', 'template_mdb3nra', form.current, {
+            publicKey: 'SP7Vld6f5wytgRVLm',
+          })
+          .then(
+            () => {
+              alert('SUCCESS!');
+              e.target.reset();
+            },
+            (error) => {
+             alert('FAILED...', error.text);
+            },
+          );
+      };
+
+      const sendEmails = (e) => {
+        e.preventDefault();
+    
+        emailjs
+          .sendForm('service_nmfnxej', 'template_mdb3nra', forms.current, {
+            publicKey: 'SP7Vld6f5wytgRVLm',
+          })
+          .then(
+            () => {
+              alert('SUCCESS!');
+              e.target.reset();
+            },
+            (error) => {
+             alert('FAILED...', error.text);
+            },
+          );
+      };
 
 
     useEffect(() => {
@@ -184,6 +228,7 @@ const Ecell = () =>
                             )}
                             <div class="member-name">
                                 <span>{member.MemberName}</span>
+                                <span>{member.MemberPosition}</span>
                                 <span>{member.MemberId}</span>
                                 <span>{member.MemberDept}</span>
                             </div>
@@ -222,21 +267,45 @@ const Ecell = () =>
             </Carousel>
             </div>
             <div class="ecell-footer">
-                <div>
+                <div class="follow-us">
+                    <h4>Follow us</h4>
                     <ul>
-                        <h4>Follow us</h4>
                         <li><FaInstagram size={30}/></li>
                         <li><FaWhatsapp size={30}/></li>
                         <li><FaTwitter size={30}/></li>
                     </ul>
                 </div>
                 <div class="ecell-contactus">
+                    <h4>Contact Us</h4>
                     <ul>
-                        <h4 >Contact Us</h4>
                         <li><MdEmail size={30}/></li>
                     </ul>
                 </div>
+                <div class="share-thoughts">
+                    <h4>Share Your Thoughts</h4>
+                    <span>Please provide your thoughts on Ecell development and innovation to explore more</span>
+                    <form ref={form} onSubmit={sendEmail}>
+                        <textarea name="message" />
+                        <input type="email" name="user_email" placeholder='Enter your Email' />
+                        <button type="submit" value="Send">Submit</button>
+                    </form>
+                </div>
+                
+                <div class="interview-openings">
+                    <h4>Interview Openings</h4>
+                    <span>Register here to attend Interview and become a part of E-cell</span>
+                    <form ref={forms} onSubmit={sendEmails}>
+                        
+                        <label>Email</label>
+                        <input type="email" name="user_email" />
+                        <label>Phone</label>
+                        <input type="text" name="user_contact" />                        
+                        <button type="submit" value="Send" >Send</button>
+                    </form>
+                    
+                </div>
             </div>
+
         </div>
     )
 }

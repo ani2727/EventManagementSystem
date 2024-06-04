@@ -53,8 +53,8 @@ const DeleteEvent = () =>
                 <div>
                     <label>Club Name</label>
                     <select className="delete-event-input" value={clubname} ref={clubName} onChange={(e)=>setClubName(e.target.value)} required>
-                        <option>Select</option><option >Code Club</option><option >Ecell</option><option >Math Club</option><option >TNP</option>
-                        <option >Dept</option><option >Hope House</option>
+                        <option>Select</option><option >CodeClub</option><option >Ecell</option><option >MathClub</option><option >TNP</option>
+                        <option >Dept</option><option >HopeHouse</option>
                     </select>
                 </div>
                 <div>
