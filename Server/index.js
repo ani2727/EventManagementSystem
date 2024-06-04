@@ -59,6 +59,37 @@ app.post("/signin", async (req, res) => {
     }
 });
 
+app.post("/addmember",async(req,res)=>{
+    try{
+        const {ClubName,MemberName,MemberId,MemberDept,imageUrl} = req.body;
+
+        const user = await TeamMembersModel.findOne({MemberId});
+        if(user) return res.send({message:"Failure"});
+
+        await TeamMembersModel.create({ClubName,MemberName,MemberId,MemberDept,ImageURL:imageUrl})
+        return res.send({message:"Success"});
+    }
+    catch(err) {
+        console.log(err);
+        return res.send({message:"Error While Adding Member"})
+    }
+});
+
+app.post("/deletemember",async(req,res) => {
+    try{
+        const {ClubName,Id} = req.body;
+        const user = await TeamMembersModel.findOne({ClubName,MemberId:Id});
+        if(!user) return res.send("Failure");
+
+        await TeamMembersModel.deleteOne({ClubName,MemberId:Id});
+        return res.send("Success");
+    }
+    catch(err) {
+        console.log(err);
+        return res.status(500).send({message:"Error Deleting Member"})
+    }
+})
+
 app.get("/teammembers", async(req,res)=> {
     
     const ClubName = req.query.ClubName;
@@ -90,7 +121,7 @@ app.post("/upload", upload.single('image'), async (req, res) => {
     }
   });
 
-app.get('/gallery',async(req,res) => {
+app.get('/get/gallery',async(req,res) => {
 
     const {ClubName} = req.query;
     try{
@@ -98,7 +129,18 @@ app.get('/gallery',async(req,res) => {
         return res.send({gallery});
     }
     catch(err) {
-        return res.status(500).send(err);
+        return res.send(err);
+    }
+})
+app.post('/post/gallery',async(req,res) => {
+    try{
+        const {ClubName,imageUrl} =  req.body;
+        await GalleryModel.create({ClubName,imageUrl})
+        return res.send("Success");
+    }
+    catch(err) {
+        console.log(err);
+        return res.send("Error");
     }
 })
 
@@ -113,7 +155,7 @@ app.post("/posters",upload.single('image'), async(req,res) => {
         res.json({posterUrl: result.secure_url});
     }
     catch(err){
-        return res.status(500).json({err});
+        return res.json({err});
     }
 })
 
@@ -166,7 +208,9 @@ app.post("/api/image",upload.single('image'),async(req,res) =>
         const result = await cloudinary.uploader.upload(req.file.path);
         res.send(result.secure_url);
     }
-    catch(err) {
+    catch(err) 
+    {
+        console.log(err);
         res.json({message:"Error"})
     }
 });

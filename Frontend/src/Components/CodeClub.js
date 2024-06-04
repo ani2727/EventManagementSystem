@@ -8,52 +8,50 @@ import { FaInstagram } from 'react-icons/fa';
 import { FaTwitter } from 'react-icons/fa';
 import { MdEmail } from "react-icons/md";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const CodeClub = () => 
 {
     const [members,setMembers] = useState([]);
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [imageUrl, setImageUrl] = useState('');
-    const [uploading, setUploading] = useState(false);
-
-
-    const handleFileChange = (e) => {
-        setSelectedFile(e.target.files[0]);
-    };
-
-    const handleUpload = async () => {
-        const ClubName = 'CodeClub';
-        try {
-            setUploading(true);
-          const formData = new FormData();
-          formData.append('image', selectedFile);
-          formData.append('ClubName', ClubName);
-          const res = await axios.post('http://localhost:3001/upload', formData);
-          setImageUrl(res.data.imageUrl);
-          setSelectedFile(null);
-        } catch (err) {
-          console.error('Error uploading image:', err);
-        } finally{
-            setUploading(false);
-        }
-      };
-
+    const [galleryImages,setGalleryImages] = useState([]);
+    const [posters,setPosters] = useState([]);
+    const navigate = useNavigate();
 
 
     useEffect(() => {
     const fetch = async ()=> 
     {
-        const ClubName = 'CodeClub';
+        const ClubName = 'Code Club';
         try{
             await axios.get('http://localhost:3001/teammembers',{ params: { ClubName } })
             .then(res=>{
-                console.log(res.data);
                 setMembers(res.data.teammember);
             })
         }
         catch(err) {
             console.error('Error Fetching Images');
         }
+
+        try{
+            await axios.get(`http://localhost:3001/club/posters?ClubName=${ClubName}`)
+            .then(res => {
+                setPosters(res.data);
+            })
+        }
+        catch(err) {
+            console.log(err);
+        }
+
+        try{
+            await axios.get(`http://localhost:3001/gallery?ClubName=${ClubName}`)
+            .then(res=>{
+                setGalleryImages(res.data.gallery);
+            })
+        }
+        catch(err) {
+            console.log(err);
+        }
+
     }
     fetch();
     },[]);
@@ -78,6 +76,11 @@ const CodeClub = () =>
             setEndIndex(newEndIndex);
         }
     };
+
+    const handlePoster = (poster) => 
+    {
+        navigate("/eventdetails",{state: {posterData:poster}});
+    }
     
     return (
         <div class="ecell">
@@ -86,15 +89,16 @@ const CodeClub = () =>
                 <div class="ecell-nav-list-items">
                     <ul>
                         <li><Link to="/" class="linkcss"><button>Home</button></Link></li>
-                        <li><input type="file" multiple onChange={handleFileChange} /><button onClick={handleUpload}>Upload</button></li>
+                        <li><Link to="/addevent" class="linkcss" ><button>Add Event</button></Link></li>
+                        <li><Link to="/addmember" class="linkcss"><button>Add Member</button></Link></li>
                         <li><FaUserCircle size={40}/></li>
                     </ul>
                 </div>
             </nav>
-            <div class="ecell-basar">
+            <div className="ecell-basar">
                 <img src="Slide2.JPG" alt="" />
-                <div class="ecell-basar-text">
-                    <h1>Code Club</h1>
+                <div className="ecell-basar-text">
+                    <h1>Code Club IIIT Basar</h1>
                     <p>Checking the network cables, modem and router. Reconnecting to Wi-Fi.
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                     </p>
@@ -102,26 +106,26 @@ const CodeClub = () =>
             </div>
             <div className="ecell-events">
                 <div><h1>Code Club Events</h1></div>
-                <div className="ecell-events-posters">
-                    <div className="poster-card"><img src="Sehari.jpeg" alt="" /></div>
-                    <div className="poster-card"><img src="Finsara.jpeg" alt="" /></div>
-                    <div className="poster-card"><img src="Aloha.jpeg" alt="" /></div>
-                    <div className="poster-card"><img src="Anantrya.jpeg" alt="" /></div>
-                    <div className="poster-card"><img src="Sehari.jpeg" alt="" /></div>
-                    <div className="poster-card"><img src="Finsara.jpeg" alt="" /></div>
-                    <div className="poster-card"><img src="Aloha.jpeg" alt="" /></div>
-                    <div className="poster-card"><img src="Anantrya.jpeg" alt="" /></div>
-                    
+                    <div className="ecell-events-posters">
+                    {posters.length > 0 ? 
+                    (
+                        posters.map((poster) => (
+                            <div className="poster-card" onClick={()=>handlePoster(poster)}><img src={poster.PosterUrl} alt="" /></div>
+                        ))
+                    ):
+                    (
+                        <div style={{margin:'auto',fontWeight:'bold'}}>No Events Available</div>
+                    )
+                    }
                 </div>
             </div>
-
             <div class="whatsecell">
-                <h1>What is CodeClub</h1>
+                <h1>What is Code Club</h1>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
             </div>
             
-            <div class="team-ecells">
-                <div class="team-ecell-header"><h1>Team CodeClub</h1></div>
+            <div className="team-ecells">
+                <div className="team-ecell-header"><h1>Team Code Club</h1></div>
                 <div className="team-ecell">
                     <button onClick={prevMembers} disabled={startIndex === 0}>Previous</button>
 
@@ -137,6 +141,7 @@ const CodeClub = () =>
                             )}
                             <div class="member-name">
                                 <span>{member.MemberName}</span>
+                                <span>{member.MemberId}</span>
                                 <span>{member.MemberDept}</span>
                             </div>
                         </div>
@@ -146,20 +151,21 @@ const CodeClub = () =>
                 </div>
             </div>
             <div>
-                <h1 style={{textAlign:'center',color: '#535457'}}>Our Gallery</h1>
+                <h1 style={{textAlign:'center'}}>Our Gallery</h1>
             <Carousel class="carousel" style={{width:'100%',borderRadius:'0px',height:'600px'}}>
-                <Carousel.Item class="carousel-item">
-                    <img class="gallery-image"  src="./Slide1.JPG" alt="First slide" style={{ width: '58%',marginLeft: '300px',marginTop:'30px'}}/>
-                    
-                </Carousel.Item>
-                <Carousel.Item class="carousel-item"> 
-                <img class="gallery-image" src="./Slide2.JPG" alt="Second slide" style={{ width: '58%' ,marginLeft: '300px',marginTop:'30px'}}/>
-                    
-                </Carousel.Item>
-                <Carousel.Item class="carousel-item">
-                    <img class="gallery-image" src="./Slide3.JPG" alt="Third slide" style={{ width: '58%',marginLeft: '300px',marginTop:'30px' }}/>
-
-                </Carousel.Item>
+            {galleryImages.length > 0 ? 
+                (
+                    galleryImages.map((image, index) => (
+                        <Carousel.Item key={index} className="carousel-item">
+                            <img className="gallery-image" src={image.imageUrl} alt={`Slide ${index + 1}`} style={{ width: '600px',height:'500px',marginLeft: '380px',marginTop:'30px'}}/>
+                        </Carousel.Item>
+                    ))
+                ) : 
+                (
+                        <Carousel.Item className="carousel-item">
+                            <img className="gallery-image"  src="./defaultImage.jpg" alt="No images available" style={{ width: '58%',marginLeft: '300px',marginTop:'30px'}}/>
+                        </Carousel.Item>
+                )}
             </Carousel>
             </div>
             <div class="ecell-footer">

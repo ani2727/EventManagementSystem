@@ -7,46 +7,58 @@ import { FaWhatsapp } from 'react-icons/fa';
 import { FaInstagram } from 'react-icons/fa';
 import { FaTwitter } from 'react-icons/fa';
 import { MdEmail } from "react-icons/md";
-import {Spinner} from "react-bootstrap";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Spinner } from 'react-bootstrap';
 
 const Ecell = () => 
 {
     const [members,setMembers] = useState([]);
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [uploading, setUploading] = useState(false);
-    const fileInputRef = useRef(null);
     const [galleryImages,setGalleryImages] = useState([]);
     const [posters,setPosters] = useState([]);
     const navigate = useNavigate();
 
+    const fileInputRef = useRef();
 
-    const handleFileChange = (e) => {
-        setSelectedFile(e.target.files[0]);
+   const [uploading,setUploading] = useState(false);
+   const [selectedFile,setSelectedFile] = useState(null);
+
+   const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
     };
 
-    const handleUpload = async () => {
+   const handleUpload = async() => 
+   {
         const ClubName = 'Ecell';
-        try {
-            setUploading(true);
-          const formData = new FormData();
-          formData.append('image', selectedFile);
-          formData.append('ClubName', ClubName);
-          await axios.post(`http://localhost:3001/posters?ClubName=${ClubName}`, formData);
+    try
+    {
 
-        //   setImageUrl(res.data.imageUrl);
-          setSelectedFile(null);
-          fileInputRef.current.value = null;
-        } 
-        catch (err) {
-          console.error('Error uploading image:', err);
-        } 
-        finally{
-            setUploading(false);
-        }
-      };
+        setUploading(true);
+        const formData = new FormData();
+        formData.append('image',selectedFile);
+        await axios.post(`http://localhost:3001/api/image`,formData)
+        .then(async(res) =>
+        {
+            console.log(res.data,"Resultdata");
+            const imageUrl = res.data;
+            await axios.post(`http://localhost:3001/post/gallery`,{ClubName,imageUrl})
+            .then(res=>alert("Success"))
+            .catch(err=>alert("Failure"))
+            setSelectedFile(null);
+            fileInputRef.current.value = null;
+        })
+        
 
+        
+    }
+    catch(err) {
+        console.log("Error thrown")
+        console.log(err);
+    }
+    finally{
+        setUploading(false);
+    }
+   }
 
 
     useEffect(() => {
@@ -74,7 +86,7 @@ const Ecell = () =>
         }
 
         try{
-            await axios.get(`http://localhost:3001/gallery?ClubName=${ClubName}`)
+            await axios.get(`http://localhost:3001/get/gallery?ClubName=${ClubName}`)
             .then(res=>{
                 setGalleryImages(res.data.gallery);
             })
@@ -121,6 +133,7 @@ const Ecell = () =>
                     <ul>
                         <li><Link to="/" class="linkcss"><button>Home</button></Link></li>
                         <li><Link to="/addevent" class="linkcss" ><button>Add Event</button></Link></li>
+                        <li><Link to="/addmember" class="linkcss"><button>Add Member</button></Link></li>
                         <li><FaUserCircle size={40}/></li>
                     </ul>
                 </div>
@@ -144,7 +157,7 @@ const Ecell = () =>
                         ))
                     ):
                     (
-                        <div style={{textAlign:'center',fontWeight:'bold'}}>No Events Available</div>
+                        <div style={{margin:'auto',fontWeight:'bold'}}>No Events Available</div>
                     )
                     }
                 </div>
@@ -171,6 +184,7 @@ const Ecell = () =>
                             )}
                             <div class="member-name">
                                 <span>{member.MemberName}</span>
+                                <span>{member.MemberId}</span>
                                 <span>{member.MemberDept}</span>
                             </div>
                         </div>
@@ -181,6 +195,16 @@ const Ecell = () =>
             </div>
             <div>
                 <h1 style={{textAlign:'center'}}>Our Gallery</h1>
+                <span class="gallery-upload"><input ref={fileInputRef} onChange={handleFileChange} type="file" required />
+                {uploading ? (
+                        <Spinner animation='border' role="status">
+                            <span className="sr-only">Uploading...</span>
+                        </Spinner>
+                ):
+                (
+                    <button onClick={handleUpload}>Upload</button>
+                )}
+               </span>
             <Carousel class="carousel" style={{width:'100%',borderRadius:'0px',height:'600px'}}>
             {galleryImages.length > 0 ? 
                 (

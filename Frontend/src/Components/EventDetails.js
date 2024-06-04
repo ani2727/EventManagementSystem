@@ -1,7 +1,7 @@
 import { useLocation,useNavigate } from "react-router-dom"
 import axios from "axios";
 import "./EventDetails.css"
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 const EventDetails = () => 
 {
@@ -21,7 +21,7 @@ const EventDetails = () =>
         {
             try{
                 const res = await axios.post('http://localhost:3001/event/register',{Email,EventName,ClubName})
-                if(res.data.message == "Success") {
+                if(res.data.message === "Success") {
                     console.log(res.data.message);
                     alert("Registration Successfull!");
                     navigate("/ecell");

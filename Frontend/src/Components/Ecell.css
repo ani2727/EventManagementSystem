@@ -16,7 +16,7 @@
     display: flex;
 }
 .ecell-nav-list-items ul li button {
-    width: 100px;
+    width: 120px;
     height: 40px;
     color: #fff;
     background:#535457;
@@ -99,7 +99,7 @@
 .ecell-member {
     flex: 0 0 auto;
     width: 220px; 
-    height: 220px;
+    height: 240px;
     margin: 10px;
     margin-right: 10px; 
     background: #fff;
@@ -107,6 +107,7 @@
     box-shadow: 2px -1px 2px 2px rgba(121, 117, 117, 0.5);
     font-weight: bold;
     transition: 0.4s;
+    overflow: visible;
 }
 .ecell-member:hover{
     scale: 1.05;
@@ -114,7 +115,7 @@
 }
 .ecell-member img {
     width: 80%;
-    height: 70%;
+    height: 65%;
     margin-top: 1em;
 }
 .controls {
@@ -166,4 +167,15 @@
 }
 .ecell-contactus{
     margin-top: -70px;
+}
+
+.gallery-upload{
+    display: flex;
+    justify-content: center;
+}
+.gallery-upload button{
+    background: #222324 ;
+    padding: 3px 3em;
+    color: #fff;
+    border-radius: 0.3em;
 }

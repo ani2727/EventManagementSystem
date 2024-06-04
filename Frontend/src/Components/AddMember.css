@@ -1,0 +1,65 @@
+.addmember-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin-top: 50px;
+}
+
+.addmember {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    width: 400px;
+}
+
+.addmember div {
+    margin-bottom: 10px;
+}
+
+.addmember label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.addmember input[type="text"],
+.addmember input[type="file"],
+.addmember select {
+    width: calc(100% - 30px); /* Adjust width to accommodate the cross mark icon */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+.addmember button {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    background-color: #5b5d5f;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.addmember button:hover {
+    background-color: #424446;
+}
+
+.file-input-container {
+    position: relative;
+}
+
+.clear-file-input {
+    position: absolute;
+    top: 50%; 
+    right: 0; 
+    transform: translateY(-50%); 
+    cursor: pointer;
+}
+
+.deletemember{
+    margin-top: 30px;
+}

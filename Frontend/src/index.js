@@ -14,6 +14,7 @@ import DeptClub from './Components/DeptClub.js';
 import AddEvent from "./Components/AddEvent.js";
 import EventDetails from './Components/EventDetails.js';
 import DeleteEvent from './Components/DeleteEvent.js';
+import AddMember from './Components/AddMember.js';
 
 
 const AppRouter = createBrowserRouter(
@@ -74,7 +75,13 @@ const AppRouter = createBrowserRouter(
             },
             {
               path:"deleteevent",
-              element:<DeleteEvent/>
+              element:<DeleteEvent/>,
+              errorElement:<Error/>
+            },
+            {
+              path:"addmember",
+              element: <AddMember />,
+              errorElement:<Error/>
             }
        ]
 
