@@ -5,43 +5,35 @@ import axios from "axios";
 
 const Signin = () => 
 {
-    const [passwordValue,setPasswordValue] = useState("");
-    const [emailValue,setEmailValue] = useState("");
-    const navigate = useNavigate();
+    const [Email,setEmail] = useState('');
+    const [Password,setPassword] = useState('');
 
-    const handleChangeEmail = (e)=> {
-        const newValue = e.target.value;
-        setEmailValue(newValue);
-    }
-    const handleChangePassword = (e) => {
-        const newValue = e.target.value;
-        setPasswordValue(newValue);
-    }
+    const navigate = useNavigate();
 
     const email = useRef();
     const password = useRef();
 
-    const handleSignup = (e)=>{
-        e.preventDefault();
-        const Email = email.current.value;
-        const Password = password.current.value;
+    // const handleSignup = (e)=>{
+    //     e.preventDefault();
+    //     const Email = email.current.value;
+    //     const Password = password.current.value;
 
-        axios.post("http://localhost:3001/signup", { Email, Password })
-        .then((response) => {
-            const data = response.data; 
-            if (data.message === "User Already Exists") {
-                alert("Email Already Exists");
-            } else {
-                alert("Registration Successful")
-                navigate("/");
-            }
-        })
-        .catch((err) => {
-            alert("Enter the Details Properly");
-        });
+    //     axios.post("http://localhost:3001/signup", { Email, Password })
+    //     .then((response) => {
+    //         const data = response.data; 
+    //         if (data.message === "User Already Exists") {
+    //             alert("Email Already Exists");
+    //         } else {
+    //             alert("Registration Successful")
+    //             navigate("/");
+    //         }
+    //     })
+    //     .catch((err) => {
+    //         alert("Enter the Details Properly");
+    //     });
 
-    }
-    const handleSignin = (e)=>{
+    // }
+    const handleLogin = (e)=>{
         e.preventDefault();
         const Email = email.current.value;
         const Password = password.current.value;
@@ -66,30 +58,19 @@ const Signin = () =>
 
 
     return (
-        <div className="sign">
-            <div className="main">
-            <input type="checkbox" id="chk" aria-hidden="true" />
 
-            <div className="signup">
-                <form method="post" onSubmit={handleSignup}>
-                    <label for="chk" aria-hidden="true">Sign up</label>
-                    {/* <input type="text" name="text" placeholder="User name" value={userValue} ref={username} onChange={handleChangeEmail} required=""/> */}
-                    <input type="email" name="email" placeholder="Email" value={emailValue} ref={email} onChange={handleChangeEmail} required=""/>
-                    <input type="password" name="pswd" placeholder="Password" value={passwordValue} ref={password} onChange={handleChangePassword} required="" />
-                    <button type="submit" className="signup-btn">Sign up</button>
+            <div class="login-container">
+                <h2>Login</h2>
+                <form id="login-form">
+                <div class="form-group">
+                    <input type="text" ref={email} value={Email} onChange={e=>setEmail(e.target.value)} placeholder="Username" required />
+                </div>
+                <div class="form-group">
+                    <input type="password" ref={password} value={Password} onChange={e=>setPassword(e.target.value)} placeholder="Password" required />
+                </div>
+                <button onClick={handleLogin} type="submit">Login</button>
                 </form>
             </div>
-
-            <div className="login" onSubmit={handleSignin}>
-                <form method="post">
-                    <label for="chk" aria-hidden="true">Login</label>
-                    <input type="email" name="email" placeholder="Email" value={emailValue} ref={email} onChange={handleChangeEmail} required=""/>
-                    <input type="password" name="pswd" placeholder="Password" value={passwordValue} ref={password} onChange={handleChangePassword} required="" />
-                    <button type="submit" className="signup-btn">Login</button>
-                </form>
-            </div>
-        </div>
-        </div>
     );
 }
 export default Signin;

@@ -99,7 +99,6 @@ const Ecell = () =>
               e.target.reset();
             },
             (error) => {
-             alert('FAILED...', error.text);
             },
           );
       };
@@ -110,7 +109,7 @@ const Ecell = () =>
     {
         const ClubName = 'Ecell';
         try{
-            await axios.get('http://localhost:3001/teammembers',{ params: { ClubName } })
+            await axios.get(`http://localhost:3001/club/members?ClubName=${ClubName}`)
             .then(res=>{
                 setMembers(res.data.teammember);
             })
@@ -120,7 +119,7 @@ const Ecell = () =>
         }
 
         try{
-            await axios.get(`http://localhost:3001/club/posters?ClubName=${ClubName}`)
+            await axios.get(`http://localhost:3001/club/events?ClubName=${ClubName}`)
             .then(res => {
                 setPosters(res.data);
             })
@@ -169,15 +168,23 @@ const Ecell = () =>
         navigate("/eventdetails",{state: {posterData:poster}});
     }
     
+    const handleAddMember = () => {
+        navigate("/addmember",{state:{Club :'Ecell'}});
+    }
+
+    const handleProfile = () => {
+        navigate("/profile")
+    }
+
     return (
         <div class="ecell">
             <nav class="ecell-navbar">
                 <div class="ecell-logo"><img src="rgukt-logo.jpeg"  alt=""/></div>
                 <div class="ecell-nav-list-items">
                     <ul>
-                        <li><Link to="/" class="linkcss"><button>Home</button></Link></li>
+                        <li><button onClick={handleProfile}>Profile</button></li>
                         <li><Link to="/addevent" class="linkcss" ><button>Add Event</button></Link></li>
-                        <li><Link to="/addmember" class="linkcss"><button>Add Member</button></Link></li>
+                        <li><button onClick={handleAddMember}>Add Member</button></li>
                         <li><FaUserCircle size={40}/></li>
                     </ul>
                 </div>
@@ -196,8 +203,8 @@ const Ecell = () =>
                     <div className="ecell-events-posters">
                     {posters.length > 0 ? 
                     (
-                        posters.map((poster) => (
-                            <div className="poster-card" onClick={()=>handlePoster(poster)}><img src={poster.PosterUrl} alt="" /></div>
+                        posters.map((poster,index) => (
+                            <div key={index} className="poster-card" onClick={()=>handlePoster(poster)}><img src={poster.PosterUrl} alt="" /></div>
                         ))
                     ):
                     (
@@ -255,7 +262,7 @@ const Ecell = () =>
                 (
                     galleryImages.map((image, index) => (
                         <Carousel.Item key={index} className="carousel-item">
-                            <img className="gallery-image" src={image.imageUrl} alt={`Slide ${index + 1}`} style={{ width: '600px',height:'500px',marginLeft: '380px',marginTop:'30px'}}/>
+                            <img className="gallery-image" src={image.imageUrl} alt={`Slide ${index + 1}`} style={{ width: '800px',height:'550px',marginLeft: '280px',marginTop:'10px'}}/>
                         </Carousel.Item>
                     ))
                 ) : 

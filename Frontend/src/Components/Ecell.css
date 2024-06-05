@@ -1,3 +1,7 @@
+.ecell{
+    height: 100vh;
+}
+
 .ecell-navbar{
     display: flex;
     justify-content: space-between;
@@ -16,7 +20,7 @@
     display: flex;
 }
 .ecell-nav-list-items ul li button {
-    width: 120px;
+    width: 140px;
     height: 40px;
     color: #fff;
     background:#535457;

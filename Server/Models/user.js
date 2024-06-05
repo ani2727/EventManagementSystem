@@ -59,14 +59,8 @@ const GallerySchema = new mongoose.Schema(
     }
 )
 
-const PosterSchema = new mongoose.Schema(
-    {
-        ClubName: String,
-        posterUrl:String,
-    }
-)
 
-const AddEventSchema = new mongoose.Schema(
+const EventSchema = new mongoose.Schema(
     {
         EventName:{
             type:String,
@@ -116,10 +110,9 @@ const RegistrationSchema = new mongoose.Schema(
 )
 
 const RegistrationModel = mongoose.model("registrations",RegistrationSchema);
-const AddEventModel = mongoose.model("events",AddEventSchema);
-const PosterModel = mongoose.model("posters",PosterSchema);
+const EventModel = mongoose.model("events",EventSchema);
 const GalleryModel = mongoose.model("gallery",GallerySchema);
 const TeamMembersModel = mongoose.model("TeamMembers", TeamMembersSchema);
 const UserModel = mongoose.model("User", UserSchema);
 
-module.exports = { UserModel, TeamMembersModel, GalleryModel,PosterModel,AddEventModel,RegistrationModel };
+module.exports = { UserModel, TeamMembersModel, GalleryModel,EventModel,RegistrationModel };

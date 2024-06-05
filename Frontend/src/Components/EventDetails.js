@@ -1,13 +1,14 @@
 import { useLocation,useNavigate } from "react-router-dom"
 import axios from "axios";
 import "./EventDetails.css"
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 const EventDetails = () => 
 {
     const location = useLocation();
     const [Email,setEmail] = useState('');
     const posterData = location.state.posterData;
+    const [members,setMembers] = useState([]);
     const navigate = useNavigate();
 
     const email = useRef();
@@ -22,9 +23,9 @@ const EventDetails = () =>
             try{
                 const res = await axios.post('http://localhost:3001/event/register',{Email,EventName,ClubName})
                 if(res.data.message === "Success") {
-                    console.log(res.data.message);
                     alert("Registration Successfull!");
-                    navigate("/ecell");
+                    navigate(`/${ClubName}`);
+
                 }
                 else {
                     console.log(res.data.message)
@@ -38,6 +39,22 @@ const EventDetails = () =>
         else alert("Please Enter your Domain Email Properly")
     }
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const ClubName = posterData.ClubName;
+                const EventName = posterData.EventName;
+                const res = await axios.get(`http://localhost:3001/register/user?ClubName=${ClubName}&EventName=${EventName}`);
+                setMembers(res.data.members);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+    
+        fetchData();
+    
+    }, [posterData.ClubName, posterData.EventName]);
+    
     
     return (
         <div className="event-details-container">
@@ -48,9 +65,26 @@ const EventDetails = () =>
                     <li>Venue:{posterData.Venue}</li>
                     <li>Date:{posterData.Date}</li>
                     <li>Time:{posterData.Time}</li>
+                    <li>Agenda:{posterData.Description}</li>
                 </ul>
                 
                 <input ref={email} value={Email} onChange={(e)=>setEmail(e.target.value)} type="email" placeholder="Enter your Email" required/><button onClick={handleRegister}>Register</button>
+            </div>
+            <div class="registered-members">
+                <h3>Registered Members</h3>
+                {members.length > 0 ?
+                    (
+                        <ul>
+                            {members.map((member,index)=> (
+                                <li key={index} style={{listStyleType:'decimal'}}>{member.Email}</li>
+                            ))}
+                        </ul>
+                    ):
+                    (
+                        <p>No Members Registered For this event</p>
+                    )
+                }
+
             </div>
             
         </div>

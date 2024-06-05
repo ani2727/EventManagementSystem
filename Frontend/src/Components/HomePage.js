@@ -37,10 +37,10 @@ const HomePage = ()=>{
         const fetch = async () =>
         {
             try{
-                await axios.get(`http://localhost:3001/events`)
+                await axios.get(`http://localhost:3001/upcoming/events`)
                 .then(res => {
-                    console.log(res.data);
                     setPosters(res.data);
+                    console.log(res.data);
                 })
             }
             catch(err) {

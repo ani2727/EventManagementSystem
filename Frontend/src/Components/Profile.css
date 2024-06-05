@@ -1,0 +1,38 @@
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Makes the container full height of the viewport */
+  }
+  
+  .profile {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    width: 400px;
+  }
+  
+  .profile div {
+    margin-bottom: 15px;
+  }
+  
+  .profile label {
+    display: block;
+    font-weight: bold;
+  }
+  
+  .profile input {
+    width: calc(100% - 20px); /* Subtracting padding to make input full width */
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  .profile img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  

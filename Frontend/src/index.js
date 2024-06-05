@@ -15,6 +15,7 @@ import AddEvent from "./Components/AddEvent.js";
 import EventDetails from './Components/EventDetails.js';
 import DeleteEvent from './Components/DeleteEvent.js';
 import AddMember from './Components/AddMember.js';
+import Profile from './Components/Profile.js';
 
 
 const AppRouter = createBrowserRouter(
@@ -82,7 +83,12 @@ const AppRouter = createBrowserRouter(
               path:"addmember",
               element: <AddMember />,
               errorElement:<Error/>
-            }
+            },
+            {
+              path:"profile",
+              element:<Profile/>,
+              errorElement:<Error/>
+            },
        ]
 
     }

@@ -2,17 +2,18 @@ import "./AddMember.css";
 import { useRef,useState } from "react";
 import { Spinner } from "react-bootstrap";
 import axios from "axios";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams,useLocation } from 'react-router-dom';
 
 
 const AddMember = () => 
 {
-    let { clubname} = useParams();
+
+    const location = useLocation();
+    const Clubb = location.state.Club;
 
     const [name,setName] = useState('');
     const [id,setId] = useState('');
     const [branch,setBranch] = useState('');
-    const [club,setClub] = useState('');
     const [imageUrl,setImageUrl] = useState('');
     const [uploading,setUploading] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
@@ -23,7 +24,6 @@ const AddMember = () =>
     const Name = useRef();
     const Id = useRef();
     const Branch = useRef();
-    const Club = useRef();
     const deleteId = useRef();
     const Position = useRef();
     const navigate = useNavigate();
@@ -58,16 +58,15 @@ const AddMember = () =>
 
     const handleSubmit = async() => 
     {
-        const ClubName = Club.current.value;
         const MemberName = Name.current.value;
         const MemberId = Id.current.value;
         const MemberDept = Branch.current.value;
         const MemberPosition = Position.current.value;
 
-        if(ClubName.length > 0 && MemberName.length>0 && MemberId.length>0 && MemberDept.length>0 && imageUrl.length>0)
+        if(Clubb.length > 0 && MemberName.length>0 && MemberId.length>0 && MemberDept.length>0 && imageUrl.length>0)
         {
             try{
-                await axios.post("http://localhost:3001/addmember",{ClubName,MemberName,MemberId,MemberPosition,MemberDept,imageUrl})
+                await axios.post("http://localhost:3001/addmember",{Clubb,MemberName,MemberId,MemberPosition,MemberDept,imageUrl})
                 .then(res=>
                     {
                         if(res.data.message === "Failure") alert("User already exists")
@@ -77,10 +76,11 @@ const AddMember = () =>
                             setName('');
                             setId('');
                             setBranch('');
-                            setClub('');
                             setImageUrl('');
                             setMemberPosition('');
+                            navigate(`/${Clubb}`)
                         }
+
                     });
             }
             catch(err)
@@ -97,7 +97,7 @@ const AddMember = () =>
     const handleDeleteMember = async() => {
             let Id = deleteId.current.value;
             Id = Id.trim();
-            const ClubName = clubname;
+            const ClubName = Clubb;
             if(Id.length === 7) 
             {
 
@@ -105,7 +105,10 @@ const AddMember = () =>
                     await axios.post('http://localhost:3001/deletemember',{ClubName,Id})
                     .then(res=>{
                         console.log(res.data);
-                        if(res.data === "Success") alert("Member Deleted Successfully");
+                        if(res.data === "Success") {
+                            alert("Member Deleted Successfully");
+                            navigate(`/${Clubb}`);
+                        }
                         else alert("No Member Found with the Given Id");
                     })
                 }
@@ -148,13 +151,13 @@ const AddMember = () =>
                         <option >MECH</option><option >CIVIL</option><option >CHEM</option>
                     </select>
                 </div>
-                <div>
+                {/* <div>
                     <label>ClubName</label>
                     <select ref={Club} value={club} onChange={(e) => setClub(e.target.value)} required="">
                         <option >Select Club</option><option >Ecell</option><option >CodeClub</option><option >MathClub</option>
                         <option >TNP</option><option >HopeHouse</option><option >Dept</option>
                     </select>
-                </div>
+                </div> */}
                 <div className="file-input-container">
                     <label>Photo</label>
                     <div>
