@@ -34,7 +34,7 @@ const Ecell = () =>
 
    const handleUpload = async() => 
    {
-        const ClubName = 'Ecell';
+        const clubName = 'Ecell';
         if(selectedFile != null)
         {
             try
@@ -48,7 +48,7 @@ const Ecell = () =>
             {
                 console.log(res.data,"Resultdata");
                 const imageUrl = res.data;
-                await axios.post(`http://localhost:3001/post/gallery`,{ClubName,imageUrl})
+                await axios.post(`http://localhost:3001/post/gallery`,{clubName,imageUrl})
                 .then(res=>alert("Image added Successfully"))
                 .catch(err=>alert("Failed to add Image"))
                 setSelectedFile(null);
@@ -107,9 +107,9 @@ const Ecell = () =>
     useEffect(() => {
     const fetch = async ()=> 
     {
-        const ClubName = 'Ecell';
+        const clubName = 'Ecell';
         try{
-            await axios.get(`http://localhost:3001/club/members?ClubName=${ClubName}`)
+            await axios.get(`http://localhost:3001/club/members?clubName=${clubName}`)
             .then(res=>{
                 setMembers(res.data.teammember);
             })
@@ -119,7 +119,7 @@ const Ecell = () =>
         }
 
         try{
-            await axios.get(`http://localhost:3001/club/events?ClubName=${ClubName}`)
+            await axios.get(`http://localhost:3001/club/events?clubName=${clubName}`)
             .then(res => {
                 setPosters(res.data);
             })
@@ -129,7 +129,7 @@ const Ecell = () =>
         }
 
         try{
-            await axios.get(`http://localhost:3001/get/gallery?ClubName=${ClubName}`)
+            await axios.get(`http://localhost:3001/get/gallery?clubName=${clubName}`)
             .then(res=>{
                 setGalleryImages(res.data.gallery);
             })
@@ -172,6 +172,10 @@ const Ecell = () =>
         navigate("/addmember",{state:{Club :'Ecell'}});
     }
 
+    const handleAddEvent = () => {
+        navigate("/addevent",{state:{Club :'Ecell'}});
+    }
+
     const handleProfile = () => {
         navigate("/profile")
     }
@@ -183,7 +187,7 @@ const Ecell = () =>
                 <div class="ecell-nav-list-items">
                     <ul>
                         <li><button onClick={handleProfile}>Profile</button></li>
-                        <li><Link to="/addevent" class="linkcss" ><button>Add Event</button></Link></li>
+                        <li><button onClick={handleAddEvent}>Add Event</button></li>
                         <li><button onClick={handleAddMember}>Add Member</button></li>
                         <li><FaUserCircle size={40}/></li>
                     </ul>
@@ -204,7 +208,7 @@ const Ecell = () =>
                     {posters.length > 0 ? 
                     (
                         posters.map((poster,index) => (
-                            <div key={index} className="poster-card" onClick={()=>handlePoster(poster)}><img src={poster.PosterUrl} alt="" /></div>
+                            <div key={index} className="poster-card" onClick={()=>handlePoster(poster)}><img src={poster.imageUrl} alt="" /></div>
                         ))
                     ):
                     (
@@ -226,18 +230,19 @@ const Ecell = () =>
 
                     {members.slice(startIndex, endIndex + 1).map((member, index) => (
                         <div key={index} className="ecell-member">
-                            {member.ImageURL ? 
+                            {member.imageUrl ? 
                             (
-                                <img src={member.ImageURL} alt="" />
+                                <img src={member.imageUrl} alt="" />
                             ) 
                             :(
-                                <div>No Image Available</div>
+                                <img src={member.defaultImage} alt=""/>
                             )}
                             <div class="member-name">
-                                <span>{member.MemberName}</span>
-                                <span>{member.MemberPosition}</span>
-                                <span>{member.MemberId}</span>
-                                <span>{member.MemberDept}</span>
+                                <span>{member.memberName}</span>
+                                <span>{member.memberPosition}</span>
+                                <span>{member.memberId}</span>
+                                <span>{member.memberDept}</span>
+                                <span>{member.email}</span>
                             </div>
                         </div>
                     ))}
@@ -258,19 +263,19 @@ const Ecell = () =>
                 )}
                </span>
             <Carousel class="carousel" style={{width:'100%',borderRadius:'0px',height:'600px'}}>
-            {galleryImages.length > 0 ? 
-                (
-                    galleryImages.map((image, index) => (
-                        <Carousel.Item key={index} className="carousel-item">
-                            <img className="gallery-image" src={image.imageUrl} alt={`Slide ${index + 1}`} style={{ width: '800px',height:'550px',marginLeft: '280px',marginTop:'10px'}}/>
-                        </Carousel.Item>
-                    ))
-                ) : 
-                (
-                        <Carousel.Item className="carousel-item">
-                            <img className="gallery-image"  src="./defaultImage.jpg" alt="No images available" style={{ width: '58%',marginLeft: '300px',marginTop:'30px'}}/>
-                        </Carousel.Item>
-                )}
+                {galleryImages.length > 0 ? 
+                    (
+                        galleryImages.map((image, index) => (
+                            <Carousel.Item key={index} className="carousel-item">
+                                <img className="gallery-image" src={image.imageUrl} alt={`Slide ${index + 1}`} style={{ width: '800px',height:'550px',marginLeft:'250px',marginTop:'10px'}}/>
+                            </Carousel.Item>
+                        ))
+                    ) : 
+                    (
+                            <Carousel.Item className="carousel-item">
+                                <img className="gallery-image"  src="./defaultImage.jpg" alt="No images available" style={{ width: '58%',marginLeft:'250px',marginTop:'30px'}}/>
+                            </Carousel.Item>
+                    )}
             </Carousel>
             </div>
             <div class="ecell-footer">

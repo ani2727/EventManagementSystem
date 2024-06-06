@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const { UserModel, TeamMembersModel, GalleryModel,EventModel,RegistrationModel } = require('./Models/user'); // Adjust the path if necessary
+const { UserModel, TeamMembersModel, GalleryModel,EventModel,RegistrationModel,DeptEventsModel,AdminModel } = require('./Models/user'); 
 const bcrypt = require("bcrypt");
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
@@ -59,29 +59,38 @@ app.post("/signin", async (req, res) => {
     }
 });
 
-app.post("/addmember",async(req,res)=>{
+app.get('/admins',async(req,res) =>{
     try{
-        const {Clubb,MemberName,MemberId,MemberPosition,MemberDept,imageUrl} = req.body;
-
-        const user = await TeamMembersModel.findOne({MemberId,ClubName:Clubb});
-        if(user) return res.send({message:"Failure"});
-
-        await TeamMembersModel.create({ClubName:Clubb,MemberName,MemberId,MemberPosition,MemberDept,ImageURL:imageUrl})
-        return res.send({message:"Success"});
+        const result = await AdminModel.find();
+        return res.send(result);
     }
     catch(err) {
         console.log(err);
+    }
+})
+
+app.post("/addmember",async(req,res)=>{
+    try{
+        const {clubName,memberName,memberId,memberPosition,memberDept,imageUrl,email} = req.body;
+        const user = await TeamMembersModel.findOne({memberId,clubName});
+        if(user) return res.send({message:"Failure"});
+        
+        await TeamMembersModel.create({clubName,memberName,memberId,memberPosition,memberDept,imageUrl,email})
+        return res.send({message:"Success"});
+    }
+    catch(err) {
+        console.log("Error While Adding Member");
         return res.send({message:"Error While Adding Member"})
     }
 });
 
 app.post("/deletemember",async(req,res) => {
     try{
-        const {ClubName,Id} = req.body;
-        const user = await TeamMembersModel.findOne({ClubName,MemberId:Id});
+        const {clubName,Id} = req.body;
+        const user = await TeamMembersModel.findOne({clubName,memberId:Id});
         if(!user) return res.send("Failure");
 
-        await TeamMembersModel.deleteOne({ClubName,MemberId:Id});
+        await TeamMembersModel.deleteOne({clubName,memberId:Id});
         return res.send("Success");
     }
     catch(err) {
@@ -92,10 +101,10 @@ app.post("/deletemember",async(req,res) => {
 
 app.get("/club/members", async(req,res)=> {
     
-    const {ClubName} = req.query;
+    const {clubName} = req.query;
 
     try {
-        const teammember = await TeamMembersModel.find({ClubName})
+        const teammember = await TeamMembersModel.find({clubName})
         return res.send({ teammember});
         
     } 
@@ -123,9 +132,9 @@ app.post("/upload", upload.single('image'), async (req, res) => {
 
 app.get('/get/gallery',async(req,res) => {
 
-    const {ClubName} = req.query;
+    const {clubName} = req.query;
     try{
-        const gallery = await GalleryModel.find({ClubName})
+        const gallery = await GalleryModel.find({clubName})
         return res.send({gallery});
     }
     catch(err) {
@@ -134,8 +143,8 @@ app.get('/get/gallery',async(req,res) => {
 })
 app.post('/post/gallery',async(req,res) => {
     try{
-        const {ClubName,imageUrl} =  req.body;
-        await GalleryModel.create({ClubName,imageUrl})
+        const {clubName,imageUrl} =  req.body;
+        await GalleryModel.create({clubName,imageUrl})
         return res.send("Success");
     }
     catch(err) {
@@ -174,26 +183,61 @@ app.get('/posters',async(req,res) => {
 
 app.post('/addevent',async(req,res) => 
 {
-    const {EventName,ClubName,Venue,Dats,Tims,imageUrl,Description} = req.body;
-
+    const {eventName,clubName,tagline,venue,date,time,imageUrl,description,facultyCoordinator,facultyCoordinatorEmail,studentCoordinator,studentCoordinatorEmail} = req.body;
     try{
-        await EventModel.create({EventName,ClubName,Venue,Date:Dats,Time:Tims,PosterUrl:imageUrl,Description})
+        await EventModel.create({eventName,clubName,tagline,venue,date,time,imageUrl,facultyCoordinator,facultyCoordinatorEmail,studentCoordinator,studentCoordinatorEmail,description})
         res.status(200).json({message:"Success"})
     }
     catch(err) {
         res.status(500).json({message:"Failure"});
     }
 })
-app.get("/club/events",async(req,res) => {
-    try {
 
-        const {ClubName} = req.query;
+app.post('/dept/addevent',async(req,res) => 
+{
+    const {eventName,clubName,tagline,venue,date,time,imageUrl,description,facultyCoordinator,facultyCoordinatorEmail,studentCoordinator,studentCoordinatorEmail,branch} = req.body;
+    try{
+        await DeptEventsModel.create({eventName,clubName,tagline,venue,date,time,imageUrl,facultyCoordinator,facultyCoordinatorEmail,studentCoordinator,studentCoordinatorEmail,description,branch})
+        res.status(200).json({message:"Success"})
+    }
+    catch(err) {
+        res.status(500).json({message:"Failure"});
+    }
+})
+
+app.get("/dept/club/events",async(req,res) => 
+{
+    try {
 
         const currentDate = new Date();
 
         const formattedCurrentDate = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`;
 
-        const result = await EventModel.find({ Date: { $gte: formattedCurrentDate },ClubName}).sort({ Date: 1 });
+        const result = await DeptEventsModel.find({ 
+            date: { $gte: formattedCurrentDate },
+            branch: { $in: ['PUC', 'CSE', 'ECE', 'EEE', 'MECH', 'CIVIL', 'CHEM', 'METALLURGY'] }
+        }).sort({ date: 1 });        
+        return res.send(result);
+    } 
+    catch (err) 
+    {
+        res.status(500).send("Error"); 
+    } 
+})
+
+
+app.get("/club/events",async(req,res) => 
+{
+    try {
+
+        const {clubName} = req.query;
+        console.log(clubName);
+
+        const currentDate = new Date();
+
+        const formattedCurrentDate = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`;
+
+        const result = await EventModel.find({ date: { $gte: formattedCurrentDate },clubName}).sort({ Date: 1 });
 
         return res.send(result);
     } 
@@ -210,7 +254,7 @@ app.get("/upcoming/events",async(req,res) =>
 
         const formattedCurrentDate = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`;
 
-        const result = await EventModel.find({ Date: { $gte: formattedCurrentDate }}).sort({ Date: 1 });
+        const result = await EventModel.find({ date: { $gte: formattedCurrentDate }}).sort({ Date: 1 });
 
         return res.send(result);
     } 
@@ -263,12 +307,12 @@ app.post("/deleteevent",async(req,res) => {
 app.post("/event/register",async(req,res) => {
 
     try{
-        const {Email,EventName,ClubName} = req.body;
-        const result = await RegistrationModel.findOne({Email,EventName,ClubName});
+        const {email,eventName,clubName} = req.body;
+        const result = await RegistrationModel.findOne({email,eventName,clubName});
 
         if(!result)
         {
-            await RegistrationModel.create({Email,EventName,ClubName});            
+            await RegistrationModel.create({email,eventName,clubName});            
             return res.send({message:"Success"});
         }
         return res.send({message:"Failure"});
@@ -280,8 +324,8 @@ app.post("/event/register",async(req,res) => {
 
 app.get("/register/user",async(req,res)=>{
     try{
-        const {ClubName,EventName} = req.query;
-        const members = await RegistrationModel.find({ClubName,EventName});
+        const {clubName,eventName} = req.query;
+        const members = await RegistrationModel.find({clubName,eventName});
         return res.send({message:"Success",members});
     }
     catch(err) {

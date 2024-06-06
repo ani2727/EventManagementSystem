@@ -5,6 +5,8 @@
     border-radius: 5px;
     width: 400px;
     margin: auto;
+    height: 185vh;
+    margin-top: 150%;
 }
 
 .addEvent div {

@@ -26,35 +26,40 @@ UserSchema.pre('save', async function(next) {
 });
 
 const TeamMembersSchema = new mongoose.Schema({
-    ClubName:{
+    clubName:{
         type: String,
         required: true,
     },
-    MemberName:{
+    memberName:{
         type: String,
         required: true,
     },
-    MemberId:{
+    memberId:{
         type:String,
         required:true,
     },
-    MemberPosition:{
+    memberPosition:{
         type:String,
         required:true,
     },
-    MemberDept:{
+    memberDept:{
         type: String,
         required: true,
     },
-    ImageURL:{
+    imageUrl:{
         type: String,
         required: true,
-    }
-});
+    },
+    email:{
+        type:String,
+        required:true,
+    },
+
+})
 
 const GallerySchema = new mongoose.Schema(
     {
-        ClubName:String,
+        clubName:String,
         imageUrl:String,
     }
 )
@@ -62,31 +67,137 @@ const GallerySchema = new mongoose.Schema(
 
 const EventSchema = new mongoose.Schema(
     {
-        EventName:{
+        eventName:{
             type:String,
             required: true,
         },
-        ClubName:{
+        tagline:{
+            type:String,
+        },
+        clubName:{
             type:String,
             required: true,
         },
-        Venue:{
+        studentCoordinator:{
             type:String,
             required: true,
         },
-        Date:{
+        studentCoordinatorEmail:{
             type:String,
             required: true,
         },
-        Time:{
+        facultyCoordinator:{
+            type:String,
+        },
+        facultyCoordinatorEmail:{
+            type:String,
+        },
+        venue:{
             type:String,
             required: true,
         },
-        PosterUrl:{
+        date:{
+            type:String,
+            required: true,
+        },
+        time:{
+            type:String,
+            required: true,
+        },
+        imageUrl:{
             type:String,
             required:true,
         },
-        Description: {
+        description: {
+            type:String,
+        }
+    }
+)
+
+const DeptEventsSchema = new mongoose.Schema(
+    {
+        eventName:{
+            type:String,
+            required: true,
+        },
+        tagline:{
+            type:String,
+        },
+        clubName:{
+            type:String,
+            required: true,
+        },
+        branch:{
+            type:String,
+            required:true,
+        },
+        studentCoordinator:{
+            type:String,
+            required: true,
+        },
+        studentCoordinatorEmail:{
+            type:String,
+            required: true,
+        },
+        facultyCoordinator:{
+            type:String,
+        },
+        facultyCoordinatorEmail:{
+            type:String,
+        },
+        venue:{
+            type:String,
+            required: true,
+        },
+        date:{
+            type:String,
+            required: true,
+        },
+        time:{
+            type:String,
+            required: true,
+        },
+        imageUrl:{
+            type:String,
+            required:true,
+        },
+        description: {
+            type:String,
+        }
+    }
+)
+
+const AdminSchema = new mongoose.Schema(
+    {
+        name:{
+            type:String,
+            required:true,
+        },
+        id:{
+            type:String,
+            required:true,
+        },
+        dept:{
+            type:String,
+            required:true,
+        },
+        email:{
+            type:String,
+            required:true,
+        },
+        password:{
+            type:String,
+            required:true,
+        },
+        contact:{
+            type:String,
+            required:true,
+        },
+        adminOf:{
+            type:[String],
+            required:true,
+        },
+        imageUrl:{
             type:String,
         }
     }
@@ -94,25 +205,27 @@ const EventSchema = new mongoose.Schema(
 
 const RegistrationSchema = new mongoose.Schema(
     {
-        Email:{
+        email:{
             type:String,
             required:true,
         },
-        EventName:{
+        eventName:{
             type:String,
             required: true,
         },
-        ClubName:{
+        clubName:{
             type:String,
             required:true,
         }
     }
 )
 
+const AdminModel = mongoose.model("admins",AdminSchema)
+const DeptEventsModel = mongoose.model("departmentevents",DeptEventsSchema);
 const RegistrationModel = mongoose.model("registrations",RegistrationSchema);
 const EventModel = mongoose.model("events",EventSchema);
 const GalleryModel = mongoose.model("gallery",GallerySchema);
 const TeamMembersModel = mongoose.model("TeamMembers", TeamMembersSchema);
 const UserModel = mongoose.model("User", UserSchema);
 
-module.exports = { UserModel, TeamMembersModel, GalleryModel,EventModel,RegistrationModel };
+module.exports = { UserModel, TeamMembersModel, GalleryModel,EventModel,RegistrationModel,DeptEventsModel,AdminModel };

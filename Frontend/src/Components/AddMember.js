@@ -5,22 +5,23 @@ import axios from "axios";
 import { useNavigate, useParams,useLocation } from 'react-router-dom';
 
 
-const AddMember = () => 
+const Addmember = () => 
 {
 
     const location = useLocation();
-    const Clubb = location.state.Club;
+    const clubName = location.state.Club;
 
     const [name,setName] = useState('');
     const [id,setId] = useState('');
     const [branch,setBranch] = useState('');
-    const [imageUrl,setImageUrl] = useState('');
+    const [imageUrl,setImageUrl] = useState("https://res.cloudinary.com/dkdslxqqx/image/upload/v1717658764/iwlasfaj6duzq9qw55hy.webp");
     const [uploading,setUploading] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
     const [deleteID,setDeleteID] = useState('');
-    const [memberPosition,setMemberPosition] = useState('');
+    const [memberPosition,setmemberPosition] = useState('');
+    const [email,setEmail] = useState('');
 
-
+    const Email = useRef();
     const Name = useRef();
     const Id = useRef();
     const Branch = useRef();
@@ -58,28 +59,30 @@ const AddMember = () =>
 
     const handleSubmit = async() => 
     {
-        const MemberName = Name.current.value;
-        const MemberId = Id.current.value;
-        const MemberDept = Branch.current.value;
-        const MemberPosition = Position.current.value;
+        const memberName = Name.current.value;
+        const memberId = Id.current.value;
+        const memberDept = Branch.current.value;
+        const memberPosition = Position.current.value;
+        const email = Email.current.value;
 
-        if(Clubb.length > 0 && MemberName.length>0 && MemberId.length>0 && MemberDept.length>0 && imageUrl.length>0)
+        if(clubName.length > 0 && memberName.length>0 && memberId.length>0 && memberDept.length>0 && email.length>0)
         {
             try{
-                await axios.post("http://localhost:3001/addmember",{Clubb,MemberName,MemberId,MemberPosition,MemberDept,imageUrl})
+                await axios.post("http://localhost:3001/addmember",{clubName,memberName,memberId,memberPosition,memberDept,imageUrl,email})
                 .then(res=>
                     {
                         if(res.data.message === "Failure") alert("User already exists")
-                        else 
+                        else if(res.data.message === "Success")
                         {   
-                            alert("Member Added Successfully")
+                            alert("member Added Successfully")
                             setName('');
                             setId('');
                             setBranch('');
                             setImageUrl('');
-                            setMemberPosition('');
-                            navigate(`/${Clubb}`)
+                            setmemberPosition('');
+                            navigate(`/${clubName}`)
                         }
+                        else alert("Member Not Added")
 
                     });
             }
@@ -94,22 +97,20 @@ const AddMember = () =>
 
     }
 
-    const handleDeleteMember = async() => {
+    const handleDeletemember = async() => {
             let Id = deleteId.current.value;
             Id = Id.trim();
-            const ClubName = Clubb;
             if(Id.length === 7) 
             {
 
                 try{
-                    await axios.post('http://localhost:3001/deletemember',{ClubName,Id})
+                    await axios.post('http://localhost:3001/deletemember',{clubName,Id})
                     .then(res=>{
-                        console.log(res.data);
                         if(res.data === "Success") {
-                            alert("Member Deleted Successfully");
-                            navigate(`/${Clubb}`);
+                            alert("member Deleted Successfully");
+                            navigate(`/${clubName}`);
                         }
-                        else alert("No Member Found with the Given Id");
+                        else alert("No member Found with the Given Id");
                     })
                 }
                 catch(err) {
@@ -131,37 +132,35 @@ const AddMember = () =>
         <div className="addmember-container">
             
             <div className="addmember">
-                <div><h1>Add Member</h1></div>
+                <div><h1>Add member</h1></div>
                 <div>
                     <label>Name</label>
-                    <input ref={Name} placeholder="Enter Member Name" value={name} onChange={(e)=>setName(e.target.value)} type="text" required=""></input>
+                    <input ref={Name} placeholder="Enter member Name" value={name} onChange={(e)=>setName(e.target.value)} type="text" required=""></input>
                 </div>
                 <div>
                     <label>ID</label>
-                    <input ref={Id} placeholder="Enter Member ID" value={id} onChange={(e)=>setId(e.target.value)} type="text" required=""></input>
+                    <input ref={Id} placeholder="Enter member ID" value={id} onChange={(e)=>setId(e.target.value)} type="text" required=""></input>
                 </div>
                 <div>
                     <label>Position</label>
-                    <input ref={Position} placeholder="Enter Member Position" value={memberPosition} onChange={(e)=>setMemberPosition(e.target.value)} type="text" required=""></input>
+                    <input ref={Position} placeholder="Enter member Position" value={memberPosition} onChange={(e)=>setmemberPosition(e.target.value)} type="text" required=""></input>
+                </div>
+                <div>
+                    <label>Email</label>
+                    <input ref={Email} placeholder="Enter Email" value={email} onChange={(e)=>setEmail(e.target.value)} type="text" required=""></input>
                 </div>
                 <div>
                     <label>Branch</label>
                     <select ref={Branch} value={branch} onChange={(e) => setBranch(e.target.value)} required="">
                         <option >Select branch</option><option >CSE</option><option >ECE</option><option >EEE</option>
-                        <option >MECH</option><option >CIVIL</option><option >CHEM</option>
+                        <option >MECH</option><option >CIVIL</option><option >CHEm</option>
                     </select>
                 </div>
-                {/* <div>
-                    <label>ClubName</label>
-                    <select ref={Club} value={club} onChange={(e) => setClub(e.target.value)} required="">
-                        <option >Select Club</option><option >Ecell</option><option >CodeClub</option><option >MathClub</option>
-                        <option >TNP</option><option >HopeHouse</option><option >Dept</option>
-                    </select>
-                </div> */}
+                
                 <div className="file-input-container">
                     <label>Photo</label>
                     <div>
-                        <input ref={fileInputRef} onChange={handleFileChange} id="file-input" type="file" required></input>
+                        <input ref={fileInputRef} onChange={handleFileChange} id="file-input" type="file"></input>
                         <span onClick={clearFileInput} className="clear-file-input">&#10006;</span>
 
                         {uploading ? (<Spinner animation="border" role="status">
@@ -173,11 +172,11 @@ const AddMember = () =>
                 <button onClick={handleSubmit}>Submit</button>
                 <div class="deletemember">
                     <input ref={deleteId} value={deleteID} onChange={(e)=>setDeleteID(e.target.value)} type="text" placeholder="Ex: B190000"/>
-                    <button onClick={handleDeleteMember}>Delete Member</button>
+                    <button onClick={handleDeletemember}>Delete member</button>
                 </div>
             </div>
         </div>
     );
 };
 
-export default AddMember;
+export default Addmember;

@@ -51,7 +51,7 @@ const HomePage = ()=>{
     },[])
    
     return (
-        <div className="home" id="home">
+        <div className="home">
             <div className="home-header">
                 <img className="logo" src="./rgukt-logo.jpeg" alt="logo" />
                 <div className="search-events-container">
@@ -84,7 +84,7 @@ const HomePage = ()=>{
                     {posters.length > 0 ?
                     (
                         posters.map((poster) => (
-                            <div className="poster-card"><img src={poster.PosterUrl} alt=""/></div>
+                            <div className="poster-card"><img src={poster.imageUrl} alt=""/></div>
                         ))
                         
                     )
@@ -102,7 +102,7 @@ const HomePage = ()=>{
                         {posters.length > 0 ?
                         (
                             posters.map((poster) => (
-                                <div className="poster-card"><img src={poster.PosterUrl} alt=""/></div>
+                                <div className="poster-card"><img src={poster.imageUrl} alt=""/></div>
                             ))
                             
                         )

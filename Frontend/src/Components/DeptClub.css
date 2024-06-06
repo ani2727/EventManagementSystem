@@ -1,0 +1,28 @@
+.depts{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-wrap: wrap;
+}
+
+.dept-club{
+    margin: 0.5em;
+    width: 8em;
+    height: 6em;
+    background: white;
+    box-shadow: -1px -1px 2px 3px rgba(136, 133, 133, 0.5);
+    border-radius: 2px;
+    padding: 5px 10px;
+    font-weight: bold;
+    transition: 0.4s;
+    text-decoration: none;
+    color: inherit;
+}
+
+.dept-club img{
+    width: 50%;
+}
+.dept-club:hover{
+    scale: 1.1;
+    cursor: pointer;
+}

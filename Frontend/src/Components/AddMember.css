@@ -2,8 +2,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: auto;
-    margin-top: 50px;
+    height: 100vh;
+    margin-top: 40%;
 }
 
 .addmember {

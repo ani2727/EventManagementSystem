@@ -100,10 +100,17 @@
     margin: 0px 20px;
     margin-bottom: 2em;
 }
+.team-dept{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
 .ecell-member {
     flex: 0 0 auto;
     width: 220px; 
-    height: 250px;
+    height: 300px;
     margin: 10px;
     margin-right: 10px; 
     background: #fff;
