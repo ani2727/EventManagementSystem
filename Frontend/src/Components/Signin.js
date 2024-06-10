@@ -1,55 +1,29 @@
 import "./Signin.css";
 import {useNavigate} from "react-router-dom";
-import {useState,useRef} from "react"
+import {useState, useRef} from "react"
 import axios from "axios";
 
 const Signin = () => 
 {
-    const [Email,setEmail] = useState('');
-    const [Password,setPassword] = useState('');
+    const [Emails,setEmail] = useState('');
+    const [Passwords,setPassword] = useState('');
 
     const navigate = useNavigate();
 
-    const email = useRef();
-    const password = useRef();
+    const Email = useRef();
+    const Password = useRef();
 
-    // const handleSignup = (e)=>{
-    //     e.preventDefault();
-    //     const Email = email.current.value;
-    //     const Password = password.current.value;
-
-    //     axios.post("http://localhost:3001/signup", { Email, Password })
-    //     .then((response) => {
-    //         const data = response.data; 
-    //         if (data.message === "User Already Exists") {
-    //             alert("Email Already Exists");
-    //         } else {
-    //             alert("Registration Successful")
-    //             navigate("/");
-    //         }
-    //     })
-    //     .catch((err) => {
-    //         alert("Enter the Details Properly");
-    //     });
-
-    // }
-    const handleLogin = (e)=>{
+    const handleLogin = async(e)=>{
         e.preventDefault();
-        const Email = email.current.value;
-        const Password = password.current.value;
 
-        axios.post("http://localhost:3001/signin",{Email,Password})
+        const email = Email.current.value;
+        const password = Password.current.value;
+
+        await axios.post("http://localhost:3001/auth/signin",{email,password})
         .then((res)=> {
-            const data = res.data;
-            if(data.message === "Success") 
-            {
-                alert("Hey Welcome");
-                navigate("/");
-                
-            }
-            else alert("You haven't Registered to Login")
-            
-            
+            console.log(res);
+            localStorage.setItem('userInfo',JSON.stringify(res.data));
+            navigate("/")
         })
         .catch((err)=>{
             alert("Invalid Login");
@@ -62,13 +36,14 @@ const Signin = () =>
             <div class="login-container">
                 <h2>Login</h2>
                 <form id="login-form">
-                <div class="form-group">
-                    <input type="text" ref={email} value={Email} onChange={e=>setEmail(e.target.value)} placeholder="Username" required />
-                </div>
-                <div class="form-group">
-                    <input type="password" ref={password} value={Password} onChange={e=>setPassword(e.target.value)} placeholder="Password" required />
-                </div>
-                <button onClick={handleLogin} type="submit">Login</button>
+                    <div class="form-group">
+                        <input type="text" ref={Email} value={Emails} onChange={e=>setEmail(e.target.value)} placeholder="username" required />
+                    </div>
+                    <div class="form-group">
+                        <input type="password" ref={Password} value={Passwords} onChange={e=>setPassword(e.target.value)} placeholder="Password" required />
+                    </div>
+                    
+                    <button onClick={handleLogin} >Login</button>
                 </form>
             </div>
     );

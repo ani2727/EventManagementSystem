@@ -1,10 +1,15 @@
 .addmember-container {
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin-top: 40%;
+    align-items: flex-start; /* Adjust alignment as per your requirement */
+    margin-top: 250px;
 }
+
+.addmember,
+.deleteadmin {
+    margin-right: 20px; /* Adjust the gap between the divs */
+}
+
 
 .addmember {
     border: 1px solid #ccc;

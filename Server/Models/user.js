@@ -2,29 +2,45 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
 const UserSchema = new mongoose.Schema({
-    Email:{
+    userName:{
         type:String,
         required: true,
-        unique: true,
     },
-    Password:{
+    studentId:{
+        type:String,
+        required:true,
+        
+    },
+    password:{
         type:String,
         required: true,
+    },
+    dept:{
+        type:String,
+        required:true,
+    },
+    imageUrl:{
+        type:String,
+    },
+    clubs:{
+        type:[String],
+    },
+    isAdmin:{
+        type:Boolean,
+        default:false,
     }
 });
 
-// Middleware to hash password before saving
 UserSchema.pre('save', async function(next) {
     try {
         const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(this.Password, salt);
-        this.Password = hashedPassword;
+        const hashedPassword = await bcrypt.hash(this.password, salt);
+        this.password = hashedPassword;
         next();
     } catch(err) {
         next(err);
     }
 });
-
 const TeamMembersSchema = new mongoose.Schema({
     clubName:{
         type: String,
@@ -56,15 +72,11 @@ const TeamMembersSchema = new mongoose.Schema({
     },
 
 })
-
 const GallerySchema = new mongoose.Schema(
     {
         clubName:String,
         imageUrl:String,
-    }
-)
-
-
+    })
 const EventSchema = new mongoose.Schema(
     {
         eventName:{
@@ -111,8 +123,23 @@ const EventSchema = new mongoose.Schema(
         description: {
             type:String,
         }
+    })
+
+const ClubSchema = new mongoose.Schema({
+    clubName:{
+        type:String,
+        required:true,
+    },
+    description:{
+        type:String,
+        required:true,
+    },
+    imageUrl:{
+        type:String,
+    }
     }
 )
+
 
 const DeptEventsSchema = new mongoose.Schema(
     {
@@ -164,8 +191,7 @@ const DeptEventsSchema = new mongoose.Schema(
         description: {
             type:String,
         }
-    }
-)
+    })
 
 const AdminSchema = new mongoose.Schema(
     {
@@ -193,6 +219,10 @@ const AdminSchema = new mongoose.Schema(
             type:String,
             required:true,
         },
+        isAdmin:{
+            type:Boolean,
+            default:false,
+        },
         adminOf:{
             type:[String],
             required:true,
@@ -200,8 +230,18 @@ const AdminSchema = new mongoose.Schema(
         imageUrl:{
             type:String,
         }
+    })
+
+AdminSchema.pre('save', async function(next) {
+    try {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(this.password, salt);
+        this.password = hashedPassword;
+        next();
+    } catch(err) {
+        next(err);
     }
-)
+});
 
 const RegistrationSchema = new mongoose.Schema(
     {
@@ -227,5 +267,6 @@ const EventModel = mongoose.model("events",EventSchema);
 const GalleryModel = mongoose.model("gallery",GallerySchema);
 const TeamMembersModel = mongoose.model("TeamMembers", TeamMembersSchema);
 const UserModel = mongoose.model("User", UserSchema);
+const ClubModel = mongoose.model("clubs",ClubSchema);
 
-module.exports = { UserModel, TeamMembersModel, GalleryModel,EventModel,RegistrationModel,DeptEventsModel,AdminModel };
+module.exports = { UserModel, TeamMembersModel, GalleryModel,EventModel,RegistrationModel,DeptEventsModel,AdminModel ,ClubModel};

@@ -5,19 +5,24 @@ import { FiSearch } from "react-icons/fi";
 import { FaInstagram } from "react-icons/fa6";
 import { RiTwitterXFill } from "react-icons/ri";
 import { FaWhatsapp } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { useEffect ,useState} from "react";
 import axios from "axios";
 import { useRef } from "react";
+import getUserInfo from "../utils/userInfo.js";
 
 
-const HomePage = ()=>{
+
+const HomePage = ()=>
+{
 
     const [posters,setPosters] = useState([]);
     const [searchtext,setSearchtext] = useState('');
+    const [clubs,setClubs] = useState(null);
 
     const searchText = useRef(null);
-    
+    const navigate = useNavigate();
+    const userData = getUserInfo();
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -27,7 +32,7 @@ const HomePage = ()=>{
             setPosters(posters);
         }
         else {
-            const result = posters.filter(poster => poster.EventName.toLowerCase().includes(search));
+            const result = posters.filter(poster => poster.eventName.toLowerCase().includes(search));
             setPosters(result);
         }
 
@@ -37,31 +42,70 @@ const HomePage = ()=>{
         const fetch = async () =>
         {
             try{
-                await axios.get(`http://localhost:3001/upcoming/events`)
+                await axios.get(`http://localhost:3001/get/upcoming/events`)
                 .then(res => {
                     setPosters(res.data);
-                    console.log(res.data);
                 })
             }
             catch(err) {
                 console.log(err);
             }
+
+            try{
+                const result = await axios.get('http://localhost:3001/get/clubs')
+                setClubs(result.data.result);
+            }
+            catch(err) {
+                alert("Error accessing clubs");
+            }
+
         }
         fetch();
     },[])
-   
+
+    const handleClub = (club)=>
+    {
+        if(club.clubName !== 'DeptClub')  navigate('/club',{state:{clubData:club}})
+        else navigate('/deptclub',{state:{clubData:club}})
+    }
+
+    const handleLogout = () => {
+        localStorage.removeItem('userInfo');
+        navigate("/")
+    }
+    
+
     return (
         <div className="home">
             <div className="home-header">
-                <img className="logo" src="./rgukt-logo.jpeg" alt="logo" />
-                <div className="search-events-container">
-                    <FiSearch/>
-                    <input className="search-bar" ref={searchText} value={searchtext} onChange={(e)=>setSearchtext(e.target.value)} placeholder="Search Events"></input>
+                <div>
+                    <img className="logo" src="./rgukt-logo.jpeg" alt="logo" />
+                    <div className="search-events-container">
+                        <FiSearch/>
+                        <input className="search-bar" ref={searchText} value={searchtext} onChange={(e)=>setSearchtext(e.target.value)} placeholder="Search Events"></input>
+                    </div>
+                    <button className="search-btn" onClick={handleSearch}>Search</button>
                 </div>
-                <button className="search-btn" onClick={handleSearch}>Search</button>
-                <Link to="/signin" className="linkcss"><button className="signin-btn" >Sign In</button></Link>
-
-               
+                <div>
+                <Link to="/admins"><button class="manageadmin-btn">Manage Admin</button></Link>
+                {
+                    userData ? (
+                        <div className="dropdown">
+                            <button className="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src={userData.imageUrl} style={{width:'60px'}} alt="ProfileImage"/>
+                            </button>
+                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <Link to="/profile" className="dropdown-item">Profile</Link>
+                                <button className="dropdown-item" onClick={handleLogout} >Logout</button>
+                            </div>
+                        </div>
+                    ) : (
+                        <Link to="/signin" className="linkcss"><button className="signin-btn">Sign In</button></Link>
+                    )
+                    
+                }
+                </div>
+                
             </div>
             <div className="home-body">
                 <div className="eventos">
@@ -83,8 +127,8 @@ const HomePage = ()=>{
                 <div className="upcoming-events-posters">
                     {posters.length > 0 ?
                     (
-                        posters.map((poster) => (
-                            <div className="poster-card"><img src={poster.imageUrl} alt=""/></div>
+                        posters.map((poster,index) => (
+                            <div key={index} className="poster-card"><img src={poster.imageUrl} alt=""/></div>
                         ))
                         
                     )
@@ -101,8 +145,8 @@ const HomePage = ()=>{
                     <div className="online-events-posters">
                         {posters.length > 0 ?
                         (
-                            posters.map((poster) => (
-                                <div className="poster-card"><img src={poster.imageUrl} alt=""/></div>
+                            posters.map((poster,index) => (
+                                <div key={index} className="poster-card"><img src={poster.imageUrl} alt=""/></div>
                             ))
                             
                         )
@@ -115,34 +159,19 @@ const HomePage = ()=>{
             </div>
             <div className="clubs">
                 <div className="clubs-header"><h1>Explore Club Events</h1></div>
-                <div className="club-items">
-                    <Link to="/ecell" className="linkcss"><div className="club">
-                        <img src="rgukt-logo.jpeg" alt=""/>
-                        <p>E-Cell</p>
-                    </div>
-                    </Link>
-                    <Link to="/hopehouse" className="linkcss"><div className="club">
-                        <img src="rgukt-logo.jpeg" alt=""/>
-                        <p>Hope House</p>
-                    </div>
-                    </Link>
-                    <Link to="deptclub" className="linkcss"><div className="club">
-                        <img src="rgukt-logo.jpeg" alt=""/>
-                        <p>Dept</p>
-                    </div></Link>
-                    <Link to="codeclub" className="linkcss"><div className="club">
-                        <img src="rgukt-logo.jpeg" alt=""/>
-                        <p>Code Club</p>
-                    </div></Link>
-                    <Link to="mathclub" className="linkcss"><div className="club">
-                        <img src="rgukt-logo.jpeg" alt=""/>
-                        <p>Math Club</p>
-                    </div></Link>
-                    <Link to="tnp" className="linkcss"><div className="club">
-                        <img src="rgukt-logo.jpeg" alt=""/>
-                        <p>TNP Cell</p>
-                    </div></Link>
+                <div className="club-items" >
+                {clubs && clubs.length>0 ?
+                (
+                    clubs.map((club,index) =>(
+                        <div key={index} className="club" onClick={()=>handleClub(club)}>
+                           <p><img src={club.imageUrl} alt="" /></p> 
+                            <p>{club.clubName}</p>
+                        </div>
+                    ))
+                ):<h2>No Clubs to Display</h2>
+                }
                 </div>
+                
             </div>
             
             <div className="footer-section">

@@ -21,7 +21,7 @@ const EventDetails = () =>
         if(email.length > 0 && email.endsWith("@rgukt.ac.in"))
         {
             try{
-                const res = await axios.post('http://localhost:3001/event/register',{email,eventName,clubName})
+                const res = await axios.post('http://localhost:3001/register/events',{email,eventName,clubName})
                 if(res.data.message === "Success") {
                     alert("Registration Successfull!");
                     navigate(`/${clubName}`);
@@ -39,21 +39,29 @@ const EventDetails = () =>
         else alert("Please Enter your Domain Email Properly")
     }
 
-    useEffect(() => {
+    useEffect(() => 
+    {
+        let isMounted = true; 
         const fetchData = async () => {
             try {
                 const clubName = posterData.clubName;
                 const eventName = posterData.eventName;
-                const res = await axios.get(`http://localhost:3001/register/user?clubName=${clubName}&eventName=${eventName}`);
-                setMembers(res.data.members);
+                const res = await axios.get(`http://localhost:3001/register/users?clubName=${clubName}&eventName=${eventName}`);
+                if (isMounted) {
+                    setMembers(res.data.members);
+                }
             } catch (err) {
                 console.log(err);
             }
         };
     
         fetchData();
+
+        return () => {
+            isMounted = false;
+        };
     
-    }, [posterData.clubName, posterData.eventName]);
+    }, [posterData.clubName,posterData.eventName]);
     
     
     return (

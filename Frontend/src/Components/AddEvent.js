@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import "./AddEvent.css"
 import axios from "axios";
 import { Spinner } from "react-bootstrap";
-import { useNavigate,Link,useLocation } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 
 const AddEvent = () => 
 {
@@ -65,8 +65,7 @@ const AddEvent = () =>
             setUploading(false);
         }
       };
-
-
+    
       const handleSubmit = async(e) => {
         e.preventDefault();
     
@@ -80,14 +79,12 @@ const AddEvent = () =>
         const studentCoordinatorEmail = scoordinatoremail.current.value;
         const facultyCoordinator = fcoordinator.current.value;
         const facultyCoordinatorEmail = fcoordinatoremail.current.value;
-        const branch = Branch.current.value;
-        if(clubName !== 'deptclub')
+        if(clubName !== 'DeptClub')
         {
             try {
-                await axios.post('http://localhost:3001/addevent',{eventName,clubName,tagline,studentCoordinator,studentCoordinatorEmail,facultyCoordinator,facultyCoordinatorEmail,venue,date,time,imageUrl,description})
+                await axios.post('http://localhost:3001/add/event',{eventName,clubName,tagline,studentCoordinator,studentCoordinatorEmail,facultyCoordinator,facultyCoordinatorEmail,venue,date,time,imageUrl,description})
                 .then(res => {
                     alert("Event Added Successfully")
-                    navigate(`/${clubName}`)
                 })
             }
             
@@ -98,21 +95,24 @@ const AddEvent = () =>
         }
         else 
         {
+            const branch = Branch.current.value;
             try {
-                await axios.post('http://localhost:3001/dept/addevent',{eventName,clubName,tagline,studentCoordinator,studentCoordinatorEmail,facultyCoordinator,facultyCoordinatorEmail,venue,date,time,imageUrl,description,branch})
+                await axios.post('http://localhost:3001/add/dept/event',{eventName,clubName,tagline,studentCoordinator,studentCoordinatorEmail,facultyCoordinator,facultyCoordinatorEmail,venue,date,time,imageUrl,description,branch})
                 .then(res => {
-                    console.log(res, "Came to Result")
                     alert("Event Added Successfully")
-                    navigate(`/${clubName}`)
                 })
             }
             
             catch(err) {
                 console.log(err);
-                alert("Event not added");
+                alert("Department Event not added");
             }
         }
     
+    }
+
+    const handleDeleteEvent = () => {
+        navigate("/deleteevent",{state:{club: clubName}})
     }
     
     const clearFileInput = () => {
@@ -130,7 +130,7 @@ const AddEvent = () =>
                 <div>
                     <label>Tag Line</label><input placeholder="Tag line" type="text" ref={taglinee} value={Tagline} onChange={(e)=>setTagline(e.target.value)} />
                 </div>
-                {clubName==="deptclub" ?
+                {clubName==="DeptClub" ?
                 (
                     <div>
                     <label>Branch</label>
@@ -145,25 +145,27 @@ const AddEvent = () =>
                 )
                 }
                 <div>
-                <label>Student Co-ordinator Name</label><input className="add-event-input" type="text" placeholder="Enter Co-ordinator Name" ref={scoordinator} value={scoordinatorName} onChange={(e)=>setScoordinatorName(e.target.value)} required=""/>
+                    <label>Student Co-ordinator Name</label>
+                    <input className="add-event-input" type="text" placeholder="Enter Co-ordinator Name" value={scoordinatorName} onChange={(e) => setScoordinatorName(e.target.value)} required="" ref={scoordinator} />
+                </div>
+            <div>
+                <label>Student Co-ordinator Mail</label>
+                <input className="add-event-input" type="text" placeholder="Enter Co-ordinator Name" value={scoordinatorEmail} onChange={(e) => setScoordinatorEmail(e.target.value)} required="" ref={scoordinatoremail} />
+            </div>
+                <div>
+                <label>Faculty Co-ordinator Name</label><input className="add-event-input" type="text" placeholder="Enter Co-ordinator Name"  value={fcoordinatorName} onChange={(e)=>setFcoordinatorName(e.target.value)} required="" ref={fcoordinator}/>
                 </div>
                 <div>
-                <label>Student Co-ordinator Mail</label><input className="add-event-input" type="text" placeholder="Enter Co-ordinator Name" ref={scoordinatoremail} value={scoordinatorEmail} onChange={(e)=>setScoordinatorEmail(e.target.value)} required=""/>
-                </div>
-                <div>
-                <label>Faculty Co-ordinator Name</label><input className="add-event-input" type="text" placeholder="Enter Co-ordinator Name" ref={fcoordinator} value={fcoordinatorName} onChange={(e)=>setFcoordinatorName(e.target.value)} required=""/>
-                </div>
-                <div>
-                <label>Faculty Co-ordinator Mail</label><input className="add-event-input" type="text" placeholder="Enter Co-ordinator Name" ref={fcoordinatoremail} value={fcoordinatorEmail} onChange={(e)=>setFcoordinatorEmail(e.target.value)} required=""/>
+                <label>Faculty Co-ordinator Mail</label><input className="add-event-input" type="text" placeholder="Enter Co-ordinator Name" value={fcoordinatorEmail} onChange={(e)=>setFcoordinatorEmail(e.target.value)} required="" ref={fcoordinatoremail}/>
                 </div>
                 <div>
                 <label>Venue</label><input className="add-event-input" type="text" placeholder="Enter Venue" ref={Venues} value={Venue} onChange={(e)=>setVenue(e.target.value)} required=""/>
                 </div>
                 <div>
-                <label>Date</label><input className="add-event-input" type="date"  ref={dates} value={Date} onChange={e => setDate(e.target.value)} required/>
+                <label>Date</label><input className="add-event-input" type="date"   value={Date} onChange={e => setDate(e.target.value)} required ref={dates}/>
                 </div>
                 <div>
-                <label>Time</label><input className="add-event-input" type="time"  ref={times} value={Time} onChange={e => setTime(e.target.value)} required/>
+                <label>Time</label><input className="add-event-input" type="time"   value={Time} onChange={e => setTime(e.target.value)} required ref={times}/>
                 </div>
 
                 <div className="file-input-container">
@@ -179,14 +181,14 @@ const AddEvent = () =>
                     </div>
                 </div>
                 <div>
-                <label>Description</label><textarea type="text" placeholder="Write something about Event" ref={desc} onChange={(e)=>setDescription(e.target.value)} value={description} className="add-event-input"  />
+                <label>Description</label><textarea type="text" placeholder="Write something about Event"  onChange={(e)=>setDescription(e.target.value)} value={description} className="add-event-input" ref={desc} />
                 </div>
 
                 <button className="addevent-submit-btn" onClick={handleSubmit}>Submit</button>
 
                 <div class="delete-event">
                     <span>Delete an existing Event?</span>
-                    <span><Link to="/deleteevent" class="linkcss"><button>Delete Event</button></Link></span>
+                    <span onClick={handleDeleteEvent}><button>Delete Event</button></span>
                 </div>
             </div>
         </div>

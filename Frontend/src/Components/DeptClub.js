@@ -1,7 +1,6 @@
 import React, { useState,useEffect,useRef } from 'react';
 import "./Ecell.css"
 import { FaUserCircle } from "react-icons/fa";
-import {Link} from "react-router-dom"
 import Carousel from 'react-bootstrap/Carousel';
 import { FaWhatsapp } from 'react-icons/fa';
 import { FaInstagram } from 'react-icons/fa';
@@ -12,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { Spinner } from 'react-bootstrap';
 import emailjs from '@emailjs/browser';
 
+import { useLocation } from 'react-router-dom';
 
 
 const DeptClub = () => 
@@ -21,7 +21,9 @@ const DeptClub = () =>
     const [posters,setPosters] = useState([]);
     const navigate = useNavigate();
     const form = useRef();
-    const forms = useRef();
+
+    const location = useLocation();
+    const clubData = location.state.clubData;
 
     const fileInputRef = useRef();
 
@@ -34,7 +36,7 @@ const DeptClub = () =>
 
    const handleUpload = async() => 
    {
-        const clubName = 'deptclub';
+        const clubName = clubData.clubName;
         if(selectedFile != null)
             {
             try
@@ -46,7 +48,7 @@ const DeptClub = () =>
                 .then(async(res) =>
                 {
                     const imageUrl = res.data;
-                    await axios.post(`http://localhost:3001/post/gallery`,{clubName,imageUrl})
+                    await axios.post(`http://localhost:3001/add/galleryimage`,{clubName,imageUrl})
                     .then(res=>alert("Image added Successfully"))
                     .catch(err=>alert("Failed to add Image"))
                     setSelectedFile(null);
@@ -54,8 +56,7 @@ const DeptClub = () =>
                 })
             }
             catch(err) {
-            console.log("Error thrown")
-            console.log(err);
+            console.log(err)
             }
             finally{
             setUploading(false);
@@ -82,30 +83,13 @@ const DeptClub = () =>
           );
       };
 
-      const sendEmails = (e) => {
-        e.preventDefault();
-    
-        emailjs
-          .sendForm('service_nmfnxej', 'template_mdb3nra', forms.current, {
-            publicKey: 'SP7Vld6f5wytgRVLm',
-          })
-          .then(
-            () => {
-              alert('SUCCESS!');
-              e.target.reset();
-            },
-            (error) => {
-            },
-          );
-      };
-
 
     useEffect(() => {
     const fetch = async ()=> 
     {
-        const clubName = 'deptclub';
+        const clubName = clubData.clubName;
         try{
-            await axios.get(`http://localhost:3001/club/members?clubName=${clubName}`)
+            await axios.get(`http://localhost:3001/get/club/members?clubName=${clubName}`)
             .then(res=>{
                 setMembers(res.data.teammember);
             })
@@ -115,7 +99,7 @@ const DeptClub = () =>
         }
 
         try{
-            const result = await axios.get('http://localhost:3001/admins')
+            const result = await axios.get('http://localhost:3001/get/admins')
             setMembers(result.data);
         }
         catch(err) {
@@ -123,7 +107,7 @@ const DeptClub = () =>
         }
 
         try{
-            await axios.get(`http://localhost:3001/dept/club/events`)
+            await axios.get(`http://localhost:3001/get/dept/club/events`)
             .then(res => {
                 setPosters(res.data);
             })
@@ -144,7 +128,7 @@ const DeptClub = () =>
 
     }
     fetch();
-    },[]);
+    },[clubData.clubName]);
 
     const handlePoster = (poster) => 
     {
@@ -152,16 +136,16 @@ const DeptClub = () =>
     }
     
     const handleAddMember = () => {
-        navigate("/addmember",{state:{Club :'deptclub'}});
+        navigate("/addmember",{state:{Club :clubData.clubName}});
     }
 
     const handleProfile = () => {
         navigate("/profile")
     }
     const handleAddEvent = () => {
-        navigate("/addevent",{state:{Club :'deptclub'}});
+        navigate("/addevent",{state:{Club :clubData.clubName}});
     }
-
+    
     return (
         <div class="ecell">
             <nav class="ecell-navbar">
@@ -332,25 +316,53 @@ const DeptClub = () =>
             </div>
             <div className="team-ecells">
                 <div className="team-ecell-header"><h1>Department Admins</h1></div>
-                <div className="team-dept">
-
-
-                    {members.map((member, index) => (
-                        <div key={index} className="ecell-member">
+                <div className="team-dept team-ecell">
+                    {members && members.length > 0 ? (
+                        members.map((member, index) => (
+                            <div key={index} className="ecell-member">
                             <img src={member.imageUrl} alt="" />
                             <div class="member-name">
                                 <span>{member.name}</span>
                                 <span>{member.id}</span>
-                                <span>{member.email}</span>
                                 <span>{member.dept}</span>
+                                <span>{member.email}</span>
+                                <span>{member.contact}</span>
                             </div>
-                        </div>
-                    ))}
-
+                            </div>
+                        ))
+                        ) : (
+                        <div>No Members Available</div>
+                    )}
+                </div>
+            </div>
+            <div class="ecell-footer">
+                <div class="follow-us">
+                    <h4>Follow us</h4>
+                    <ul>
+                        <li><FaInstagram size={30}/></li>
+                        <li><FaWhatsapp size={30}/></li>
+                        <li><FaTwitter size={30}/></li>
+                    </ul>
+                </div>
+                <div class="ecell-contactus">
+                    <h4>Contact Us</h4>
+                    <ul>
+                        <li><MdEmail size={30}/></li>
+                    </ul>
+                </div>
+                <div class="share-thoughts">
+                    <h4>Share Your Thoughts</h4>
+                    <span>Please provide your thoughts on Ecell development and innovation to explore more</span>
+                    <form ref={form} onSubmit={sendEmail}>
+                        <textarea name="message" placeholder='Write your Thought you want to share ' />
+                        <label>Email</label><input type="email" name="user_email" placeholder='Enter your Email' /> <br/>
+                        <label>Phone</label><input type="text" name="user_contact" placeholder='+91 12345 06978' />
+                        <button type="submit" value="Send">Submit</button>
+                    </form>
                 </div>
             </div>
         </div>
-    )
-}
+)}
+
 
 export default DeptClub;

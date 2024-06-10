@@ -2,7 +2,7 @@ import "./AddMember.css";
 import { useRef,useState } from "react";
 import { Spinner } from "react-bootstrap";
 import axios from "axios";
-import { useNavigate, useParams,useLocation } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 
 
 const Addmember = () => 
@@ -68,7 +68,7 @@ const Addmember = () =>
         if(clubName.length > 0 && memberName.length>0 && memberId.length>0 && memberDept.length>0 && email.length>0)
         {
             try{
-                await axios.post("http://localhost:3001/addmember",{clubName,memberName,memberId,memberPosition,memberDept,imageUrl,email})
+                await axios.post("http://localhost:3001/add/member",{clubName,memberName,memberId,memberPosition,memberDept,imageUrl,email})
                 .then(res=>
                     {
                         if(res.data.message === "Failure") alert("User already exists")
@@ -80,7 +80,7 @@ const Addmember = () =>
                             setBranch('');
                             setImageUrl('');
                             setmemberPosition('');
-                            navigate(`/${clubName}`)
+                            navigate(`/club`)
                         }
                         else alert("Member Not Added")
 
@@ -104,7 +104,7 @@ const Addmember = () =>
             {
 
                 try{
-                    await axios.post('http://localhost:3001/deletemember',{clubName,Id})
+                    await axios.post('http://localhost:3001/delete/members',{clubName,Id})
                     .then(res=>{
                         if(res.data === "Success") {
                             alert("member Deleted Successfully");
