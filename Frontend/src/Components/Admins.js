@@ -11,18 +11,16 @@ const Admins = () => {
         const fetchData = async () => {
             try {
                 const clubadmins = await axios.get("http://localhost:3001/get/club/admins");
-                console.log(clubadmins.data);
                 setClubAdmins(clubadmins.data);
             } catch (err) {
-                console.log(err);
+                alert(err);
             }
 
             try {
                 const departmentadmins = await axios.get("http://localhost:3001/get/dept/admins");
-                console.log(departmentadmins.data);
                 setDepartmentadmins(departmentadmins.data);
             } catch (err) {
-                console.log(err);
+                alert(err);
             }
         };
 
@@ -39,11 +37,9 @@ const Admins = () => {
                         <div key={index} className="admin-member">
                             <img src={admin.imageUrl} alt="" />
                             <div className="member-name">
-                                <span>{admin.name}</span>
-                                <span>{admin.id}</span>
-                                <span>Admin Of {admin.adminOf[0]}</span>
-                                <span>{admin.email}</span>
-                                <span>{admin.contact}</span>
+                                <span>{admin.userName}</span>
+                                <span>{admin.studentId}</span>
+                                <span>{admin.dept}</span>
                             </div>
                             <button>Manage</button>
                         </div>
@@ -61,12 +57,9 @@ const Admins = () => {
                             <div key={index} className="admin-member">
                                 <img src={admin.imageUrl} alt="" />
                                 <div className="member-name">
-                                    <span>{admin.name}</span>
-                                    <span>{admin.id}</span>
-                                    <span>Admin Of {admin.adminOf[0]}</span>
-                                    <span>{admin.email}</span>
-                                    <span>{admin.contact}</span>
-                                </div>
+                                    <span>{admin.userName}</span>
+                                    <span>{admin.studentId}</span>
+                                    <span>{admin.dept}</span>                                </div>
                                 <Link to="/addadmin" ><button >Manage</button></Link>
                             </div>
                         ))

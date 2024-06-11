@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const TeamClub = ()=>
+const TeamClub = ({clubData})=>
 {
     const [members,setMembers] = useState([]);
+    const clubName = clubData.clubName;
 
     const [startIndex, setStartIndex] = useState(0);
     const [endIndex, setEndIndex] = useState(3); 
@@ -30,7 +31,6 @@ const TeamClub = ()=>
     useEffect(()=>{
         const fetch = async ()=> 
         {
-            const clubName = 'Ecell';
             try{
                 await axios.get(`http://localhost:3001/get/club/members?clubName=${clubName}`)
                 .then(res=>{
@@ -42,12 +42,12 @@ const TeamClub = ()=>
             }
         }
         fetch();
-    },[])
+    },[clubName])
 
 
     return (
             <div className="team-ecells">
-                <div className="team-ecell-header"><h1>Team E-Cell</h1></div>
+                <div className="team-ecell-header"><h1>Team {clubName}</h1></div>
                 <div className="team-ecell">
                     <button onClick={prevMembers} disabled={startIndex === 0}>Previous</button>
 

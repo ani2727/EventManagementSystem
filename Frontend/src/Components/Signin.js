@@ -1,5 +1,5 @@
 import "./Signin.css";
-import {useNavigate} from "react-router-dom";
+import {useNavigate,Link} from "react-router-dom";
 import {useState, useRef} from "react"
 import axios from "axios";
 
@@ -21,7 +21,7 @@ const Signin = () =>
 
         await axios.post("http://localhost:3001/auth/signin",{email,password})
         .then((res)=> {
-            console.log(res);
+            console.log(res.data);
             localStorage.setItem('userInfo',JSON.stringify(res.data));
             navigate("/")
         })
@@ -44,6 +44,7 @@ const Signin = () =>
                     </div>
                     
                     <button onClick={handleLogin} >Login</button>
+                    <Link to="/signup" ><button>Sign Up</button></Link>
                 </form>
             </div>
     );

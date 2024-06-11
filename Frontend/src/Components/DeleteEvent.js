@@ -13,7 +13,7 @@ const DeleteEvent = () =>
     const navigate = useNavigate();
 
     const location = useLocation();
-    const club = location.state.club;
+    const clubData = location.state.clubData;
 
     const EventName = useRef();
     const ClubName = useRef();
@@ -26,21 +26,22 @@ const DeleteEvent = () =>
             const eventName = EventName.current.value;
             const date = dates.current.value;
             let clubName = '';
-            let branch = '';
-            if(club !== 'deptclub') clubName = ClubName.current.value;
+            let branch = null;
+            if(clubData.clubName !== 'DeptClub') clubName = clubData.clubName;
             else branch = Branch.current.value;
+
             const res = await axios.post("http://localhost:3001/delete/deleteevents",{eventName,clubName,date,branch})
             if(res.data === "Success") {
                 setClubName('');
                 setEventName('');
                 setDate('');
                 alert("Delete Successfully");
-                navigate(`/${club}`);
+                if(clubData.clubName !== 'DeptClub') navigate(`/club`,{state:{clubData:clubData}});
+                else navigate('/deptclub',{state:{clubData:clubData}})
             }
             else alert("Event Not Found")
         }
         catch(err) {
-            console.log(err);
         }
     }
 
@@ -51,7 +52,7 @@ const DeleteEvent = () =>
                 <div className="eventname">
                     <label>Event Name</label><input className="delete-event-input" type="text" placeholder="Enter Event Name" value={eventname} ref={EventName} onChange={(e)=>setEventName(e.target.value)} required/>
                 </div>
-                {club === 'deptclub' ?
+                {clubData.clubName === 'DeptClub' ?
                 (
                     <div>
                     <label>Department</label>
@@ -72,7 +73,7 @@ const DeleteEvent = () =>
                 )
                 }
                 <div>
-                <label>Date</label><input className="delete-event-input" type="date"  ref={dates} value={Date} onChange={e => setDate(e.target.value)} required  />
+                    <label>Date</label><input className="delete-event-input" type="date"  ref={dates} value={Date} onChange={e => setDate(e.target.value)} required  />
                 </div>
                 <button className="deleteevent-submit-btn" onClick={handleDelete}>Delete</button>
             </div>

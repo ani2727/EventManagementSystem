@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import axios from "axios";
 import { Spinner } from "react-bootstrap";
+import "./AddMember.css"
 
 const AddClub = ()=>
 {
@@ -9,10 +10,12 @@ const AddClub = ()=>
     const [imageUrl,setImageUrl] = useState("https://res.cloudinary.com/dkdslxqqx/image/upload/v1717915940/hs5a6by2rnaswjbp2rqo.jpg");
     const [uploading,setUploading] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
+    const [admin,setAdmin] = useState('');
 
     const fileInputRef = useRef();
     const Club = useRef();
     const Desc = useRef();
+    const Admin = useRef();
 
     const handleFileChange = (e) => {
         setSelectedFile(e.target.files[0]);
@@ -46,9 +49,10 @@ const AddClub = ()=>
     const handleAddClub = async()=>{
         const clubName = Club.current.value;
         const description = Desc.current.value;
+        const clubAdmin = Admin.current.value;
 
         try{
-                await axios.post('http://localhost:3001/add/club',{clubName,description,imageUrl})
+                await axios.post('http://localhost:3001/add/club',{clubName,description,imageUrl,clubAdmin})
                 .then(res=>{
                     if(res.data.message === "ClubExists") alert("ClubName already exists")
                     else alert("Club Added Successfully")
@@ -61,8 +65,11 @@ const AddClub = ()=>
     }
 
     return(
-        <div>
+        <div className="manage-clubs">
             <div className="addmember">
+                <div>
+                    <h1>Add Club</h1>
+                </div>
                 <div>
                     <label>ClubName</label>
                     <input ref={Club} value={clubs} onChange={e=>setClubs(e.target.value)} type="text" required placeholder="Enter ClubName"></input>
@@ -70,6 +77,10 @@ const AddClub = ()=>
                 <div>
                     <label>Description</label>
                     <input ref={Desc} value={desc} onChange={e=>setDescription(e.target.value)} type="text" required placeholder="Enter ClubName"></input>
+                </div>
+                <div>
+                    <label>Admin UserName</label>
+                    <input type="text" ref={Admin} value={admin} onChange={(e)=>setAdmin(e.target.value)} placeholder="Enter Admin UserName" required/>
                 </div>
                 <div className="file-input-container">
                     <label>Photo</label>

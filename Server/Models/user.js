@@ -22,25 +22,44 @@ const UserSchema = new mongoose.Schema({
     imageUrl:{
         type:String,
     },
-    clubs:{
-        type:[String],
-    },
-    isAdmin:{
+    clubs:[
+        {
+            clubId:{
+                type: mongoose.Schema.Types.ObjectId,
+                ref:"clubs",
+                required:true,
+            },
+            clubName:{
+                type:String,
+                required:true,
+            },
+            isClubAdmin:{
+                type:Boolean,
+                required:true,
+                default:false,
+            }
+        }
+    ],
+    isSuperAdmin:{
         type:Boolean,
         default:false,
     }
 });
 
-UserSchema.pre('save', async function(next) {
-    try {
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(this.password, salt);
-        this.password = hashedPassword;
-        next();
-    } catch(err) {
-        next(err);
+const DeptAdminSchema = mongoose.Schema(
+    {
+        dept:{
+            type:String,
+            
+            required:true,
+        },
+        admin:{
+            type:mongoose.Schema.Types.ObjectId,
+            required:true,
+        }
     }
-});
+)
+
 const TeamMembersSchema = new mongoose.Schema({
     clubName:{
         type: String,
@@ -136,10 +155,13 @@ const ClubSchema = new mongoose.Schema({
     },
     imageUrl:{
         type:String,
+    },
+    clubAdmin:{
+        type:String,
+        required:true,
     }
     }
 )
-
 
 const DeptEventsSchema = new mongoose.Schema(
     {
@@ -193,55 +215,6 @@ const DeptEventsSchema = new mongoose.Schema(
         }
     })
 
-const AdminSchema = new mongoose.Schema(
-    {
-        name:{
-            type:String,
-            required:true,
-        },
-        id:{
-            type:String,
-            required:true,
-        },
-        dept:{
-            type:String,
-            required:true,
-        },
-        email:{
-            type:String,
-            required:true,
-        },
-        password:{
-            type:String,
-            required:true,
-        },
-        contact:{
-            type:String,
-            required:true,
-        },
-        isAdmin:{
-            type:Boolean,
-            default:false,
-        },
-        adminOf:{
-            type:[String],
-            required:true,
-        },
-        imageUrl:{
-            type:String,
-        }
-    })
-
-AdminSchema.pre('save', async function(next) {
-    try {
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(this.password, salt);
-        this.password = hashedPassword;
-        next();
-    } catch(err) {
-        next(err);
-    }
-});
 
 const RegistrationSchema = new mongoose.Schema(
     {
@@ -260,7 +233,7 @@ const RegistrationSchema = new mongoose.Schema(
     }
 )
 
-const AdminModel = mongoose.model("admins",AdminSchema)
+const DeptAdminModel = mongoose.model("departmentadmins",DeptAdminSchema)
 const DeptEventsModel = mongoose.model("departmentevents",DeptEventsSchema);
 const RegistrationModel = mongoose.model("registrations",RegistrationSchema);
 const EventModel = mongoose.model("events",EventSchema);
@@ -269,4 +242,4 @@ const TeamMembersModel = mongoose.model("TeamMembers", TeamMembersSchema);
 const UserModel = mongoose.model("User", UserSchema);
 const ClubModel = mongoose.model("clubs",ClubSchema);
 
-module.exports = { UserModel, TeamMembersModel, GalleryModel,EventModel,RegistrationModel,DeptEventsModel,AdminModel ,ClubModel};
+module.exports = { UserModel, TeamMembersModel, GalleryModel,EventModel,RegistrationModel,DeptEventsModel,DeptAdminModel ,ClubModel};

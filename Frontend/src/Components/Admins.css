@@ -4,28 +4,25 @@
 
 .club-admins {
     display: flex;
-    overflow-x: hidden;
-    scroll-snap-type: x mandatory;
     justify-content: center;
     align-items: center;
     text-align: center;
+    flex-wrap: wrap;
     margin: 0px 20px;
     margin-bottom: 2em;
 }
 
 .dept-admins{
     display: flex;
-    overflow-x: hidden;
-    scroll-snap-type: x mandatory;
     justify-content: center;
     align-items: center;
     text-align: center;
     margin: 0px 20px;
     margin-bottom: 2em;
+    flex-wrap: wrap;
 }
 
 .admin-member{
-    flex: 0 0 auto;
     width: 220px; 
     height: 320px;
     margin: 10px;
@@ -35,6 +32,7 @@
     font-weight: bold;
     transition: 0.4s;
     overflow: visible;
+
 }
 
 .admin-member img{
@@ -45,7 +43,7 @@
 }
 
 .admin-member:hover{
-    scale: 1.02;
+    scale: 1.05;
     cursor: pointer;
 }
 

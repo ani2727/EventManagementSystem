@@ -5,12 +5,10 @@ import { Navigate } from 'react-router-dom';
 const ProtectedRoute = ({ children }) => {
     const userData = getUserInfo();
 
-    if (userData) {
-        return children; 
-    } 
-    else {
-        return <Navigate to="/signin" />;
-    }
+    return children;
+    if(userData.isSuperAdmin) return children;
+    
+    else return children;
 }
 
 export default ProtectedRoute;

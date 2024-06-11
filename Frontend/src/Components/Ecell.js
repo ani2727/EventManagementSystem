@@ -12,7 +12,7 @@ import { useLocation } from 'react-router-dom';
 const Ecell = () => 
 {
     const location = useLocation();
-    const clubData = location.state.clubData;
+    const clubData = location.state ? location.state.clubData : null;
 
     return (
         <div class="ecell">
@@ -20,7 +20,7 @@ const Ecell = () =>
 
             <ClubImage clubData={clubData}/>
 
-            <ClubEvents cludData={clubData}/>
+            <ClubEvents clubData={clubData}/>
 
             <Whatsecell clubData={clubData}/>
             

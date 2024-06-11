@@ -1,24 +1,34 @@
 
 const { axios } = require("axios");
-const {UserModel,AdminModel,TeamMembersModel,EventModel,GalleryModel,DeptEventsModel,RegistrationModel,ClubModel} = require("../Models/user")
+const {UserModel,DeptAdminModel,TeamMembersModel,EventModel,GalleryModel,DeptEventsModel,RegistrationModel,ClubModel} = require("../Models/user")
 const generateToken = require("../utils/generateToken")     
 const bcrypt = require("bcrypt")
 
 
-const handleAddClub = async(req,res) =>{
-    const {clubName,description,imageUrl} = req.body;
+const handleAddClub = async (req, res) => {
+    const { clubName, description, imageUrl, clubAdmin } = req.body;
 
-    try{
-            const result = await ClubModel.findOne({clubName});
-            if(result) return res.json({message:"ClubExists"})
+    try {
+        const existingClub = await ClubModel.findOne({ clubName });
+        if (existingClub) return res.json({ message: "ClubExists" });
 
-            const club = await ClubModel.create({clubName,description,imageUrl})
-            return res.json({club});
-    }
-    catch(err) {
-        return res.status(500).json({message:"Failure"})
+        const user = await UserModel.findOne({ userName: clubAdmin });
+        if (!user) return res.send('InvalidAdmin');
+
+        const newClub = await ClubModel.create({ clubName, description, imageUrl, clubAdmin: user._id });
+        if (newClub) {
+            user.clubs.push({ clubId: newClub._id, isClubAdmin: true, clubName});
+            await user.save();
+            
+        }
+
+        return res.json({ club: newClub });
+    } catch (err) {
+        console.error(err); // Log the error for debugging
+        return res.status(500).json({ message: "Failure" });
     }
 }
+
 
 const handleGetClubs = async(req,res) =>{
     try{
@@ -30,28 +40,29 @@ const handleGetClubs = async(req,res) =>{
     }
 }
 
-const handleSignin = async(req, res) => {
-    const { email,password} = req.body;
+const handleSignin = async (req, res) => {
+    const { email, password } = req.body;
+
     try {
-        const user = await UserModel.findOne({userName:email});
+        const user = await UserModel.findOne({ userName: email });
+
         if (user) {
-            bcrypt.compare(password, user.password, (err, result) => {
-                if (result) {
-                    generateToken(user._id,res)
-                    res.send(user);
-                } else {
-                    res.send({ message: "Failure" });
-                }
-            });
+            const result = await bcrypt.compare(password, user.password);
+            if (result) {
+                generateToken(user._id, res);
+                return res.status(200).send(user);
+            } else {
+                return res.status(401).json({ message: "Invalid credentials" });
+            }
         } else {
-            res.status(404).json({ message: "No user exists" });
+            return res.status(404).json({ message: "No user exists" });
         }
-        
     } catch (err) {
-        res.status(500).json({ success: false, message: "Invalid Login" });
-        
+        console.error(err);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
-}
+};
+
 
 
 const handleSignup = async(req,res) =>{
@@ -61,7 +72,11 @@ const handleSignup = async(req,res) =>{
         const user = await UserModel.findOne({userName:email})
         if(user) return res.send('UserExists')
         const isAdmin = false;
-        const User = await UserModel.create({userName:email,password,studentId,dept,imageUrl,isAdmin})
+        
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        const User = await UserModel.create({userName:email,password:hashedPassword,studentId,dept,imageUrl,isAdmin})
 
         generateToken(User._id,res)
 
@@ -85,10 +100,16 @@ const handleGetAdmins = async(req,res) =>{
 
 const handleAddAdmins = async(req,res) =>{
     try{
-        const {name,id,imageUrl,dept,email,password,contact,adminOf} = req.body;
-        const isAdmin = true;
-        await AdminModel.create({name,id,imageUrl,dept,email,password,contact,adminOf,isAdmin});
-        return res.send({message:"Success"});
+        const {name,id} = req.body;
+
+        const user = await UserModel.findOne({userName:name})
+        if(!user) return res.send('UserNotExists')
+
+        const club = await ClubModel.findOne({clubName:'DeptClub'})
+        user.clubs.push({clubId:club._id,isClubAdmin:true,clubName:id})
+        user.save();
+
+        return res.send('Success')
     }
     catch(err) {
         return res.send(err);
@@ -176,9 +197,11 @@ const handleAddEvent = async(req,res) =>
 const handleDeptAddEvent = async(req,res) => 
 {
     const {eventName,clubName,tagline,venue,date,time,imageUrl,description,facultyCoordinator,facultyCoordinatorEmail,studentCoordinator,studentCoordinatorEmail,branch} = req.body;
+    console.log(branch)
     try{
-        await DeptEventsModel.create({eventName,clubName,tagline,venue,date,time,imageUrl,facultyCoordinator,facultyCoordinatorEmail,studentCoordinator,studentCoordinatorEmail,description,branch})
-        res.send({message:"Success"})
+        const result = await DeptEventsModel.create({eventName,clubName,tagline,venue,date,time,imageUrl,facultyCoordinator,facultyCoordinatorEmail,studentCoordinator,studentCoordinatorEmail,description,branch})
+        if(result) res.send('Success');
+        else res.send('Failure')
     }
     catch(err) {
         res.send({message:"Failure"});
@@ -283,7 +306,7 @@ const handleDeleteEvent = async(req,res) => {
     try{
         const {eventName,clubName,date,branch} = req.body;
        
-        if(branch != null) 
+        if(branch !== null) 
         {
 
             const result = await DeptEventsModel.findOne({eventName,date,branch})
@@ -303,25 +326,34 @@ const handleDeleteEvent = async(req,res) => {
     }
 }
 
-const handleGetClubAdmins = async(req,res) => {
-    try{
-            const result = await AdminModel.find({adminOf:{ $in: ['Ecell', 'CodeClub','MathClub','TNP','HopeHouse'] }})
-            return res.send(result);
-    }
-    catch(err) {
-            return res.send("Error")
-    }
-}
+const handleGetClubAdmins = async (req, res) => {
+    try {
+        const clubs = await ClubModel.find();
+        const adminPromises = clubs.map(async (element) => {
+            return await UserModel.findOne({ _id: element.clubAdmin });
+        });
 
-const handleGetDeptAdmins = async(req,res) => {
-    try{
-        const result = await AdminModel.find({ adminOf: { $nin: ['Ecell', 'CodeClub', 'MathClub', 'TNP', 'HopeHouse'] } });
-        return res.send(result);
+        const admins = await Promise.all(adminPromises);
+        return res.send(admins);
+    } catch (err) {
+        return res.status(500).send("Error");
     }
-    catch(err) {
-            return res.send("Error")
+};
+
+
+const handleGetDeptAdmins = async (req, res) => {
+    try {
+        const data = await DeptAdminModel.find();
+        const adminPromises = data.map(async (element) => {
+            return await UserModel.findOne({ _id: element.admin });
+        });
+
+        const admins = await Promise.all(adminPromises);
+        return res.send(admins);
+    } catch (err) {
+        return res.status(500).send('Error');
     }
-}
+};
 
 const handleDeleteAdmin = async(req,res) => {
     

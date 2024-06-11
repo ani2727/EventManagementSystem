@@ -8,7 +8,8 @@ const AddEvent = () =>
 {
 
     const location = useLocation();
-    const clubName = location.state.Club;
+    const clubData = location.state.clubData;
+    const clubName = clubData.clubName;
 
     const [eventName,setEventName] = useState('');
     const [Tagline,setTagline] = useState('');
@@ -84,7 +85,8 @@ const AddEvent = () =>
             try {
                 await axios.post('http://localhost:3001/add/event',{eventName,clubName,tagline,studentCoordinator,studentCoordinatorEmail,facultyCoordinator,facultyCoordinatorEmail,venue,date,time,imageUrl,description})
                 .then(res => {
-                    alert("Event Added Successfully")
+                    alert("Event Added Successfully");
+                    navigate('/club',{state:{clubData:clubData}})
                 })
             }
             
@@ -99,12 +101,17 @@ const AddEvent = () =>
             try {
                 await axios.post('http://localhost:3001/add/dept/event',{eventName,clubName,tagline,studentCoordinator,studentCoordinatorEmail,facultyCoordinator,facultyCoordinatorEmail,venue,date,time,imageUrl,description,branch})
                 .then(res => {
+                    if(res.data === "Success") {
                     alert("Event Added Successfully")
+                    navigate('/deptclub',{state:{clubData:clubData}})
+                    }
+                    else{
+                        alert("Failed to Add Event")
+                    }
                 })
             }
             
             catch(err) {
-                console.log(err);
                 alert("Department Event not added");
             }
         }
@@ -112,7 +119,7 @@ const AddEvent = () =>
     }
 
     const handleDeleteEvent = () => {
-        navigate("/deleteevent",{state:{club: clubName}})
+        navigate("/deleteevent",{state:{clubData:clubData}})
     }
     
     const clearFileInput = () => {
@@ -136,7 +143,7 @@ const AddEvent = () =>
                     <label>Branch</label>
                     <select ref={Branch} value={branchs} onChange={(e) => setBranch(e.target.value)} required="">
                         <option >Select branch</option><option >PUC</option><option >CSE</option><option >ECE</option><option >EEE</option>
-                        <option >MECH</option><option >CIVIL</option><option >CHEM</option><option>METALLURGY</option>
+                        <option >MECH</option><option >CIVIL</option><option >CHEM</option><option>MME</option>
                     </select>
                 </div>
                 ):

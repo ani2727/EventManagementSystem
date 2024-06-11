@@ -1,6 +1,5 @@
 import React, { useState,useEffect,useRef } from 'react';
 import "./Ecell.css"
-import { FaUserCircle } from "react-icons/fa";
 import Carousel from 'react-bootstrap/Carousel';
 import { FaWhatsapp } from 'react-icons/fa';
 import { FaInstagram } from 'react-icons/fa';
@@ -11,20 +10,39 @@ import { useNavigate } from 'react-router-dom';
 import { Spinner } from 'react-bootstrap';
 import emailjs from '@emailjs/browser';
 
-import { useLocation } from 'react-router-dom';
+import { useLocation,Link } from 'react-router-dom';
+import getUserInfo from '../utils/userInfo';
 
 
 const DeptClub = () => 
 {
+
+    const location = useLocation();
+    const clubData = location.state.clubData;
+    const clubName = clubData.clubName;
+
+    let admin = false;
+    let userData;
+    const check = ()=>{
+        userData = getUserInfo();
+        const clubId = clubData._id;
+        const userClubs = userData.clubs;
+    
+        userClubs.forEach(element => {
+            if(clubId === element.clubId && element.isClubAdmin) {
+                admin = true;
+            }
+        });
+    }
+    check();
+
     const [members,setMembers] = useState([]);
     const [galleryImages,setGalleryImages] = useState([]);
     const [posters,setPosters] = useState([]);
     const navigate = useNavigate();
     const form = useRef();
 
-    const location = useLocation();
-    const clubData = location.state.clubData;
-
+    
     const fileInputRef = useRef();
 
    const [uploading,setUploading] = useState(false);
@@ -36,7 +54,6 @@ const DeptClub = () =>
 
    const handleUpload = async() => 
    {
-        const clubName = clubData.clubName;
         if(selectedFile != null)
             {
             try
@@ -87,7 +104,6 @@ const DeptClub = () =>
     useEffect(() => {
     const fetch = async ()=> 
     {
-        const clubName = clubData.clubName;
         try{
             await axios.get(`http://localhost:3001/get/club/members?clubName=${clubName}`)
             .then(res=>{
@@ -95,7 +111,7 @@ const DeptClub = () =>
             })
         }
         catch(err) {
-            console.error('Error Fetching Images');
+            alert('Error Fetching Images');
         }
 
         try{
@@ -103,7 +119,7 @@ const DeptClub = () =>
             setMembers(result.data);
         }
         catch(err) {
-            console.log(err);
+            alert(err)
         }
 
         try{
@@ -113,7 +129,7 @@ const DeptClub = () =>
             })
         }
         catch(err) {
-            console.log(err);
+            alert(err)
         }
 
         try{
@@ -123,27 +139,25 @@ const DeptClub = () =>
             })
         }
         catch(err) {
-            console.log(err);
+            alert(err)
         }
 
     }
     fetch();
-    },[clubData.clubName]);
+    },[clubName]);
+
+    const handleLogout = () => {
+        localStorage.removeItem('userInfo');
+        navigate("/")
+    }
 
     const handlePoster = (poster) => 
     {
         navigate("/eventdetails",{state: {posterData:poster}});
     }
     
-    const handleAddMember = () => {
-        navigate("/addmember",{state:{Club :clubData.clubName}});
-    }
-
-    const handleProfile = () => {
-        navigate("/profile")
-    }
     const handleAddEvent = () => {
-        navigate("/addevent",{state:{Club :clubData.clubName}});
+        navigate("/addevent",{state:{clubData:clubData}});
     }
     
     return (
@@ -152,10 +166,16 @@ const DeptClub = () =>
                 <div class="ecell-logo"><img src="rgukt-logo.jpeg"  alt=""/></div>
                 <div class="ecell-nav-list-items">
                     <ul>
-                        <li><button onClick={handleProfile}>Profile</button></li>
-                        <li><button onClick={handleAddEvent}>Add Event</button></li>
-                        <li><button onClick={handleAddMember}>Add Member</button></li>
-                        <li><FaUserCircle size={40}/></li>
+                        {admin?(<li><button onClick={handleAddEvent}>Add Event</button></li>):(<li></li>)}
+                        <div className="dropdown">
+                                <button className="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src={userData.imageUrl} style={{width:'60px'}} alt="ProfileImage"/>
+                                </button>
+                                <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <Link to="/profile" className="dropdown-item">Profile</Link>
+                                    <button className="dropdown-item" onClick={handleLogout} >Logout</button>
+                                </div>
+                            </div>
                     </ul>
                 </div>
             </nav>
@@ -174,18 +194,22 @@ const DeptClub = () =>
                             </Carousel.Item>
                     )}
             </Carousel>
-            <div>
-            <span class="gallery-upload"><input ref={fileInputRef} onChange={handleFileChange} type="file" required />
-                {uploading ? (
-                        <Spinner animation='border' role="status">
-                            <span className="sr-only">Uploading...</span>
-                        </Spinner>
-                ):
-                (
-                    <button onClick={handleUpload}>Upload</button>
-                )}
-               </span>
-            </div>
+            {admin?(
+                    <div>
+                    <span class="gallery-upload"><input ref={fileInputRef} onChange={handleFileChange} type="file" required />
+                        {uploading ? (
+                                <Spinner animation='border' role="status">
+                                    <span className="sr-only">Uploading...</span>
+                                </Spinner>
+                        ):
+                        (
+                            <button onClick={handleUpload}>Upload</button>
+                        )}
+                        </span>
+                    </div>
+            ):(<div></div>)
+
+            }
             <div class="whatsecell">
                 <h1>About Engineering Events</h1>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>

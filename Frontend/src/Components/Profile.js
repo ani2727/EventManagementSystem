@@ -1,34 +1,38 @@
 import "./Profile.css";
+import getUserInfo from "../utils/userInfo";
 
-const Profile = () => 
-{
-    const userData = JSON.parse(localStorage.getItem('userInfo'))
+const Profile = () => {
+    const userData = getUserInfo();
+    const userClubs = userData.clubs;
+    
     return (
-        <div class="profile-container">
-            <div class="profile">
+        <div className="profile-container">
+            <div className="profile">
                 <div>
-                    <img src="user-icon.webp" alt=""></img>
+                    <img src="user-icon.webp" alt="User Icon" />
                 </div>
                 <div>
-                    <label>Name</label>
-                    <input type="text" placeholder={userData.email}></input>
+                    <label>Name: {userData.userName}</label>
                 </div>
                 <div>
-                    <label>ID</label>
-                    <input type="text" placeholder="Your Name"></input>
+                    <label>ID: {userData.studentId}</label>
                 </div>
                 <div>
-                    <label>Branch</label>
-                    <input type="text" placeholder="Your Name"></input>
+                    <label>Branch: {userData.dept}</label>
                 </div>
                 <div>
-                    <label>Clubs</label>
-                    <input type="text" placeholder="Cluber Member of"></input>
+                    <label>Clubs:</label>
+                    <ul>
+                        {
+                            userClubs.map((element, index) => (
+                                <li key={index}>{element.clubName}</li>
+                            ))
+                        }
+                    </ul>
                 </div>
-                
             </div>
         </div>
-    )
+    );
 }
 
 export default Profile;

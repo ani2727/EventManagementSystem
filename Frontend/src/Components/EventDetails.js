@@ -1,21 +1,21 @@
 import { useLocation,useNavigate } from "react-router-dom"
 import axios from "axios";
 import "./EventDetails.css"
-import { useRef, useState, useEffect } from "react";
+import {useState, useEffect } from "react";
+import getUserInfo from "../utils/userInfo"
 
 const EventDetails = () => 
 {
     const location = useLocation();
-    const [Emails,setEmail] = useState('');
     const posterData = location.state.posterData;
     const [members,setMembers] = useState([]);
     const navigate = useNavigate();
 
-    const Email = useRef();
+    const userData = getUserInfo();
 
     const handleRegister = async() => 
     {
-        const email = Email.current.value;
+        const email = userData.userName+"@rgukt.ac.in"
         const clubName = posterData.clubName;
         const eventName = posterData.eventName;
         if(email.length > 0 && email.endsWith("@rgukt.ac.in"))
@@ -24,7 +24,7 @@ const EventDetails = () =>
                 const res = await axios.post('http://localhost:3001/register/events',{email,eventName,clubName})
                 if(res.data.message === "Success") {
                     alert("Registration Successfull!");
-                    navigate(`/${clubName}`);
+                    navigate('/club')
 
                 }
                 else {
@@ -80,7 +80,7 @@ const EventDetails = () =>
                     <li>Faculty Co-ordinator:{posterData.facultyCoordinatorEmail}</li>
                 </ul>
                 
-                <input ref={Email} value={Emails} onChange={(e)=>setEmail(e.target.value)} type="email" placeholder="Enter your Email" required/><button onClick={handleRegister}>Register</button>
+                <button onClick={handleRegister}>Register</button>
             </div>
             <div class="registered-members">
                 <h3>Registered Members</h3>

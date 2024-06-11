@@ -23,6 +23,8 @@ const HomePage = ()=>
     const searchText = useRef(null);
     const navigate = useNavigate();
     const userData = getUserInfo();
+    let admin = '';
+    if(userData) admin = userData.isSuperAdmin;
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -64,7 +66,8 @@ const HomePage = ()=>
     },[])
 
     const handleClub = (club)=>
-    {
+    {        
+
         if(club.clubName !== 'DeptClub')  navigate('/club',{state:{clubData:club}})
         else navigate('/deptclub',{state:{clubData:club}})
     }
@@ -87,7 +90,17 @@ const HomePage = ()=>
                     <button className="search-btn" onClick={handleSearch}>Search</button>
                 </div>
                 <div>
-                <Link to="/admins"><button class="manageadmin-btn">Manage Admin</button></Link>
+                {admin ? 
+                (
+                    <>
+                        <Link to="/addclub"><button>Manage Clubs</button></Link>
+                        <Link to="/admins"><button className="manageadmin-btn">Manage Admin</button></Link>
+                    </>
+                ) : (
+                    <div></div>
+                )
+                }
+
                 {
                     userData ? (
                         <div className="dropdown">

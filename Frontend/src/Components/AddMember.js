@@ -7,9 +7,10 @@ import { useNavigate,useLocation } from 'react-router-dom';
 
 const Addmember = () => 
 {
-
     const location = useLocation();
-    const clubName = location.state.Club;
+    const clubData = location.state.clubData;
+    const clubName = clubData.clubName;
+
 
     const [name,setName] = useState('');
     const [id,setId] = useState('');
@@ -65,7 +66,7 @@ const Addmember = () =>
         const memberPosition = Position.current.value;
         const email = Email.current.value;
 
-        if(clubName.length > 0 && memberName.length>0 && memberId.length>0 && memberDept.length>0 && email.length>0)
+        if(memberName.length>0 && memberId.length>0 && memberDept.length>0 && email.length>0)
         {
             try{
                 await axios.post("http://localhost:3001/add/member",{clubName,memberName,memberId,memberPosition,memberDept,imageUrl,email})
@@ -80,7 +81,7 @@ const Addmember = () =>
                             setBranch('');
                             setImageUrl('');
                             setmemberPosition('');
-                            navigate(`/club`)
+                            navigate('/',{state:{clubData:clubData}})
                         }
                         else alert("Member Not Added")
 
@@ -108,7 +109,7 @@ const Addmember = () =>
                     .then(res=>{
                         if(res.data === "Success") {
                             alert("member Deleted Successfully");
-                            navigate(`/${clubName}`);
+                            navigate('/club');
                         }
                         else alert("No member Found with the Given Id");
                     })
