@@ -8,6 +8,7 @@ const EventDetails = () =>
 {
     const location = useLocation();
     const posterData = location.state.posterData;
+    const clubData = location.state.clubData;
     const [members,setMembers] = useState([]);
     const navigate = useNavigate();
 
@@ -24,8 +25,8 @@ const EventDetails = () =>
                 const res = await axios.post('http://localhost:3001/register/events',{email,eventName,clubName})
                 if(res.data.message === "Success") {
                     alert("Registration Successfull!");
-                    navigate('/club')
-
+                    if(clubData.clubName === 'DeptClub') navigate('/deptclub',{state:{clubData:clubData}})
+                    else navigate('/club',{state:{clubData:clubData}})
                 }
                 else {
                     console.log(res.data.message)

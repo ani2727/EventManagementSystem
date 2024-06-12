@@ -54,15 +54,27 @@ const AddClub = ()=>
         try{
                 await axios.post('http://localhost:3001/add/club',{clubName,description,imageUrl,clubAdmin})
                 .then(res=>{
-                    if(res.data.message === "ClubExists") alert("ClubName already exists")
-                    else alert("Club Added Successfully")
+                    if(res.data === "ClubExists") alert("A Club Already Exists with this Name")
+                    else if(res.data === "Success") alert("Club Added Successfully")
+                    else alert("Try again")
                 })
                 .catch(err=>alert("Error while adding a club"))
         }
         catch(err) {
-
+                alert(err);
         }
     }
+    const [isDropdown, setIsDropdown] = useState(true);
+
+    const handleInputChange = (e) => {
+        setClubs(e.target.value);
+    };
+
+    const toggleInputType = () => {
+        setIsDropdown(!isDropdown);
+        setClubs(''); 
+    };
+
 
     return(
         <div className="manage-clubs">
@@ -72,11 +84,26 @@ const AddClub = ()=>
                 </div>
                 <div>
                     <label>ClubName</label>
-                    <input ref={Club} value={clubs} onChange={e=>setClubs(e.target.value)} type="text" required placeholder="Enter ClubName"></input>
+                    {isDropdown ? (
+                        <select ref={Club} value={clubs} onChange={(e) => setClubs(e.target.value)} required>
+                            <option value="">Select club</option>
+                            <option value="Ecell">Ecell</option>
+                            <option value="TNP">TNP</option>
+                            <option value="MathClub">MathClub</option>
+                            <option value="CodeClub">CodeClub</option>
+                            <option value="HopeHouse">HopeHouse</option>
+                            <option value="DeptClub">DeptClub</option>
+                        </select>
+                    ) : (
+                        <input ref={Club} type="text" value={clubs} onChange={handleInputChange} placeholder="Enter club name" required />
+                    )}
+                    <button onClick={toggleInputType}>
+                        {isDropdown ? 'Use Input Field' : 'Use Dropdown'}
+                    </button>
                 </div>
                 <div>
                     <label>Description</label>
-                    <input ref={Desc} value={desc} onChange={e=>setDescription(e.target.value)} type="text" required placeholder="Enter ClubName"></input>
+                    <textarea ref={Desc} value={desc} onChange={e=>setDescription(e.target.value)} type="text" required placeholder="Enter ClubName"></textarea>
                 </div>
                 <div>
                     <label>Admin UserName</label>

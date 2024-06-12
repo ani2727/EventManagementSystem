@@ -18,7 +18,7 @@ const HomePage = ()=>
 
     const [posters,setPosters] = useState([]);
     const [searchtext,setSearchtext] = useState('');
-    const [clubs,setClubs] = useState(null);
+    const [clubs,setClubs] = useState([]);
 
     const searchText = useRef(null);
     const navigate = useNavigate();
@@ -177,7 +177,7 @@ const HomePage = ()=>
                 (
                     clubs.map((club,index) =>(
                         <div key={index} className="club" onClick={()=>handleClub(club)}>
-                           <p><img src={club.imageUrl} alt="" /></p> 
+                           <p><img src={club.clubLogo} alt="" /></p> 
                             <p>{club.clubName}</p>
                         </div>
                     ))

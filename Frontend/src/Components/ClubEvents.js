@@ -2,7 +2,7 @@ import { useEffect,useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const ClubEvents = () =>
+const ClubEvents = ({clubData}) =>
 {
     const [posters,setPosters] = useState([]);
     const navigate = useNavigate();
@@ -25,12 +25,12 @@ const ClubEvents = () =>
 
     const handlePoster = (poster) => 
     {
-        navigate("/eventdetails",{state: {posterData:poster}});
+        navigate("/eventdetails",{state: {posterData:poster,clubData:clubData}});
     }
     
     return (
         <div className="ecell-events">
-                <div><h1>E-Cell Events</h1></div>
+                <div><h1>{clubData.clubName} Events</h1></div>
                     <div className="ecell-events-posters">
                     {posters.length > 0 ? 
                     (

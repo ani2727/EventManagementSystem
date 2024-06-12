@@ -6,7 +6,8 @@ const {handleSignin,handleSignup,handleGetAdmins, handleAddAdmins,
      handleGetDeptEvents,handleGetClubEvents, handleGetUpcomingEvents,
      handleGetClubPosters,handleEventRegister,handleGetRegisteredUsers,
      handleDeleteEvent,handleGetClubAdmins,handleGetDeptAdmins,handleDeleteAdmin,
-    handleAddClub,handleGetClubs} = require("../Controllers/userController")
+    handleAddClub,handleGetClubs,handleChangeDeptAdmin, handleChangeClubAdmin,
+    handleChangeClub} = require("../Controllers/userController")
 
 
 router.route("/signin").post(handleSignin)
@@ -33,6 +34,8 @@ router.route("/dept/admins").get(handleGetDeptAdmins)
 router.route("/club/admin").post(handleDeleteAdmin)
 router.route("/club").post(handleAddClub)
 router.route("/clubs").get(handleGetClubs)
-
+router.route("/changedept/admin").post(handleChangeDeptAdmin);
+router.route("/changeclub/admin").post(handleChangeClubAdmin);
+router.route("/change/club").post(handleChangeClub);
 
 module.exports = router;

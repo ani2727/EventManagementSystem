@@ -3,9 +3,11 @@ import "./AddEvent.css"
 import axios from "axios";
 import { Spinner } from "react-bootstrap";
 import { useNavigate,useLocation } from "react-router-dom";
+import getUserInfo from "../utils/userInfo"
 
 const AddEvent = () => 
 {
+    const userData = getUserInfo();
 
     const location = useLocation();
     const clubData = location.state.clubData;
@@ -98,21 +100,45 @@ const AddEvent = () =>
         else 
         {
             const branch = Branch.current.value;
-            try {
-                await axios.post('http://localhost:3001/add/dept/event',{eventName,clubName,tagline,studentCoordinator,studentCoordinatorEmail,facultyCoordinator,facultyCoordinatorEmail,venue,date,time,imageUrl,description,branch})
-                .then(res => {
-                    if(res.data === "Success") {
-                    alert("Event Added Successfully")
-                    navigate('/deptclub',{state:{clubData:clubData}})
+            if(branch === 'PUC') {
+                if(userData.dept !== 'PUC1' && userData.dept !== 'PUC2') {
+                    alert("You are not allowed to add an event in this department")
+                }
+                else{
+                    try {
+                        const res = await axios.post('http://localhost:3001/add/dept/event',{eventName,clubName,tagline,studentCoordinator,studentCoordinatorEmail,facultyCoordinator,facultyCoordinatorEmail,venue,date,time,imageUrl,description,branch})
+                        if(res.data === "Success") {
+                            alert("Event Added Successfully")
+                            navigate('/deptclub',{state:{clubData:clubData}})
+                        }
+                        else{
+                            alert("Failed to Add Event")
+                        }
                     }
-                    else{
-                        alert("Failed to Add Event")
+                    catch(err) {
+                        alert("Department Event not added");
                     }
-                })
+                }
             }
-            
-            catch(err) {
-                alert("Department Event not added");
+            else if(branch !== userData.dept) alert("You are Not allowed to add an event in this Department")
+            else
+            {
+                try {
+                    await axios.post('http://localhost:3001/add/dept/event',{eventName,clubName,tagline,studentCoordinator,studentCoordinatorEmail,facultyCoordinator,facultyCoordinatorEmail,venue,date,time,imageUrl,description,branch})
+                    .then(res => {
+                        if(res.data === "Success") {
+                        alert("Event Added Successfully")
+                        navigate('/deptclub',{state:{clubData:clubData}})
+                        }
+                        else{
+                            alert("Failed to Add Event")
+                        }
+                    })
+                }
+                
+                catch(err) {
+                    alert("Department Event not added");
+                }
             }
         }
     
@@ -145,7 +171,7 @@ const AddEvent = () =>
                         <option >Select branch</option><option >PUC</option><option >CSE</option><option >ECE</option><option >EEE</option>
                         <option >MECH</option><option >CIVIL</option><option >CHEM</option><option>MME</option>
                     </select>
-                </div>
+                    </div>
                 ):
                 (
                     <div></div>

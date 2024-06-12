@@ -14,7 +14,8 @@ import Admins from "./Components/Admins";
 import "./index.css"
 import "./Components/HomePage.css"
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ProtectedRoute from "./Components/authorization/ProtectedRoute";
+import {ProtectedRoute,ProtectedClubs} from "./Components/authorization/ProtectedRoute";
+import ChangeClub from "./Components/ChangeClub";
 
 const App = ()=>{
   return (
@@ -23,7 +24,7 @@ const App = ()=>{
       <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomePage/>} />
-            <Route path="/club" element={<Ecell />} />
+            <Route path="/club" element={<ProtectedRoute><Ecell /></ProtectedRoute>} />
             <Route path="/deptclub" element={<DeptClub />} />
             <Route path="/signin" element={<Signin />} />
             <Route path="/signup" element={<Signup/>} />
@@ -33,8 +34,9 @@ const App = ()=>{
             <Route path="/addevent" element={<AddEvent/>} />
             <Route path="/deleteevent" element={<DeleteEvent/>} />
             <Route path="/profile" element={<Profile/>} />
-            <Route path="/addclub" element={<AddClub/>} />
-            <Route path="/admins" element={<Admins/>} />
+            <Route path="/addclub" element={<ProtectedClubs><AddClub /></ProtectedClubs>} />
+            <Route path="/admins" element={<ProtectedClubs><Admins /></ProtectedClubs>} />
+            <Route path="/changeclub" element={<ProtectedClubs><ChangeClub /></ProtectedClubs>} />
           </Routes>
       </BrowserRouter>
       

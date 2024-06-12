@@ -14,8 +14,16 @@ const Ecell = () =>
     const location = useLocation();
     const clubData = location.state ? location.state.clubData : null;
 
+    if (!clubData) {
+        return (
+            <div className="not-authorized">
+                <h1>You're not authorized. Contact your admin.</h1>
+            </div>
+        );
+    }
+
     return (
-        <div class="ecell">
+        <div className="ecell">
             <Navbar clubData={clubData}/>
 
             <ClubImage clubData={clubData}/>
@@ -24,11 +32,11 @@ const Ecell = () =>
 
             <Whatsecell clubData={clubData}/>
             
-           <TeamClub clubData={clubData}/>
+            <TeamClub clubData={clubData}/>
 
-           <Gallery clubData={clubData}/>
+            <Gallery clubData={clubData}/>
 
-           <Footer clubData={clubData}/>
+            <Footer clubData={clubData}/>
         </div>
     )
 }

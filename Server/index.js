@@ -30,6 +30,7 @@ app.use("/get",userRoutes);
 app.use("/add",userRoutes);
 app.use("/delete",userRoutes);
 app.use("/register",userRoutes)
+app.use("/change",userRoutes);
 
 
 

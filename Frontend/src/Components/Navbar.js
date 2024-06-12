@@ -6,8 +6,10 @@ const Navbar = ({clubData})=>
 
     let admin = false;
     let userData;
+    let superAdmin = false;
     const check = ()=>{
         userData = getUserInfo();
+        superAdmin = userData.isSuperAdmin;
         const clubId = clubData._id;
         const userClubs = userData.clubs;
     
@@ -40,12 +42,12 @@ const Navbar = ({clubData})=>
                 <div class="ecell-nav-list-items">
                     <ul>
                     
-                        {admin===true ?(
+                        {admin || superAdmin ?(
                             <li><button onClick={handleAddEvent}>Add Event</button></li>
                         ):<li></li>
 
                         }
-                        {admin===true ?(<li><button onClick={handleAddMember}>Add Member</button></li>):(<li></li>)
+                        {admin || superAdmin?(<li><button onClick={handleAddMember}>Add Member</button></li>):(<li></li>)
 
                         }
                         {

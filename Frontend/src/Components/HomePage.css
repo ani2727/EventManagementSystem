@@ -198,16 +198,17 @@
 }
 .club{
     margin: 0.5em;
-    width: 8em;
-    height: 6em;
+    width: 10em;
+    height: 8em;
     background: white;
     box-shadow: -1px -1px 2px 3px rgba(136, 133, 133, 0.5);
     border-radius: 2px;
     padding: 5px 10px;
     font-weight: bold;
-    transition: 0.4s;
+    transition: 0.3s;
     text-decoration: none;
     color: inherit;
+   
 }
 .club img{
     width: 50%;

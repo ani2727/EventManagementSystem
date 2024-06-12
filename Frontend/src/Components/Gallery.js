@@ -1,22 +1,38 @@
 import axios from "axios"
 import { useEffect, useState ,useRef} from "react";
 import Carousel from 'react-bootstrap/Carousel';
-
+import getUserInfo from "../utils/userInfo";
 import { Spinner } from 'react-bootstrap';
 
 
 
-const Gallery = ()=>
+const Gallery = ({clubData})=>
 {
     const [galleryImages,setGalleryImages] = useState([]);
     const [uploading,setUploading] = useState(false);
     const [selectedFile,setSelectedFile] = useState(null);
     
     const fileInputRef = useRef();
+    let admin = false;
+    let userData;
+    let superAdmin = false;
+    const check = ()=>{
+        userData = getUserInfo();
+        superAdmin = userData.isSuperAdmin;
+        const clubId = clubData._id;
+        const userClubs = userData.clubs;
+    
+        userClubs.forEach(element => {
+            if(clubId === element.clubId && element.isClubAdmin) {
+                admin = true;
+            }
+        });
+    }
+    check();
 
     const handleFileChange = (e) => {
         setSelectedFile(e.target.files[0]);
-        };
+    };
 
 
         const handleUpload = async() => 
@@ -45,8 +61,7 @@ const Gallery = ()=>
 
             }
             catch(err) {
-            console.log("Error thrown")
-            console.log(err);
+                alert(err);
             }
             finally{
             setUploading(false);
@@ -75,16 +90,22 @@ const Gallery = ()=>
     return(
         <div>
             <h1 style={{textAlign:'center'}}>Our Gallery</h1>
-            <span class="gallery-upload"><input ref={fileInputRef} onChange={handleFileChange} type="file" required />
-            {uploading ? (
-                    <Spinner animation='border' role="status">
-                        <span className="sr-only">Uploading...</span>
-                    </Spinner>
-            ):
-            (
-                <button onClick={handleUpload}>Upload</button>
-            )}
-            </span>
+            {admin||superAdmin?(
+                    <div>
+                    <span class="gallery-upload"><input ref={fileInputRef} onChange={handleFileChange} type="file" required />
+                        {uploading ? (
+                                <Spinner animation='border' role="status">
+                                    <span className="sr-only">Uploading...</span>
+                                </Spinner>
+                        ):
+                        (
+                            <button onClick={handleUpload}>Upload</button>
+                        )}
+                        </span>
+                    </div>
+            ):(<div></div>)
+
+            }
             <Carousel class="carousel" style={{width:'100%',borderRadius:'0px',height:'600px'}}>
                 {galleryImages.length > 0 ? 
                     (
@@ -105,3 +126,8 @@ const Gallery = ()=>
 }
 
 export default Gallery;
+
+
+
+
+

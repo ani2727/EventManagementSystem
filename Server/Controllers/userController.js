@@ -1,6 +1,6 @@
 
 const { axios } = require("axios");
-const {UserModel,DeptAdminModel,TeamMembersModel,EventModel,GalleryModel,DeptEventsModel,RegistrationModel,ClubModel} = require("../Models/user")
+const {UserModel,DeptAdminModel,EventModel,GalleryModel,DeptEventsModel,RegistrationModel,ClubModel} = require("../Models/user")
 const generateToken = require("../utils/generateToken")     
 const bcrypt = require("bcrypt")
 
@@ -10,7 +10,7 @@ const handleAddClub = async (req, res) => {
 
     try {
         const existingClub = await ClubModel.findOne({ clubName });
-        if (existingClub) return res.json({ message: "ClubExists" });
+        if (existingClub) return res.send('ClubExists');
 
         const user = await UserModel.findOne({ userName: clubAdmin });
         if (!user) return res.send('InvalidAdmin');
@@ -22,9 +22,8 @@ const handleAddClub = async (req, res) => {
             
         }
 
-        return res.json({ club: newClub });
+        return res.send('Success');
     } catch (err) {
-        console.error(err); // Log the error for debugging
         return res.status(500).json({ message: "Failure" });
     }
 }
@@ -58,7 +57,6 @@ const handleSignin = async (req, res) => {
             return res.status(404).json({ message: "No user exists" });
         }
     } catch (err) {
-        console.error(err);
         return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 };
@@ -116,48 +114,61 @@ const handleAddAdmins = async(req,res) =>{
     } 
 }
 
-const handleAddMember = async(req,res)=>{
-    try{
-        const {clubName,memberName,memberId,memberPosition,memberDept,imageUrl,email} = req.body;
-        const user = await TeamMembersModel.findOne({memberId,clubName});
-        if(user) return res.send({message:"Failure"});
-        
-        await TeamMembersModel.create({clubName,memberName,memberId,memberPosition,memberDept,imageUrl,email})
-        return res.send({message:"Success"});
-    }
-    catch(err) {
-        return res.send({message:"Error While Adding Member"})
-    }
-}
-
-const handleDeleteMember = async(req,res) => {
-    try{
-        const {clubName,Id} = req.body;
-        const user = await TeamMembersModel.findOne({clubName,memberId:Id});
-        if(!user) return res.send("Failure");
-
-        await TeamMembersModel.deleteOne({clubName,memberId:Id});
-        return res.send("Success");
-    }
-    catch(err) {
-        return res.status(500).send({message:"Error Deleting Member"})
-    }
-}
-
-const handleGetClubMembers = async(req,res)=> {
-    
-    const {clubName} = req.query;
-
+const handleAddMember = async (req, res) => {
     try {
-        const teammember = await TeamMembersModel.find({clubName})
-        return res.send({ teammember});
-        
+        const { userName, clubName, position } = req.body;
+
+        const user = await UserModel.findOne({ userName });
+        if (!user) return res.send('InvalidUser');
+
+        const club = await ClubModel.findOne({ clubName });
+        if (!club) return res.send('InvalidClub');
+
+        const isMember = user.clubs.some(element => element.clubName === clubName);
+        if (isMember) return res.send('UserExists');
+
+        user.clubs.push({ clubId: club._id, isClubAdmin: false, position, clubName });
+        await user.save();
+
+        return res.send('Success');
+    } catch (err) {
+        return res.status(500).send({ message: 'Error While Adding Member', error: err.message });
+    }
+};
+
+const handleDeleteMember = async (req, res) => {
+    try {
+        const { clubName, Id } = req.body;
+
+        const user = await UserModel.findOne({ studentId: Id });
+        if (!user) return res.status(404).send('UserNotExists');
+
+        user.clubs = user.clubs.filter(ele => ele.clubName !== clubName);
+        await user.save();
+
+        return res.send('Success');
+    } catch (err) {
+        return res.status(500).send({ message: "Error Deleting Member" });
+    }
+}
+
+
+const handleGetClubMembers = async (req, res) => {
+    const { clubName } = req.query;
+    try {
+        const members = await UserModel.find();
+
+        const teamMembers = members.filter(member => 
+            member.clubs.some(club => club.clubName === clubName)
+        );
+        return res.json(teamMembers);
     } 
     catch (error) {
         return res.status(500).json({ error: "Internal Server Error" });
     }
-    
 }
+
+
 
 const handleGetGallery = async(req,res) => {
 
@@ -197,11 +208,10 @@ const handleAddEvent = async(req,res) =>
 const handleDeptAddEvent = async(req,res) => 
 {
     const {eventName,clubName,tagline,venue,date,time,imageUrl,description,facultyCoordinator,facultyCoordinatorEmail,studentCoordinator,studentCoordinatorEmail,branch} = req.body;
-    console.log(branch)
     try{
         const result = await DeptEventsModel.create({eventName,clubName,tagline,venue,date,time,imageUrl,facultyCoordinator,facultyCoordinatorEmail,studentCoordinator,studentCoordinatorEmail,description,branch})
-        if(result) res.send('Success');
-        else res.send('Failure')
+        if(result) return res.send('Success');
+        else return res.send('Failure')
     }
     catch(err) {
         res.send({message:"Failure"});
@@ -218,7 +228,7 @@ const handleGetDeptEvents = async(req,res) =>
 
         const result = await DeptEventsModel.find({ 
             date: { $gte: formattedCurrentDate },
-            branch: { $in: ['PUC', 'CSE', 'ECE', 'EEE', 'MECH', 'CIVIL', 'CHEM', 'METALLURGY'] }
+            branch: { $in: ['PUC', 'CSE', 'ECE', 'EEE', 'MECH', 'CIVIL', 'CHEM', 'MME'] }
         }).sort({ date: 1 });        
         return res.send(result);
     } 
@@ -351,6 +361,7 @@ const handleGetDeptAdmins = async (req, res) => {
         const admins = await Promise.all(adminPromises);
         return res.send(admins);
     } catch (err) {
+        console.log(err);
         return res.status(500).send('Error');
     }
 };
@@ -370,9 +381,112 @@ const handleDeleteAdmin = async(req,res) => {
     }
 }
 
+const handleChangeClubAdmin = async (req, res) => {
+    try {
+      const { userName, dept } = req.body;  
+      const clubName = dept;
+  
+      const user = await UserModel.findOne({ userName });
+      if (!user) return res.status(404).send('UserNotExists');
+  
+      const club = await ClubModel.findOne({ clubName });
+      if (!club) return res.status(404).send('ClubNotExists');
+  
+      if (club.clubAdmin === user._id) return res.send('Success');  
+  
+      const oldUser = await UserModel.findById(club.clubAdmin);
+      if (oldUser) {
+        oldUser.clubs = oldUser.clubs.filter(club => club.clubName !== clubName);
+        await oldUser.save();
+      }
+  
+      club.clubAdmin = user._id;
+      await club.save();
+  
+      const userClub = user.clubs.find(club => club.clubName === clubName);
+      if (userClub) {
+        userClub.isClubAdmin = true;
+      } else {
+        user.clubs.push({ clubId: club._id, isClubAdmin: true, clubName });
+      }
+      await user.save();
+  
+      return res.send('Success');
+    } 
+    catch (err) {
+      return res.status(500).send('Error');
+    }
+  };
+  
+
+const handleChangeDeptAdmin = async (req, res) => {
+    try {
+      const { userName, dept } = req.body;
+  
+      const user = await UserModel.findOne({ userName });
+      if (!user) return res.status(404).send('UserNotExists');
+  
+      const deptAdmin = await DeptAdminModel.findOne({ dept });
+      if (!deptAdmin) return res.status(404).send('DeptNotExists');
+  
+      const oldUserId = deptAdmin.admin;
+  
+      if (oldUserId) {
+        const oldUser = await UserModel.findById(oldUserId);
+        if (oldUser && oldUser.userName === userName) {
+            return res.send('Success');
+        }
+        if (oldUser) {
+          oldUser.clubs = oldUser.clubs.filter(club => club.clubName !== dept);
+          await oldUser.save();
+        }
+      }
+  
+      deptAdmin.admin = user._id;
+      await deptAdmin.save();
+  
+      const club = await ClubModel.findOne({ clubName: 'DeptClub' });
+
+      user.clubs.push({ clubId: club._id, isClubAdmin: true, clubName: dept });
+      await user.save();
+  
+      return res.send('Success');
+    } 
+    catch (err) 
+    {
+        return res.status(500).send('Error');
+    }
+  };
+  
+const handleChangeClub = async(req,res)=>{
+    const {clubName, description,imageUrl,coverImage,mail,insta,facebook} = req.body;
+
+    try{
+            const club = await ClubModel.findOne({clubName})
+
+            if(!club) return res.send('ClubNotExists');
+
+            if(description) club.description = description;
+            if(imageUrl) club.clubLogo = imageUrl;
+            if(coverImage) club.clubImage = coverImage;
+            if(mail) club.clubMail = mail;
+            if(insta) club.clubInsta = insta;
+            if(facebook) club.clubFacebook = facebook;
+            
+            await club.save();
+            return res.send('Success');
+    }
+    catch(err) {
+            return res.status(500).send('Error')
+    }
+}
+
+  
+
 module.exports = {handleSignin,handleSignup,handleGetAdmins,
     handleAddAdmins,handleAddMember,handleDeleteMember,handleGetClubMembers,
     handleGetGallery,handleAddGallery,handleAddEvent,handleDeptAddEvent,
     handleGetDeptEvents,handleGetClubEvents,handleGetUpcomingEvents,handleGetClubPosters,
     handleEventRegister,handleGetRegisteredUsers,handleDeleteEvent,handleGetClubAdmins,
-    handleGetDeptAdmins,handleDeleteAdmin,handleAddClub, handleGetClubs}
+    handleGetDeptAdmins,handleDeleteAdmin,handleAddClub, handleGetClubs, handleChangeDeptAdmin,
+    handleChangeClubAdmin,handleChangeClub}

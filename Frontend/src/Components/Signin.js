@@ -21,9 +21,9 @@ const Signin = () =>
 
         await axios.post("http://localhost:3001/auth/signin",{email,password})
         .then((res)=> {
-            console.log(res.data);
             localStorage.setItem('userInfo',JSON.stringify(res.data));
-            navigate("/")
+            alert("Welcome");
+            navigate('/')
         })
         .catch((err)=>{
             alert("Invalid Login");

@@ -33,6 +33,10 @@ const UserSchema = new mongoose.Schema({
                 type:String,
                 required:true,
             },
+            position:{
+                type:String,
+                default:'Member',
+            },
             isClubAdmin:{
                 type:Boolean,
                 required:true,
@@ -65,31 +69,14 @@ const TeamMembersSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    memberName:{
+    member:{
         type: String,
         required: true,
     },
-    memberId:{
+    position:{
         type:String,
         required:true,
     },
-    memberPosition:{
-        type:String,
-        required:true,
-    },
-    memberDept:{
-        type: String,
-        required: true,
-    },
-    imageUrl:{
-        type: String,
-        required: true,
-    },
-    email:{
-        type:String,
-        required:true,
-    },
-
 })
 const GallerySchema = new mongoose.Schema(
     {
@@ -153,12 +140,24 @@ const ClubSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    imageUrl:{
+    clubLogo:{
         type:String,
     },
     clubAdmin:{
         type:String,
         required:true,
+    },
+    clubImage:{
+        type:String,
+    },
+    clubInsta:{
+        type:String,
+    },
+    clubFacebook:{
+        type:String,
+    },
+    clubMail:{
+        type:String,
     }
     }
 )

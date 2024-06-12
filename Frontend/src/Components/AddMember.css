@@ -2,7 +2,6 @@
     display: flex;
     justify-content: center;
     align-items: flex-start; /* Adjust alignment as per your requirement */
-    margin-top: 250px;
 }
 
 .addmember,
@@ -29,6 +28,7 @@
 
 .addmember input[type="text"],
 .addmember input[type="file"],
+.addmember textarea[type="text"],
 .addmember select {
     width: calc(100% - 30px); /* Adjust width to accommodate the cross mark icon */
     padding: 8px;

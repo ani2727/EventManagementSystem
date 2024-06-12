@@ -1,4 +1,4 @@
-import React, { useState,useEffect,useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import "./Ecell.css"
 import Carousel from 'react-bootstrap/Carousel';
 import { FaWhatsapp } from 'react-icons/fa';
@@ -18,13 +18,15 @@ const DeptClub = () =>
 {
 
     const location = useLocation();
-    const clubData = location.state.clubData;
-    const clubName = clubData.clubName;
+    const clubData = location.state ? location.state.clubData : null;
+    const clubName = clubData ? clubData.clubName : null;
 
     let admin = false;
     let userData;
+    let superAdmin = false;
     const check = ()=>{
         userData = getUserInfo();
+        superAdmin = userData.isSuperAdmin;
         const clubId = clubData._id;
         const userClubs = userData.clubs;
     
@@ -36,7 +38,7 @@ const DeptClub = () =>
     }
     check();
 
-    const [members,setMembers] = useState([]);
+    const [departmentadmin,setDepartmentadmins] = useState([]);
     const [galleryImages,setGalleryImages] = useState([]);
     const [posters,setPosters] = useState([]);
     const navigate = useNavigate();
@@ -104,22 +106,12 @@ const DeptClub = () =>
     useEffect(() => {
     const fetch = async ()=> 
     {
-        try{
-            await axios.get(`http://localhost:3001/get/club/members?clubName=${clubName}`)
-            .then(res=>{
-                setMembers(res.data.teammember);
-            })
-        }
-        catch(err) {
-            alert('Error Fetching Images');
-        }
 
-        try{
-            const result = await axios.get('http://localhost:3001/get/admins')
-            setMembers(result.data);
-        }
-        catch(err) {
-            alert(err)
+        try {
+            const result = await axios.get("http://localhost:3001/get/dept/admins");
+            setDepartmentadmins(result.data);
+        } catch (err) {
+            alert(err);
         }
 
         try{
@@ -160,13 +152,22 @@ const DeptClub = () =>
         navigate("/addevent",{state:{clubData:clubData}});
     }
     
+    if (!clubData) {
+        return (
+            <div className="not-authorized">
+                <h1>You're not authorized. Contact your admin.</h1>
+            </div>
+        );
+    }
+
     return (
-        <div class="ecell">
+        
+<div class="ecell">
             <nav class="ecell-navbar">
                 <div class="ecell-logo"><img src="rgukt-logo.jpeg"  alt=""/></div>
                 <div class="ecell-nav-list-items">
                     <ul>
-                        {admin?(<li><button onClick={handleAddEvent}>Add Event</button></li>):(<li></li>)}
+                        {admin||superAdmin?(<li><button onClick={handleAddEvent}>Add Event</button></li>):(<li></li>)}
                         <div className="dropdown">
                                 <button className="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <img src={userData.imageUrl} style={{width:'60px'}} alt="ProfileImage"/>
@@ -341,22 +342,34 @@ const DeptClub = () =>
             <div className="team-ecells">
                 <div className="team-ecell-header"><h1>Department Admins</h1></div>
                 <div className="team-dept team-ecell">
-                    {members && members.length > 0 ? (
-                        members.map((member, index) => (
-                            <div key={index} className="ecell-member">
-                            <img src={member.imageUrl} alt="" />
-                            <div class="member-name">
-                                <span>{member.name}</span>
-                                <span>{member.id}</span>
-                                <span>{member.dept}</span>
-                                <span>{member.email}</span>
-                                <span>{member.contact}</span>
-                            </div>
-                            </div>
-                        ))
-                        ) : (
-                        <div>No Members Available</div>
-                    )}
+                {departmentadmin && departmentadmin.length > 0 ? (
+                departmentadmin.reduce((uniqueAdmins, admin) => {
+                    const isDuplicate = uniqueAdmins.some(a => a.studentId === admin.studentId);
+                    if (!isDuplicate) {
+                        uniqueAdmins.push(admin);
+                    }
+                    return uniqueAdmins;
+                }, []).map((admin, index) => (
+                    <div key={index} className="admin-member">
+                        <img src={admin.imageUrl} alt="" />
+                        <div className="member-name">
+                            <span>{admin.userName}</span>
+                            <span>{admin.studentId}</span>
+                            <span>{admin.dept}</span>
+                            {admin.clubs.map((club, clubIndex) => (
+                                club.isClubAdmin &&
+                                ['CSE', 'ECE', 'EEE', 'CIVIL', 'MECH', 'CHEM', 'MME', 'PUC1', 'PUC2'].includes(club.clubName) && (
+                                    <span key={clubIndex}>Admin Of {club.clubName}</span>
+                                )
+                            ))}
+                        </div>
+                        <Link to="/addadmin"><button>Manage</button></Link>
+                    </div>
+                ))
+            ) : (
+                <div>There are No Department Admins</div>
+            )}
+
                 </div>
             </div>
             <div class="ecell-footer">
@@ -386,7 +399,7 @@ const DeptClub = () =>
                 </div>
             </div>
         </div>
-)}
-
+    );
+}
 
 export default DeptClub;

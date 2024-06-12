@@ -2,13 +2,21 @@ import React from "react";
 import getUserInfo from "../../utils/userInfo";
 import { Navigate } from 'react-router-dom';
 
-const ProtectedRoute = ({ children }) => {
-    const userData = getUserInfo();
+const userData = getUserInfo();
 
-    return children;
-    if(userData.isSuperAdmin) return children;
+export const ProtectedRoute = ({ children }) => {
+
     
-    else return children;
+    if (!userData) {
+        return <Navigate to="/signin" />;
+    } else {
+        return children;
+    }
 }
 
-export default ProtectedRoute;
+export const ProtectedClubs = ({children}) =>
+{
+    if(userData && userData.isSuperAdmin) return children;
+
+    else return <Navigate to="/"/>   
+}

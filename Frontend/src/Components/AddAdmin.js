@@ -6,82 +6,43 @@ const AddAdmin = () =>
 
     const [name,setName] = useState('');
     const [id,setId] = useState('');
-    const [branch,setBranch] = useState('');
-    const [imageUrl,setImageUrl] = useState("https://res.cloudinary.com/dkdslxqqx/image/upload/v1717658764/iwlasfaj6duzq9qw55hy.webp");
-    const [uploading,setUploading] = useState(false);
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [adminid,setAdminId] = useState('');
-    const [adminclub,setAdminClub] = useState('');
 
-    const adminId = useRef();
-    const adminClub = useRef();
     const Name = useRef();
     const Id = useRef();
   
-
-    const fileInputRef = useRef();
-
     const handleSubmit = async() =>
     {
 
-        const name = Name.current.value;
-        const id = Id.current.value;
+        const userName = Name.current.value;
+        const dept = Id.current.value;
+        const validDepts = ['PUC1', 'PUC2', 'CSE', 'ECE', 'EEE','CIVIL','MECH','CHEM','MME'];
 
-        try
-        {
-            await axios.post('http://localhost:3001/add/admin',{name,id})
-            .then(res=>{
-                if(res.data === "Success") alert("Admin Added Successfully")
-                else alert("Error While Adding Admin")
-            })
-        .catch(err => alert("Admin Not Added"))
+        if (!validDepts.includes(dept)) {
+            try {
+                const res = await axios.post('http://localhost:3001/change/changeclub/admin', { userName, dept });
+                if (res.data === 'Success') {
+                alert('Admin Changed Successfully');
+                } else {
+                alert('Admin Not Changed');
+                }
+            } catch (err) {
+                alert('Error: ' + err.message);
+            }
         }
-        catch(err) {
-            alert(err);
+        else {
+            try
+            {
+                const res = await axios.post('http://localhost:3001/change/changedept/admin',{userName,dept})
+                if(res.data === "Success") alert("Admin Changed Succesfully");
+                else alert("Admin Not Changed");
+            }
+            catch(err) {
+                alert(err);
+            }
         }
             
     }
 
-    const handleUpload = async () => {
-        try {
-            setUploading(true);
-          const formData = new FormData();
-          formData.append('image', selectedFile);
-          await axios.post(`http://localhost:3001/api/image`, formData)
-          .then(res => {
-                setSelectedFile(null);
-                fileInputRef.current.value = null;
-                setImageUrl(res.data);
-                
-          })
-
-        } 
-        catch (err) {
-          console.error('Error uploading image:', err);
-        } 
-        finally{
-            setUploading(false);
-        }
-      };
-
-    const handleDeleteAdmin = async() =>
-    {
-        const adminOf = adminClub.current.value;
-        const id = adminId.current.value;
-        try{
-                const result = await axios.post("http://localhost:3001/delete/club/admin",{adminOf,id})
-                if(result.data === "Success") alert("Member Deleted Successfully")
-                else alert("Member Not Found")
-        }
-        catch(err) {
-            console.log(err);
-        }
-    }
-
-      const clearFileInput = () => {
-        const fileInput = document.getElementById("file-input");
-        fileInput.value = ""; 
-    };
 
     return (
         <div class="addmember-container">
@@ -92,8 +53,11 @@ const AddAdmin = () =>
                     <input ref={Name} placeholder="Enter member Name" value={name} onChange={(e)=>setName(e.target.value)} type="text" required=""></input>
                 </div>
                 <div>
-                    <label>ClubName</label>
-                    <input ref={Id} placeholder="Enter member ID" value={id} onChange={(e)=>setId(e.target.value)} type="text" required=""></input>
+                    <label>Branch</label>
+                    <select ref={Id} value={id} onChange={(e) => setId(e.target.value)} required="">
+                        <option >Select club</option><option >Ecell</option><option >TNP</option><option >MathClub</option><option >CodeClub</option><option >PUC1</option><option >PUC2</option><option >CSE</option><option >ECE</option><option >EEE</option>
+                        <option >MECH</option><option >CIVIL</option><option >CHEM</option><option>MME</option>
+                    </select>
                 </div>
                 
                 <button onClick={handleSubmit}>Submit</button>
