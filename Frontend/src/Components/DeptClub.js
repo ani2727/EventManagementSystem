@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import "./Ecell.css"
 import Carousel from 'react-bootstrap/Carousel';
-import { FaWhatsapp } from 'react-icons/fa';
+import { FaFacebook } from 'react-icons/fa';
 import { FaInstagram } from 'react-icons/fa';
-import { FaTwitter } from 'react-icons/fa';
 import { MdEmail } from "react-icons/md";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -162,10 +161,10 @@ const DeptClub = () =>
 
     return (
         
-<div class="ecell">
-            <nav class="ecell-navbar">
-                <div class="ecell-logo"><img src="rgukt-logo.jpeg"  alt=""/></div>
-                <div class="ecell-nav-list-items">
+<div className="ecell">
+            <nav className="ecell-navbar">
+                <div className="ecell-logo"><img src="rgukt-logo.jpeg"  alt=""/></div>
+                <div className="ecell-nav-list-items">
                     <ul>
                         {admin||superAdmin?(<li><button onClick={handleAddEvent}>Add Event</button></li>):(<li></li>)}
                         <div className="dropdown">
@@ -180,7 +179,7 @@ const DeptClub = () =>
                     </ul>
                 </div>
             </nav>
-            <Carousel class="carousel" style={{width:'100%',borderRadius:'0px',height:'600px'}}>
+            <Carousel className="carousel" style={{width:'100%',borderRadius:'0px',height:'600px'}}>
                 {galleryImages.length > 0 ? 
                     (
                         galleryImages.map((image, index) => (
@@ -371,22 +370,21 @@ const DeptClub = () =>
 
                 </div>
             </div>
-            <div class="ecell-footer">
-                <div class="follow-us">
+            <div className="ecell-footer">
+                <div className="follow-us">
                     <h4>Follow us</h4>
                     <ul>
-                        <li><FaInstagram size={30}/></li>
-                        <li><FaWhatsapp size={30}/></li>
-                        <li><FaTwitter size={30}/></li>
+                        <li><a href={`${clubData.clubInsta}`}><FaInstagram size={30}/></a></li>
+                        <li><a href={`${clubData.clubFacebook}`}><FaFacebook size={30}/></a></li>
                     </ul>
                 </div>
-                <div class="ecell-contactus">
+                <div className="ecell-contactus">
                     <h4>Contact Us</h4>
                     <ul>
                         <li><MdEmail size={30}/></li>
                     </ul>
                 </div>
-                <div class="share-thoughts">
+                <div className="share-thoughts">
                     <h4>Share Your Thoughts</h4>
                     <span>Please provide your thoughts on Ecell development and innovation to explore more</span>
                     <form ref={form} onSubmit={sendEmail}>

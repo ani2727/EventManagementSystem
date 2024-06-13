@@ -136,6 +136,9 @@ const ClubSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
+    tagline:{
+        type:String,
+    },
     description:{
         type:String,
         required:true,

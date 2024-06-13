@@ -1,10 +1,9 @@
-import { FaWhatsapp } from 'react-icons/fa';
+import { FaFacebook} from 'react-icons/fa';
 import { FaInstagram } from 'react-icons/fa';
-import { FaTwitter } from 'react-icons/fa';
 import { MdEmail } from "react-icons/md";
 import { useRef } from 'react';
 import emailjs from '@emailjs/browser';
-const Footer = ()=>
+const Footer = ({clubData})=>
 {
     const form = useRef();
     const forms = useRef();
@@ -47,22 +46,21 @@ const Footer = ()=>
 
 
     return (
-        <div class="ecell-footer">
-        <div class="follow-us">
+        <div className="ecell-footer">
+        <div className="follow-us">
             <h4>Follow us</h4>
             <ul>
-                <li><FaInstagram size={30}/></li>
-                <li><FaWhatsapp size={30}/></li>
-                <li><FaTwitter size={30}/></li>
+                <li><a href={`${clubData.clubInsta}`}><FaInstagram size={30}/></a></li>
+                <li><a href={`${clubData.clubFacebook}`}><FaFacebook size={30}/></a></li>
             </ul>
         </div>
-        <div class="ecell-contactus">
+        <div className="ecell-contactus">
             <h4>Contact Us</h4>
             <ul>
-                <li><MdEmail size={30}/></li>
+              <li><a href={`mailto:${clubData.clubMail}`}><MdEmail size={30}/></a></li>
             </ul>
         </div>
-        <div class="share-thoughts">
+        <div className="share-thoughts">
             <h4>Share Your Thoughts</h4>
             <span>Please provide your thoughts on Ecell development and innovation to explore more</span>
             <form ref={form} onSubmit={sendEmail}>
@@ -72,7 +70,7 @@ const Footer = ()=>
             </form>
         </div>
         
-        <div class="interview-openings">
+        <div className="interview-openings">
             <h4>Interview Openings</h4>
             <span>Register here to attend Interview and become a part of E-cell</span>
             <form ref={forms} onSubmit={sendEmails}>

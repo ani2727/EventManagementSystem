@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import axios from "axios";
 import { Spinner } from "react-bootstrap";
 import "./AddMember.css"
+import { useNavigate, useLocation } from "react-router-dom";
 
 const ChangeClub = ()=>
 {
@@ -16,8 +17,14 @@ const ChangeClub = ()=>
     const [insta,setInsta] = useState('');
     const [facebook,setFacebook] = useState('');
     const [mail,setMail] = useState('');
+    const [tagline,setTagline] = useState('');
+
+    const location = useLocation();
+    const clubData = location.state.clubData;
+    const navigate = useNavigate();
 
     const fileInputRef = useRef();
+    const Tagline = useRef();
     const coverImageRef = useRef();
     const Insta = useRef()
     const Facebook = useRef();
@@ -86,14 +93,13 @@ const ChangeClub = ()=>
     const handleAddClub = async () => {
     
         try {
-            const res = await axios.post('http://localhost:3001/change/change/club', { clubName, description, imageUrl,coverImage,insta,facebook,mail});
+            const res = await axios.post('http://localhost:3001/change/change/club', { clubName, description, imageUrl,coverImage,insta,facebook,mail,tagline});
     
             if (res.data === "ClubNotExists") {
                 alert("No Club present with the entered ClubName");
             } else if (res.data === "Success") {
                 alert("Updated Successfully");
-                setClubs(''); 
-                setDescription(''); 
+                navigate("/",{state:{clubData:clubData}})
             } else {
                 alert("Try again");
             }
@@ -112,6 +118,10 @@ const ChangeClub = ()=>
                 <div>
                     <label>ClubName</label>
                     <input ref={Club} type="text" value={clubName} onChange={(e)=>setClubs(e.target.value)} placeholder="Enter club name" required />
+                </div>
+                <div>
+                    <label>Tagline</label>
+                    <input type="text" ref={Tagline} value={tagline} onChange={(e)=>setTagline(e.target.value)}></input>
                 </div>
                 <div>
                     <label>Description</label>

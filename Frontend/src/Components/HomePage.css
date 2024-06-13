@@ -1,3 +1,13 @@
+button{
+  background-color: #007bff;
+  color: #fff;
+  padding: 6px 15px;
+  margin: 0.5em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 
 .home{
     background: #f8f6f6;
@@ -10,6 +20,13 @@
     justify-content: space-between;
     align-items: center;
     box-shadow: 4px -6px 10px 8px rgba(0,0,0,0.5);
+    height: 4em;
+  }
+
+  .home-header button{
+    background: #404249;
+    border-radius: 0.5em;
+    color: #fff;
   }
   
   .home-header > div:first-child {
@@ -18,7 +35,7 @@
   }
   
   .logo {
-    width: 80px; 
+    width: 70px; 
     height: auto;
     border-radius: 50%;
   }
@@ -51,7 +68,6 @@
   
   .manageadmin-btn,
   .signin-btn, .search-btn{
-    margin-left: 10px; 
     background: #535457;
   }
   .manageadmin-btn:hover,
@@ -227,10 +243,18 @@
     display: inline-block;
   }
   
+  .dropdown button{
+    background: #f8f9fa;
+    color: #333;
+    border: none;
+    margin: 0;
+    height: 4em;
+  }
   .dropdown-toggle {
     background-color: transparent;
     cursor: pointer;
   }
+
   .dropdown-toggle:hover{
     background: #ccc;
   }

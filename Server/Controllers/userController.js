@@ -65,6 +65,7 @@ const handleSignin = async (req, res) => {
 
 const handleSignup = async(req,res) =>{
     const { email,password,studentId,dept,imageUrl} = req.body;
+    console.log(email,password,studentId,dept,imageUrl);
 
     try{
         const user = await UserModel.findOne({userName:email})
@@ -472,7 +473,7 @@ const handleChangeDeptAdmin = async (req, res) => {
   };
   
 const handleChangeClub = async(req,res)=>{
-    const {clubName, description,imageUrl,coverImage,mail,insta,facebook} = req.body;
+    const {clubName, description,imageUrl,coverImage,mail,insta,facebook,tagline} = req.body;
 
     try{
             const club = await ClubModel.findOne({clubName})
@@ -485,6 +486,7 @@ const handleChangeClub = async(req,res)=>{
             if(mail) club.clubMail = mail;
             if(insta) club.clubInsta = insta;
             if(facebook) club.clubFacebook = facebook;
+            if(tagline) club.tagline = tagline;
             
             await club.save();
             return res.send('Success');
@@ -494,14 +496,21 @@ const handleChangeClub = async(req,res)=>{
     }
 }
 
-const handleChangeUserProfile = async(req,res)=>{
+const handleChangeUserProfile = async(req,res)=>
+{
     
-    const {imageUrl,userName} = req.body;
+    const {imageUrl,userName,password} = req.body;
     try{
         const user = await UserModel.findOne({userName});
 
-        if(imageUrl.length>0) user.imageUrl = imageUrl;
+        if(imageUrl) user.imageUrl = imageUrl;
+        if(password) {
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(password, salt);
+            user.password = hashedPassword;
+        }
         await user.save();
+       
         return res.send('Success');
     }
     catch(err){

@@ -35,11 +35,14 @@ const Navbar = ({clubData})=>
     const handleAddEvent = () => {
         navigate("/addevent",{state:{clubData:clubData}});
     }
+    const handleModifyClub = ()=>{
+        navigate("/changeclub",{state:{clubData:clubData}})
+    }
 
     return (
-        <nav class="ecell-navbar">
-                <div class="ecell-logo"><img src="rgukt-logo.jpeg"  alt=""/></div>
-                <div class="ecell-nav-list-items">
+        <nav className="ecell-navbar">
+                <div className="ecell-logo"><img src={clubData.clubLogo}  alt=""/></div>
+                <div className="ecell-nav-list-items">
                     <ul>
                         {clubData.clubName==='HopeHouse'?(<li><button>Donate</button></li>):<li></li>}
                         {admin || superAdmin ?(
@@ -47,9 +50,9 @@ const Navbar = ({clubData})=>
                         ):<li></li>
 
                         }
-                        {admin || superAdmin?(<li><button onClick={handleAddMember}>Add Member</button></li>):(<li></li>)
+                        {admin || superAdmin?(<li><button onClick={handleAddMember}>Add Member</button></li>):(<li></li>)}
+                        {admin || superAdmin?(<li><button onClick={handleModifyClub}>Modify Club</button></li>):(<li></li>)}
 
-                        }
                         {
                         userData ? (
                             <div className="dropdown">

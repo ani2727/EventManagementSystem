@@ -234,7 +234,7 @@ const AddEvent = () =>
 
                 <button className="addevent-submit-btn" onClick={handleSubmit}>Submit</button>
 
-                <div class="delete-event">
+                <div className="delete-event">
                     <span>Delete an existing Event?</span>
                     <span onClick={handleDeleteEvent}><button>Delete Event</button></span>
                 </div>

@@ -4,16 +4,16 @@ import "./Carousal.css"
    
 function Carousal() {
   return (
-    <Carousel class="carousel">
-      <Carousel.Item class="carousel-item">
+    <Carousel className="carousel">
+      <Carousel.Item className="carousel-item">
         <img  src="./Slide1.JPG" alt="First slide" />
         
       </Carousel.Item>
-      <Carousel.Item class="carousel-item"> 
+      <Carousel.Item className="carousel-item"> 
        <img  src="./Slide2.JPG" alt="Second slide" />
         
       </Carousel.Item>
-      <Carousel.Item class="carousel-item">
+      <Carousel.Item className="carousel-item">
         <img  src="./Slide3.JPG" alt="Third slide" />
         
       </Carousel.Item>

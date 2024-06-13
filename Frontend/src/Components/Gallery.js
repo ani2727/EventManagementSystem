@@ -11,6 +11,7 @@ const Gallery = ({clubData})=>
     const [galleryImages,setGalleryImages] = useState([]);
     const [uploading,setUploading] = useState(false);
     const [selectedFile,setSelectedFile] = useState(null);
+    const clubName = clubData.clubName;
     
     const fileInputRef = useRef();
     let admin = false;
@@ -37,7 +38,6 @@ const Gallery = ({clubData})=>
 
         const handleUpload = async() => 
         {
-        const clubName = 'Ecell';
         if(selectedFile != null)
         {
             try
@@ -49,23 +49,24 @@ const Gallery = ({clubData})=>
             await axios.post(`http://localhost:3001/api/image`,formData)
             .then(async(res) =>
             {
-                console.log(res.data,"Resultdata");
                 const imageUrl = res.data;
-                await axios.post(`http://localhost:3001/add/galleryimage`,{clubName,imageUrl})
-                .then(res=>alert("Image added Successfully"))
-                .catch(err=>alert("Failed to add Image"))
-                setSelectedFile(null);
-                fileInputRef.current.value = null;
+                const result = await axios.post(`http://localhost:3001/add/galleryimage`,{clubName,imageUrl})
+                setUploading(false);
+                if(result.data === "Success") {
+                    alert("Image added Successfully");
+                    setSelectedFile(null);
+                    fileInputRef.current.value = null;
+                }
+                else{
+                    alert("Image Not Uploaded, Try again")
+                }
+                
             })
-
-
             }
             catch(err) {
                 alert(err);
             }
-            finally{
-            setUploading(false);
-            }
+            
         }
         else alert("Please choose a photo");
     }
@@ -106,7 +107,7 @@ const Gallery = ({clubData})=>
             ):(<div></div>)
 
             }
-            <Carousel class="carousel" style={{width:'100%',borderRadius:'0px',height:'600px'}}>
+            <Carousel className="carousel" style={{width:'100%',borderRadius:'0px',height:'600px'}}>
                 {galleryImages.length > 0 ? 
                     (
                         galleryImages.map((image, index) => (

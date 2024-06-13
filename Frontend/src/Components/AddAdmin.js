@@ -45,7 +45,7 @@ const AddAdmin = () =>
 
 
     return (
-        <div class="addmember-container">
+        <div className="addmember-container">
             <div className="addmember">
                 <div><h1>Change Admin</h1></div>
                 <div>

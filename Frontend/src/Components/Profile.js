@@ -1,13 +1,14 @@
 import { Spinner } from "react-bootstrap";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState ,useRef} from "react";
 import "./Profile.css";
 import getUserInfo from "../utils/userInfo";
 
 const Profile = () => {
     const userData = getUserInfo();
-    const userClubs = userData.clubs;
+    const userClubs = userData.clubs || [];
 
+    const Password = useRef();
     const [selectedFile, setSelectedFile] = useState(null);
     const [imageUrl,setImageUrl] = useState('');
     const [uploading,setUploading] = useState(null);
@@ -16,6 +17,25 @@ const Profile = () => {
         const file = event.target.files[0];
         setSelectedFile(file);
     };
+
+    const handleChange = async()=>{
+        try
+        {
+
+            const result = await axios.post('http://localhost:3001/change/userprofile',{imageUrl,userName:userData.userName,password:Password.current.value})
+            if(result.data === "Success") 
+            {
+                alert("Changed Successfully");
+            }
+            else alert("Sorry! Try uploading again")
+            setUploading(false);
+
+        }
+        catch(err) {
+            setUploading(false)
+            alert(err);
+        }
+    }
 
     const handleUpload = async () => {
         try {
@@ -32,21 +52,7 @@ const Profile = () => {
         catch (err) {
           console.error('Error uploading image:', err);
         } 
-        
-        try
-        {
-
-            setUploading(false);
-            const result = await axios.post('http://localhost:3001/change/userprofile',{imageUrl,userName:userData.userName})
-            if(result.data === "Success") 
-            {
-                alert("Changed Successfully");
-            }
-            else alert("Sorry! Try uploading again")
-        }
-        catch(err) {
-            alert(err);
-        }
+        handleChange();
     }
 
     return (
@@ -88,7 +94,13 @@ const Profile = () => {
                         ))}
                     </ul>
                 </div>
+                <div>
+                <label>Change Password</label>
+                <input type="password" ref={Password}></input>
+                <button onClick={handleChange}>Change</button>
+                </div>
             </div>
+           
         </div>
     );
 };

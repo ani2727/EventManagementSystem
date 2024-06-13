@@ -83,7 +83,7 @@ const EventDetails = () =>
                 
                 <button onClick={handleRegister}>Register</button>
             </div>
-            <div class="registered-members">
+            <div className="registered-members">
                 <h3>Registered Members</h3>
                 {members.length > 0 ?
                     (

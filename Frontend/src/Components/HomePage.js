@@ -93,7 +93,7 @@ const HomePage = ()=>
                 {admin ? 
                 (
                     <>
-                        <Link to="/addclub"><button>Manage Clubs</button></Link>
+                        <Link to="/addclub"><button className="manageadmin-btn">Manage Clubs</button></Link>
                         <Link to="/admins"><button className="manageadmin-btn">Manage Admin</button></Link>
                     </>
                 ) : (

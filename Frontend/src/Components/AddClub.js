@@ -121,7 +121,6 @@ const AddClub = ()=>
                     </div>
                 </div>
                 <button onClick={handleAddClub}>Add Club</button>
-                <Link to="/changeclub" className="linkcss"><button >Change Club</button></Link>
             </div>
         </div>
     )

@@ -28,7 +28,7 @@ const Admins = () => {
     }, []);
 
     return (
-        <div class="admins">
+        <div className="admins">
             <div>
             <div style={{textAlign:'center'}}><h1>Club Admins</h1></div>
             <div className=" club-admins">
@@ -65,37 +65,37 @@ const Admins = () => {
             <div>
             <div style={{textAlign:'center'}}><h1>Department Admins</h1></div>
             <div className="dept-admins">
-            {departmentadmin && departmentadmin.length > 0 ? (
-                departmentadmin.reduce((uniqueAdmins, admin) => {
-                    const isDuplicate = uniqueAdmins.some(a => a.studentId === admin.studentId);
-                    if (!isDuplicate) {
-                        uniqueAdmins.push(admin);
-                    }
-                    return uniqueAdmins;
-                }, []).map((admin, index) => (
-                    <div key={index} className="admin-member">
-                        <img src={admin.imageUrl} alt="" />
-                        <div className="member-name">
-                            <span>{admin.userName}</span>
-                            <span>{admin.studentId}</span>
-                            <span>{admin.dept}</span>
-                            {admin.clubs.map((club, clubIndex) => (
-                                club.isClubAdmin &&
-                                ['CSE', 'ECE', 'EEE', 'CIVIL', 'MECH', 'CHEM', 'MME', 'PUC1', 'PUC2'].includes(club.clubName) && (
-                                    <span key={clubIndex}>Admin Of {club.clubName}</span>
-                                )
-                            ))}
+                {departmentadmin && departmentadmin.length > 0 ? (
+                    departmentadmin.reduce((uniqueAdmins, admin) => {
+                        const isDuplicate = uniqueAdmins.some(a => a.studentId === admin.studentId);
+                        if (!isDuplicate) {
+                            uniqueAdmins.push(admin);
+                        }
+                        return uniqueAdmins;
+                    }, []).map((admin, index) => (
+                        <div key={index} className="admin-member">
+                            <img src={admin.imageUrl} alt="" />
+                            <div className="member-name">
+                                <span>{admin.userName}</span>
+                                <span>{admin.studentId}</span>
+                                <span>{admin.dept}</span>
+                                {admin.clubs.map((club, clubIndex) => (
+                                    club.isClubAdmin &&
+                                    ['CSE', 'ECE', 'EEE', 'CIVIL', 'MECH', 'CHEM', 'MME', 'PUC1', 'PUC2'].includes(club.clubName) && (
+                                        <span key={clubIndex}>Admin Of {club.clubName}</span>
+                                    )
+                                ))}
+                            </div>
+                            <Link to="/manageadmin"><button>Manage</button></Link>
                         </div>
-                        <Link to="/manageadmin"><button>Manage</button></Link>
-                    </div>
-                ))
-            ) : (
-                <div>There are No Department Admins</div>
-            )}
+                    ))
+                ) : (
+                    <div>There are No Department Admins</div>
+                )}
 
 
+                </div>
             </div>
-        </div>
 
         </div>
     );
