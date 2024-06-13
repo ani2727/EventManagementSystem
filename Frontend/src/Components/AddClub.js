@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import axios from "axios";
 import { Spinner } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "./AddMember.css"
 
 const AddClub = ()=>
@@ -27,8 +28,6 @@ const AddClub = ()=>
           formData.append('image', selectedFile);
           await axios.post(`http://localhost:3001/api/image`, formData)
           .then(res => {
-                setSelectedFile(null);
-                fileInputRef.current.value = null;
                 setImageUrl(res.data);
                 
           })
@@ -121,7 +120,8 @@ const AddClub = ()=>
                         (<button  onClick={handleUpload}>Upload</button>)}
                     </div>
                 </div>
-                <button onClick={handleAddClub}>Add </button>
+                <button onClick={handleAddClub}>Add Club</button>
+                <Link to="/changeclub" className="linkcss"><button >Change Club</button></Link>
             </div>
         </div>
     )

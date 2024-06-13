@@ -44,17 +44,19 @@ const Addmember = () => {
     const handleDeletemember = async () => {
         let Id = deleteId.current.value;
         Id = Id.trim();
-        if (Id.length === 7 && clubData) {
+        if (Id && clubData) {
             try {
                 const res = await axios.post('http://localhost:3001/delete/members', { clubName: clubData.clubName, Id });
                 if (res.data === "Success") {
                     alert("Member deleted successfully");
                     navigate('/club', { state: { clubData: clubData } });
-                } else {
+                }
+                else if(res.data === "NoClubUser") alert("User Not Exists in this Club") 
+                else {
                     alert("No member found with the given ID");
                 }
             } catch (err) {
-                console.log(err);
+                alert(err);
             }
         } else {
             alert("Please enter the ID properly");

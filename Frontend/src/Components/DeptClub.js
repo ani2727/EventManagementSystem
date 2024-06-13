@@ -152,10 +152,10 @@ const DeptClub = () =>
         navigate("/addevent",{state:{clubData:clubData}});
     }
     
-    if (!clubData) {
+    if (!clubData || !userData) {
         return (
             <div className="not-authorized">
-                <h1>You're not authorized. Contact your admin.</h1>
+                <h1>You're not authorized. Contact admin.</h1>
             </div>
         );
     }
@@ -195,7 +195,7 @@ const DeptClub = () =>
                             </Carousel.Item>
                     )}
             </Carousel>
-            {admin?(
+            {admin||superAdmin?(
                     <div>
                     <span class="gallery-upload"><input ref={fileInputRef} onChange={handleFileChange} type="file" required />
                         {uploading ? (
@@ -363,7 +363,6 @@ const DeptClub = () =>
                                 )
                             ))}
                         </div>
-                        <Link to="/addadmin"><button>Manage</button></Link>
                     </div>
                 ))
             ) : (

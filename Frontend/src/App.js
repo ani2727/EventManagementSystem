@@ -25,15 +25,15 @@ const App = ()=>{
           <Routes>
             <Route path="/" element={<HomePage/>} />
             <Route path="/club" element={<ProtectedRoute><Ecell /></ProtectedRoute>} />
-            <Route path="/deptclub" element={<DeptClub />} />
+            <Route path="/deptclub" element={<ProtectedRoute><DeptClub /></ProtectedRoute>} />
             <Route path="/signin" element={<Signin />} />
             <Route path="/signup" element={<Signup/>} />
-            <Route path="/addadmin" element={<AddAdmin/>} />
+            <Route path="/manageadmin" element={<ProtectedClubs><AddAdmin/></ProtectedClubs>} />
             <Route path="/eventdetails" element={<EventDetails/>} />
             <Route path="/addmember" element={<AddMember/>} />
             <Route path="/addevent" element={<AddEvent/>} />
             <Route path="/deleteevent" element={<DeleteEvent/>} />
-            <Route path="/profile" element={<Profile/>} />
+            <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute>} />
             <Route path="/addclub" element={<ProtectedClubs><AddClub /></ProtectedClubs>} />
             <Route path="/admins" element={<ProtectedClubs><Admins /></ProtectedClubs>} />
             <Route path="/changeclub" element={<ProtectedClubs><ChangeClub /></ProtectedClubs>} />

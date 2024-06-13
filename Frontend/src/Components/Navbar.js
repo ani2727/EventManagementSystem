@@ -41,7 +41,7 @@ const Navbar = ({clubData})=>
                 <div class="ecell-logo"><img src="rgukt-logo.jpeg"  alt=""/></div>
                 <div class="ecell-nav-list-items">
                     <ul>
-                    
+                        {clubData.clubName==='HopeHouse'?(<li><button>Donate</button></li>):<li></li>}
                         {admin || superAdmin ?(
                             <li><button onClick={handleAddEvent}>Add Event</button></li>
                         ):<li></li>

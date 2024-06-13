@@ -17,6 +17,6 @@ export const ProtectedRoute = ({ children }) => {
 export const ProtectedClubs = ({children}) =>
 {
     if(userData && userData.isSuperAdmin) return children;
-
-    else return <Navigate to="/"/>   
+    else if(userData) return <Navigate to="/"/> 
+    else return <Navigate to="/signin"/>
 }

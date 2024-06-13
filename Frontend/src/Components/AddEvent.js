@@ -55,8 +55,6 @@ const AddEvent = () =>
           formData.append('image', selectedFile);
           await axios.post(`http://localhost:3001/api/image`, formData)
           .then(res => {
-                setSelectedFile(null);
-                fileInputRef.current.value = null;
                 setImageUrl(res.data);
           })
 
@@ -100,9 +98,27 @@ const AddEvent = () =>
         else 
         {
             const branch = Branch.current.value;
-            if(branch === 'PUC') {
-                if(userData.dept !== 'PUC1' && userData.dept !== 'PUC2') {
-                    alert("You are not allowed to add an event in this department")
+            if(userData.isSuperAdmin)
+            {
+                try {
+                    const res = await axios.post('http://localhost:3001/add/dept/event',{eventName,clubName,tagline,studentCoordinator,studentCoordinatorEmail,facultyCoordinator,facultyCoordinatorEmail,venue,date,time,imageUrl,description,branch})
+                    if(res.data === "Success") {
+                        alert("Event Added Successfully")
+                        navigate('/deptclub',{state:{clubData:clubData}})
+                    }
+                    else{
+                        alert("Failed to Add Event")
+                    }
+                }
+                catch(err) {
+                    alert("Department Event not added");
+                }
+            }
+            else if(branch === 'PUC') 
+            {
+                if(userData.dept !== 'PUC1' && userData.dept !== 'PUC2') 
+                {
+                    alert("No Access")
                 }
                 else{
                     try {
@@ -120,20 +136,19 @@ const AddEvent = () =>
                     }
                 }
             }
-            else if(branch !== userData.dept) alert("You are Not allowed to add an event in this Department")
+            else if(branch !== userData.dept) alert("No Access")
             else
             {
                 try {
-                    await axios.post('http://localhost:3001/add/dept/event',{eventName,clubName,tagline,studentCoordinator,studentCoordinatorEmail,facultyCoordinator,facultyCoordinatorEmail,venue,date,time,imageUrl,description,branch})
-                    .then(res => {
-                        if(res.data === "Success") {
+                    const res = await axios.post('http://localhost:3001/add/dept/event',{eventName,clubName,tagline,studentCoordinator,studentCoordinatorEmail,facultyCoordinator,facultyCoordinatorEmail,venue,date,time,imageUrl,description,branch})
+                    if(res.data === "Success") 
+                    {
                         alert("Event Added Successfully")
                         navigate('/deptclub',{state:{clubData:clubData}})
-                        }
-                        else{
-                            alert("Failed to Add Event")
-                        }
-                    })
+                    }
+                    else{
+                        alert("Failed to Add Event")
+                    }
                 }
                 
                 catch(err) {

@@ -15,9 +15,9 @@ const handleAddClub = async (req, res) => {
         const user = await UserModel.findOne({ userName: clubAdmin });
         if (!user) return res.send('InvalidAdmin');
 
-        const newClub = await ClubModel.create({ clubName, description, imageUrl, clubAdmin: user._id });
+        const newClub = await ClubModel.create({ clubName, description, clubLogo:imageUrl, clubAdmin: user._id });
         if (newClub) {
-            user.clubs.push({ clubId: newClub._id, isClubAdmin: true, clubName});
+            user.clubs.push({ clubId: newClub._id, isClubAdmin: true, clubName,position:'Co-ordinator'});
             await user.save();
             
         }
@@ -139,13 +139,13 @@ const handleAddMember = async (req, res) => {
 const handleDeleteMember = async (req, res) => {
     try {
         const { clubName, Id } = req.body;
-
         const user = await UserModel.findOne({ studentId: Id });
-        if (!user) return res.status(404).send('UserNotExists');
 
+        if (!user) return res.send('UserNotExists');
+        const length = user.clubs.length;
         user.clubs = user.clubs.filter(ele => ele.clubName !== clubName);
         await user.save();
-
+        if(length === user.clubs.length) return res.send("NoClubUser")
         return res.send('Success');
     } catch (err) {
         return res.status(500).send({ message: "Error Deleting Member" });
@@ -205,18 +205,31 @@ const handleAddEvent = async(req,res) =>
     }
 }
 
-const handleDeptAddEvent = async(req,res) => 
-{
-    const {eventName,clubName,tagline,venue,date,time,imageUrl,description,facultyCoordinator,facultyCoordinatorEmail,studentCoordinator,studentCoordinatorEmail,branch} = req.body;
-    try{
-        const result = await DeptEventsModel.create({eventName,clubName,tagline,venue,date,time,imageUrl,facultyCoordinator,facultyCoordinatorEmail,studentCoordinator,studentCoordinatorEmail,description,branch})
-        if(result) return res.send('Success');
-        else return res.send('Failure')
+const handleDeptAddEvent = async (req, res) => {
+    const {
+        eventName,clubName,tagline,venue,date,time,imageUrl,description,facultyCoordinator,
+        facultyCoordinatorEmail,studentCoordinator,studentCoordinatorEmail,branch
+    } = req.body;
+
+    if (!eventName || !clubName || !imageUrl || !venue || !date || !time || !branch || !facultyCoordinator || !facultyCoordinatorEmail || !studentCoordinator || !studentCoordinatorEmail) {
+        return res.status(400).send("Missing required fields" );
     }
-    catch(err) {
-        res.send({message:"Failure"});
+
+    try {
+        const result = await DeptEventsModel.create({eventName,clubName,tagline,venue,date,time,
+            imageUrl,facultyCoordinator,facultyCoordinatorEmail,studentCoordinator,studentCoordinatorEmail,description,branch
+        });
+
+        if (result) {
+            return res.status(201).send('Success');
+        } else {
+            return res.status(500).send('Failure');
+        }
+    } catch (err) {
+        return res.status(500).send({ message: "Internal Server Error", error: err.message });
     }
-}
+};
+
 
 const handleGetDeptEvents = async(req,res) => 
 {
@@ -481,7 +494,21 @@ const handleChangeClub = async(req,res)=>{
     }
 }
 
-  
+const handleChangeUserProfile = async(req,res)=>{
+    
+    const {imageUrl,userName} = req.body;
+    try{
+        const user = await UserModel.findOne({userName});
+
+        if(imageUrl.length>0) user.imageUrl = imageUrl;
+        await user.save();
+        return res.send('Success');
+    }
+    catch(err){
+        return res.status(500).send("Bad Request");
+    }
+}  
+
 
 module.exports = {handleSignin,handleSignup,handleGetAdmins,
     handleAddAdmins,handleAddMember,handleDeleteMember,handleGetClubMembers,
@@ -489,4 +516,4 @@ module.exports = {handleSignin,handleSignup,handleGetAdmins,
     handleGetDeptEvents,handleGetClubEvents,handleGetUpcomingEvents,handleGetClubPosters,
     handleEventRegister,handleGetRegisteredUsers,handleDeleteEvent,handleGetClubAdmins,
     handleGetDeptAdmins,handleDeleteAdmin,handleAddClub, handleGetClubs, handleChangeDeptAdmin,
-    handleChangeClubAdmin,handleChangeClub}
+    handleChangeClubAdmin,handleChangeClub,handleChangeUserProfile}

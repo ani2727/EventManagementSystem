@@ -53,7 +53,7 @@ const Admins = () => {
                                 )
                             ))}
                         </div>
-                        <Link to="/addadmin"><button>Manage</button></Link>
+                        <Link to="/manageadmin"><button>Manage</button></Link>
                     </div>
                 ))
                  ) : (
@@ -86,7 +86,7 @@ const Admins = () => {
                                 )
                             ))}
                         </div>
-                        <Link to="/addadmin"><button>Manage</button></Link>
+                        <Link to="/manageadmin"><button>Manage</button></Link>
                     </div>
                 ))
             ) : (
