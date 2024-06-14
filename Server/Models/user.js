@@ -161,6 +161,13 @@ const ClubSchema = new mongoose.Schema({
     },
     clubMail:{
         type:String,
+    },
+    interview:{
+        type:Boolean,
+        default:false,
+    },
+    interviewFor:{
+        type:String,
     }
     }
 )

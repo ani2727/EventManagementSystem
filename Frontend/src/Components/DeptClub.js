@@ -1,14 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import "./Ecell.css"
 import Carousel from 'react-bootstrap/Carousel';
-import { FaFacebook } from 'react-icons/fa';
-import { FaInstagram } from 'react-icons/fa';
-import { MdEmail } from "react-icons/md";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Spinner } from 'react-bootstrap';
 import emailjs from '@emailjs/browser';
-
 import { useLocation,Link } from 'react-router-dom';
 import getUserInfo from '../utils/userInfo';
 
@@ -161,9 +157,10 @@ const DeptClub = () =>
 
     return (
         
-<div className="ecell">
+<div className="ecell dept-club">
             <nav className="ecell-navbar">
                 <div className="ecell-logo"><img src="rgukt-logo.jpeg"  alt=""/></div>
+                <div><h1 style={{color:'white',textAlign:'center'}}>Department Club</h1></div>
                 <div className="ecell-nav-list-items">
                     <ul>
                         {admin||superAdmin?(<li><button onClick={handleAddEvent}>Add Event</button></li>):(<li></li>)}
@@ -179,12 +176,13 @@ const DeptClub = () =>
                     </ul>
                 </div>
             </nav>
-            <Carousel className="carousel" style={{width:'100%',borderRadius:'0px',height:'600px'}}>
+            {/* <Navbar clubData={clubData} /> */}
+            <Carousel className="carousel dept-carousal" style={{width:'100%',borderRadius:'0px',height:'600px'}}>
                 {galleryImages.length > 0 ? 
                     (
                         galleryImages.map((image, index) => (
-                            <Carousel.Item key={index} className="carousel-item">
-                                <img className="gallery-image" src={image.imageUrl} alt={`Slide ${index + 1}`} style={{ width: '800px',height:'550px',marginLeft:'250px',marginTop:'10px'}}/>
+                            <Carousel.Item key={index} className="carousel-item dept-carousal-item">
+                                <img className="gallery-image" src={image.imageUrl} alt={`Slide ${index + 1}`} style={{ width: '800px',height:'550px',marginLeft:'0',marginTop:'10px'}}/>
                             </Carousel.Item>
                         ))
                     ) : 
@@ -328,7 +326,7 @@ const DeptClub = () =>
                     <div className="ecell-events-posters">
                     {posters.length > 0 ? 
                     (
-                        posters.filter((poster) => poster.branch === "METALLURGY").map((poster,index) => (
+                        posters.filter((poster) => poster.branch === "MME").map((poster,index) => (
                             <div key={index} className="poster-card" onClick={()=>handlePoster(poster)}><img src={poster.imageUrl} alt="" /></div>
                         ))
                     ):
@@ -371,26 +369,13 @@ const DeptClub = () =>
                 </div>
             </div>
             <div className="ecell-footer">
-                <div className="follow-us">
-                    <h4>Follow us</h4>
-                    <ul>
-                        <li><a href={`${clubData.clubInsta}`}><FaInstagram size={30}/></a></li>
-                        <li><a href={`${clubData.clubFacebook}`}><FaFacebook size={30}/></a></li>
-                    </ul>
-                </div>
-                <div className="ecell-contactus">
-                    <h4>Contact Us</h4>
-                    <ul>
-                        <li><MdEmail size={30}/></li>
-                    </ul>
-                </div>
-                <div className="share-thoughts">
+                <div className="share-thoughts dept">
                     <h4>Share Your Thoughts</h4>
-                    <span>Please provide your thoughts on Ecell development and innovation to explore more</span>
+                    <span>Please provide your thoughts for development and innovation to explore more</span>
                     <form ref={form} onSubmit={sendEmail}>
-                        <textarea name="message" placeholder='Write your Thought you want to share ' />
-                        <label>Email</label><input type="email" name="user_email" placeholder='Enter your Email' /> <br/>
-                        <label>Phone</label><input type="text" name="user_contact" placeholder='+91 12345 06978' />
+                        <textarea name="message" type="text" placeholder='Write your Thought you want to share ' />
+                        <input type="email" name="user_email" placeholder='Enter your Email' /> <br/>
+                        <input type="text" name="user_contact" placeholder='+91 12345 06978' /><br/>
                         <button type="submit" value="Send">Submit</button>
                     </form>
                 </div>

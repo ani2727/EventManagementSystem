@@ -1,76 +1,116 @@
+
 .addmember-container {
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Adjust alignment as per your requirement */
+    align-items: center;
+    height: 100vh;
 }
-
-.addmember,
-.deleteadmin {
-    margin-right: 20px; /* Adjust the gap between the divs */
-}
-
 
 .addmember {
-    border: 1px solid #ccc;
+    background: #aaa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    border-radius: 5px;
-    width: 400px;
+    max-width: 400px;
+    width: 90%;
 }
 
 .addmember div {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
-.addmember label {
-    display: block;
-    margin-bottom: 5px;
-}
 
 .addmember input[type="text"],
-.addmember input[type="file"],
-.addmember textarea[type="text"],
-.addmember select {
-    width: calc(100% - 30px); /* Adjust width to accommodate the cross mark icon */
-    padding: 8px;
-    border: 1px solid #ccc;
+.addmember textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
     border-radius: 5px;
     box-sizing: border-box;
-    margin-top: 5px;
+}
+.addmember input:focus,
+.addmember textarea:focus{
+    outline: none;
 }
 
 .addmember button {
-    width: 100%;
-    padding: 8px;
-    border: none;
-    border-radius: 5px;
-    background-color: #5b5d5f;
+    background: #2b2b5f;
     color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.addmember button:hover {
+    background: #34346e;
+}
+
+.deletemember {
+    display: flex;
+    align-items: center;
+}
+
+.deletemember input[type="text"] {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+.deletemember input:focus{
+    outline: none;
+}
+
+.deletemember button {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-.addmember button:hover {
-    background-color: #424446;
+.deletemember button:hover {
+    background-color: #c82333;
 }
 
-.file-input-container {
-    position: relative;
+/* Responsive styles */
+@media (max-width: 768px) {
+    .addmember input[type="text"] {
+        margin-bottom: 10px;
+    }
 }
-
-.clear-file-input {
-    position: absolute;
-    top: 50%; 
-    right: 0; 
-    transform: translateY(-50%); 
-    cursor: pointer;
-}
-
-.deletemember{
-    margin-top: 30px;
-}
-
-
 
 .manage-clubs{
-    margin-top: 25em;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2em;
+    margin-top: 2em;
+}
+.manage-clubs .addmember{
+    background: #aaa;
+    color: #2b2b5f;
+}
+.addmember label{
+    font-weight: bold;
+}
+.file-input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+
+.clear-file-input {
+    cursor: pointer;
+    margin-left: 10px; /* Adjust this value as needed */
 }

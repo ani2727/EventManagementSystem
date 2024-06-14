@@ -173,15 +173,14 @@ const AddEvent = () =>
             <div className="addevent">
                 <h1>Add Event</h1>
                 <div className="eventname">
-                    <label>Event Name</label><input className="add-event-input" type="text" placeholder="Enter Event Name" value={eventName} ref={eventname} onChange={(e)=>setEventName(e.target.value)} required=""/>
+                    <input className="add-event-input" type="text" placeholder="Event Name" value={eventName} ref={eventname} onChange={(e)=>setEventName(e.target.value)} required=""/>
                 </div>
                 <div>
-                    <label>Tag Line</label><input placeholder="Tag line" type="text" ref={taglinee} value={Tagline} onChange={(e)=>setTagline(e.target.value)} />
+                    <input placeholder="Tagline" type="text" ref={taglinee} value={Tagline} onChange={(e)=>setTagline(e.target.value)} />
                 </div>
                 {clubName==="DeptClub" ?
                 (
                     <div>
-                    <label>Branch</label>
                     <select ref={Branch} value={branchs} onChange={(e) => setBranch(e.target.value)} required="">
                         <option >Select branch</option><option >PUC</option><option >CSE</option><option >ECE</option><option >EEE</option>
                         <option >MECH</option><option >CIVIL</option><option >CHEM</option><option>MME</option>
@@ -193,27 +192,25 @@ const AddEvent = () =>
                 )
                 }
                 <div>
-                    <label>Student Co-ordinator Name</label>
-                    <input className="add-event-input" type="text" placeholder="Enter Co-ordinator Name" value={scoordinatorName} onChange={(e) => setScoordinatorName(e.target.value)} required="" ref={scoordinator} />
+                    <input className="add-event-input" type="text" placeholder="Student Co-ordinator Name" value={scoordinatorName} onChange={(e) => setScoordinatorName(e.target.value)} required="" ref={scoordinator} />
                 </div>
             <div>
-                <label>Student Co-ordinator Mail</label>
-                <input className="add-event-input" type="text" placeholder="Enter Co-ordinator Name" value={scoordinatorEmail} onChange={(e) => setScoordinatorEmail(e.target.value)} required="" ref={scoordinatoremail} />
+                <input className="add-event-input" type="text" placeholder="Student Co-ordinator Mail" value={scoordinatorEmail} onChange={(e) => setScoordinatorEmail(e.target.value)} required="" ref={scoordinatoremail} />
             </div>
                 <div>
-                <label>Faculty Co-ordinator Name</label><input className="add-event-input" type="text" placeholder="Enter Co-ordinator Name"  value={fcoordinatorName} onChange={(e)=>setFcoordinatorName(e.target.value)} required="" ref={fcoordinator}/>
+                <input className="add-event-input" type="text" placeholder="Faculty Co-ordinator Name"  value={fcoordinatorName} onChange={(e)=>setFcoordinatorName(e.target.value)} required="" ref={fcoordinator}/>
                 </div>
                 <div>
-                <label>Faculty Co-ordinator Mail</label><input className="add-event-input" type="text" placeholder="Enter Co-ordinator Name" value={fcoordinatorEmail} onChange={(e)=>setFcoordinatorEmail(e.target.value)} required="" ref={fcoordinatoremail}/>
+                <input className="add-event-input" type="text" placeholder="Faculty Co-ordinator Mail" value={fcoordinatorEmail} onChange={(e)=>setFcoordinatorEmail(e.target.value)} required="" ref={fcoordinatoremail}/>
                 </div>
                 <div>
-                <label>Venue</label><input className="add-event-input" type="text" placeholder="Enter Venue" ref={Venues} value={Venue} onChange={(e)=>setVenue(e.target.value)} required=""/>
+                <input className="add-event-input" type="text" placeholder="Venue" ref={Venues} value={Venue} onChange={(e)=>setVenue(e.target.value)} required=""/>
                 </div>
                 <div>
-                <label>Date</label><input className="add-event-input" type="date"   value={Date} onChange={e => setDate(e.target.value)} required ref={dates}/>
+                <input className="add-event-input" type="date"   value={Date} onChange={e => setDate(e.target.value)} required ref={dates}/>
                 </div>
                 <div>
-                <label>Time</label><input className="add-event-input" type="time"   value={Time} onChange={e => setTime(e.target.value)} required ref={times}/>
+                <input className="add-event-input" type="time"   value={Time} onChange={e => setTime(e.target.value)} required ref={times}/>
                 </div>
 
                 <div className="file-input-container">
@@ -229,7 +226,7 @@ const AddEvent = () =>
                     </div>
                 </div>
                 <div>
-                <label>Description</label><textarea type="text" placeholder="Write something about Event"  onChange={(e)=>setDescription(e.target.value)} value={description} className="add-event-input" ref={desc} />
+                <textarea type="text" placeholder="Write something about Event"  onChange={(e)=>setDescription(e.target.value)} value={description} className="add-event-input" ref={desc} />
                 </div>
 
                 <button className="addevent-submit-btn" onClick={handleSubmit}>Submit</button>

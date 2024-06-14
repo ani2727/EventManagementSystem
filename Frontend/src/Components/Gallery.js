@@ -55,7 +55,6 @@ const Gallery = ({clubData})=>
                 if(result.data === "Success") {
                     alert("Image added Successfully");
                     setSelectedFile(null);
-                    fileInputRef.current.value = null;
                 }
                 else{
                     alert("Image Not Uploaded, Try again")
@@ -72,7 +71,6 @@ const Gallery = ({clubData})=>
     }
 
     useEffect(() => {
-        const clubName = 'Ecell'
         const fetch = async()=>
         {
             try{
@@ -87,9 +85,9 @@ const Gallery = ({clubData})=>
         }
         
         fetch();
-    },[]);
+    },[clubName]);
     return(
-        <div>
+        <div className="ecell-gallery">
             <h1 style={{textAlign:'center'}}>Our Gallery</h1>
             {admin||superAdmin?(
                     <div>
@@ -107,18 +105,18 @@ const Gallery = ({clubData})=>
             ):(<div></div>)
 
             }
-            <Carousel className="carousel" style={{width:'100%',borderRadius:'0px',height:'600px'}}>
+            <Carousel className="carousel ecell-gallery" >
                 {galleryImages.length > 0 ? 
                     (
                         galleryImages.map((image, index) => (
                             <Carousel.Item key={index} className="carousel-item">
-                                <img className="gallery-image" src={image.imageUrl} alt={`Slide ${index + 1}`} style={{ width: '800px',height:'550px',marginLeft:'250px',marginTop:'10px'}}/>
+                                <img className="gallery-image" src={image.imageUrl} alt={`Slide ${index + 1}`} style={{ width: '80%',height:'550px',marginLeft:'0em',marginTop:'0.5em'}}/>
                             </Carousel.Item>
                         ))
                     ) : 
                     (
                             <Carousel.Item className="carousel-item">
-                                <img className="gallery-image"  src="./defaultImage.jpg" alt="No images available" style={{ width: '58%',marginLeft:'250px',marginTop:'30px'}}/>
+                                <img className="gallery-image"  src="rgukt-logo.jpeg" alt="No images available" style={{ width: '58%',marginLeft:'250px',marginTop:'30px'}}/>
                             </Carousel.Item>
                     )}
             </Carousel>

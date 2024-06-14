@@ -12,28 +12,34 @@ const Profile = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [imageUrl,setImageUrl] = useState('');
     const [uploading,setUploading] = useState(null);
+    const fileInputRef = useRef();
 
-    const handleChangePhoto = (event) => {
-        const file = event.target.files[0];
-        setSelectedFile(file);
+    const handleFileChange = (e) => {
+        setSelectedFile(e.target.files[0]);
     };
 
+    const clearFileInput = () => {
+        const fileInput = document.getElementById("file-input");
+        fileInput.value = ""; 
+        };
+
     const handleChange = async()=>{
-        try
-        {
-
-            const result = await axios.post('http://localhost:3001/change/userprofile',{imageUrl,userName:userData.userName,password:Password.current.value})
-            if(result.data === "Success") 
+        if(!imageUrl && !Password.current.value) alert("Please enter the fields")
+        else{
+            try
             {
-                alert("Changed Successfully");
+                const result = await axios.post('http://localhost:3001/change/userprofile',{imageUrl,userName:userData.userName,password:Password.current.value})
+                if(result.data === "Success") 
+                {
+                    alert("Changed Successfully");
+                }
+                else alert("Sorry! Try uploading again")
+                setUploading(false);
+    
             }
-            else alert("Sorry! Try uploading again")
-            setUploading(false);
-
-        }
-        catch(err) {
-            setUploading(false)
-            alert(err);
+            catch(err) {
+                alert(err);
+            }
         }
     }
 
@@ -52,30 +58,26 @@ const Profile = () => {
         catch (err) {
           console.error('Error uploading image:', err);
         } 
-        handleChange();
-    }
+        finally{
+            setUploading(false);
+            handleChange();
+        }
+      };
 
     return (
         <div className="profile-container">
             <div className="profile">
-                <div>
-                    <img src={userData.imageUrl} alt="User Icon" />
-                    <label htmlFor="file-input" className="change-photo-label">Change Photo</label>
-                    <input
-                        id="file-input"
-                        type="file"
-                        onChange={handleChangePhoto}
-                        style={{ display: "none" }}
-                    />
-                    {selectedFile && (
-                        <div>
-                            <span>{selectedFile.name}</span>
-                            {uploading ? (<Spinner animation="border" role="status">
+            <div className="file-input-container">
+                <img src={userData.imageUrl} alt=""/>
+                    <div>
+                        <input style={{outline:'none',border:'none'}} ref={fileInputRef} onChange={handleFileChange} id="file-input" type="file"></input>
+                        <span onClick={clearFileInput} className="clear-file-input">&#10006;</span>
+
+                        {uploading ? (<Spinner animation="border" role="status">
                                     <span className="sr-only">Uploading...</span>
                                 </Spinner>) : 
-                        (<button  onClick={handleUpload}>Upload</button>)}
-                        </div>
-                    )}
+                        (<span style={{marginLeft:'9em',fontWeight:'bold',cursor:'pointer'}}  onClick={handleUpload}>Upload</span>)}
+                    </div>
                 </div>
                 <div>
                     <label>Name: {userData.userName}</label>

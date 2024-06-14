@@ -6,7 +6,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 const ChangeClub = ()=>
 {
-    const [clubName,setClubs] = useState('');
     const [description,setDescription] = useState('');
     const [imageUrl,setImageUrl] = useState("");
     const [uploading,setUploading] = useState(false);
@@ -18,6 +17,7 @@ const ChangeClub = ()=>
     const [facebook,setFacebook] = useState('');
     const [mail,setMail] = useState('');
     const [tagline,setTagline] = useState('');
+    const [open,setOpen] = useState('');
 
     const location = useLocation();
     const clubData = location.state.clubData;
@@ -29,8 +29,10 @@ const ChangeClub = ()=>
     const Insta = useRef()
     const Facebook = useRef();
     const Mail = useRef();
-    const Club = useRef();
     const Desc = useRef();
+    const Interview = useRef();
+    const Open = useRef();
+    const Close = useRef();
 
     const handleFileChange = (e) => {
         setSelectedFile(e.target.files[0]);
@@ -91,15 +93,15 @@ const ChangeClub = ()=>
         };
 
     const handleAddClub = async () => {
-    
+        alert(open)
         try {
-            const res = await axios.post('http://localhost:3001/change/change/club', { clubName, description, imageUrl,coverImage,insta,facebook,mail,tagline});
+            const res = await axios.post('http://localhost:3001/change/change/club', { clubName:clubData.clubName, description, imageUrl,coverImage,insta,facebook,mail,tagline,interviewFor:Interview.current.value,open});
     
             if (res.data === "ClubNotExists") {
                 alert("No Club present with the entered ClubName");
             } else if (res.data === "Success") {
                 alert("Updated Successfully");
-                navigate("/",{state:{clubData:clubData}})
+                navigate("/club",{state:{clubData:clubData}})
             } else {
                 alert("Try again");
             }
@@ -116,16 +118,10 @@ const ChangeClub = ()=>
                     <h1>Modify Club</h1>
                 </div>
                 <div>
-                    <label>ClubName</label>
-                    <input ref={Club} type="text" value={clubName} onChange={(e)=>setClubs(e.target.value)} placeholder="Enter club name" required />
+                    <input type="text" placeholder="Tagline" ref={Tagline} value={tagline} onChange={(e)=>setTagline(e.target.value)}></input>
                 </div>
                 <div>
-                    <label>Tagline</label>
-                    <input type="text" ref={Tagline} value={tagline} onChange={(e)=>setTagline(e.target.value)}></input>
-                </div>
-                <div>
-                    <label>Description</label>
-                    <textarea ref={Desc} value={description} onChange={e=>setDescription(e.target.value)} type="text" required placeholder="Describe Club"></textarea>
+                    <textarea ref={Desc} value={description} onChange={e=>setDescription(e.target.value)} type="text" required placeholder="Description"></textarea>
                 </div>
                 <div className="file-input-container">
                     <label>Club Logo</label>
@@ -142,7 +138,7 @@ const ChangeClub = ()=>
                 <div className="file-input-container">
                     <label>Club Cover Image</label>
                     <div>
-                        <input ref={coverImageRef} onChange={handleFileChanges} id="file-inputs" type="file"></input>
+                        <input ref={coverImageRef} placeholder="Club Logo" onChange={handleFileChanges} id="file-inputs" type="file"></input>
                         <span onClick={clearFileInputs} className="clear-file-input">&#10006;</span>
 
                         {uploadings ? (<Spinner animation="border" role="status">
@@ -152,18 +148,31 @@ const ChangeClub = ()=>
                     </div>
                 </div>
                 <div>
-                    <label>Club Mail</label>
                     <input ref={Mail} value={mail} onChange={(e)=>setMail(e.target.value)} type="text" placeholder="Email"></input>
                 </div>
                 <div>
-                    <label>Club Insta Handle</label>
-                    <input ref={Insta} value={insta} onChange={(e)=>setInsta(e.target.value)} type="text" placeholder="Instagram Link"></input>
+                    <input ref={Insta} value={insta} onChange={(e)=>setInsta(e.target.value)} type="text" placeholder="Instagram"></input>
                 </div>
                 <div>
-                    <label>Club Facebook Handle</label>
-                    <input ref={Facebook} value={facebook} onChange={(e)=>setFacebook(e.target.value)} type="text" placeholder="Password"></input>
+                    <input ref={Facebook} value={facebook} onChange={(e)=>setFacebook(e.target.value)} type="text" placeholder="LinkedIn"></input>
                 </div>
                 <button onClick={handleAddClub}>Add </button>
+            </div>
+            <div className="addmember">
+                <h1>Interview Openings</h1>
+                <div>
+                    <label>Eligible batches</label>
+                    <input ref={Interview} type="text"></input>
+                </div>
+                <div>
+                    <input ref={Open} id="open" name="status" onChange={(e)=>setOpen(e.target.value)} type="radio" value="open"  />
+                    <label for="open">Open</label>
+                </div>
+                <div>
+                    <input ref={Close} id="close" name="status" onChange={(e)=>setOpen(e.target.value)} type="radio" value="close" />
+                    <label for="close">Close</label>
+                </div>
+                <button onClick={handleAddClub}>Submit</button>
             </div>
         </div>
     )

@@ -1,34 +1,32 @@
+body{
+  background: #e0d8d8;
+  color: #2b2b5f;
+
+}
 button{
-  background-color: #007bff;
-  color: #fff;
-  padding: 6px 15px;
-  margin: 0.5em;
+  color: white;
+  background: none;
+  padding: 0.4em 1em;
+  margin: 0.2em;
+  border-radius: 0.4em;
+  outline: none;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: 0.5s;
+}  
+button:hover{
+  background: #2b2b5f;
 }
-
-.home{
-    background: #f8f6f6;
-    height: 100vh;
-}
-
 
 .home-header {
+    background: purple;
     display: flex;
     justify-content: space-between;
     align-items: center;
     box-shadow: 4px -6px 10px 8px rgba(0,0,0,0.5);
-    height: 4em;
+    height: 4.5em;
   }
 
-  .home-header button{
-    background: #404249;
-    border-radius: 0.5em;
-    color: #fff;
-  }
-  
+ 
   .home-header > div:first-child {
     display: flex;
     align-items: center;
@@ -50,30 +48,29 @@ button{
     height: 35px;
     padding:5px 8px;
     border-radius: 0.5em;
-    color: black;
-    box-shadow: 0 0px 1px 1px rgba(0,0,0,0.5);
+    color: white;
 }
 
   .search-bar {
     padding: 8px;
     margin-left: 5px;
     background: transparent; 
+    color: white;
     border: 0;
+  }
+
+  .search-bar::placeholder{
+    color: white;
+  }
+
+  .search-bar:focus {
+    border: none;
+    outline:none;
   }
   
   .search-btn {
     margin-left: 10px; 
     padding: 6px 15px;
-  }
-  
-  .manageadmin-btn,
-  .signin-btn, .search-btn{
-    background: #535457;
-  }
-  .manageadmin-btn:hover,
-  .signin-btn:hover, .search-btn:hover
-  {
-    background: #404249;
   }
   
   .linkcss {
@@ -92,7 +89,6 @@ button{
 .eventos{
     width: 50%;
     height: 80vh;
-    color: #535457;
     margin: 1em;
 }
 
@@ -118,7 +114,6 @@ button{
 }
 
 .contact-us button {
-    background: #3c3c3f;
     color: white;
     border-radius: 0.5em;
     padding: 5px 55px;
@@ -133,7 +128,7 @@ button{
     display: flex;
     justify-content: space-evenly;
     text-align: center;
-    background: #535457;
+    background: #8b8bad;
     color: #fff;
 }
 .footer-section ul{
@@ -157,20 +152,15 @@ button{
 
 
 .upcomingevents,.online-events{
-    margin: 0.5em;
     border-radius: 1em;
 }
 
-.upcomingevents h1{
-    color: #535457;
-    padding:  1em;
+.upcomingevents h1,.online-events h1{
+    color: #2b2b5f;
+    padding-bottom: 0.5em;
     text-align: center;
 }
-.online-events h1{
-    color: #535457;
-    padding:  1em;
-    text-align: center;
-}
+
 .poster-card{
     width: 220px;
     height: 300px;
@@ -178,7 +168,7 @@ button{
     transition: 0.8s;
     margin: 1em;
     cursor: pointer;
-    transition: transform 1s ease;
+    transition: transform 0.7s;
 }
 .poster-card img{
     width: 100%;
@@ -187,24 +177,20 @@ button{
 }
 .poster-card:hover{
     transform: scale(1.2);
-    box-shadow: 3px -2px 5px 2px rgba(82, 71, 71, 0.5);
+    box-shadow: 3px -2px 5px 2px rgba(207, 193, 193, 0.5);
 
 }
 
 .next img{  
     width: 50%;
 }
-.poster-card:nth-child(5):hover{
-    scale:1;
-    transition: 0s;
-    box-shadow: 0px;
-}
+
 .clubs{
     margin: 1.5em;
 }
 .clubs-header{
     text-align: center;
-    color: #535457;
+    color: #2b2b5f;
 }
 .club-items{
     display: flex;
@@ -213,24 +199,24 @@ button{
     flex-wrap: wrap;
 }
 .club{
-    margin: 0.5em;
+    margin: 1em;
     width: 10em;
     height: 8em;
-    background: white;
-    box-shadow: -1px -1px 2px 3px rgba(136, 133, 133, 0.5);
-    border-radius: 2px;
+    background: #8b8bad;
+    border-radius: 5%;
     padding: 5px 10px;
-    font-weight: bold;
+    font-weight: 500;
     transition: 0.3s;
     text-decoration: none;
-    color: inherit;
+    color: white;
    
 }
 .club img{
-    width: 50%;
+    width: 70px;
+    border-radius: 50%;
 }
 .club:hover{
-    scale: 1.1;
+    transform: scale(1.1);
     cursor: pointer;
 }
 .linkcss{
@@ -241,11 +227,11 @@ button{
 .dropdown {
     position: relative;
     display: inline-block;
+    padding-top: 5px;
   }
   
   .dropdown button{
-    background: #f8f9fa;
-    color: #333;
+    color: white;
     border: none;
     margin: 0;
     height: 4em;
@@ -253,10 +239,11 @@ button{
   .dropdown-toggle {
     background-color: transparent;
     cursor: pointer;
+    color: white;
   }
 
   .dropdown-toggle:hover{
-    background: #ccc;
+    background: #2b2b5f;
   }
   
   .dropdown-menu {
@@ -266,12 +253,13 @@ button{
     z-index: 1000;
     display: none;
     min-width: 160px;
-    margin: 2px 0 0;
+    margin: 1px 0 0;
     font-size: 14px;
     text-align: left;
-    background-color: #fff;
+    background: purple;
     border: 1px solid #ccc;
     border-radius: 4px;
+    color: white;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   }
   
@@ -281,15 +269,16 @@ button{
     padding: 0.5rem 1rem;
     clear: both;
     font-weight: 400;
-    color: #333;
     text-align: inherit;
     background-color: transparent;
     border: 0;
     cursor: pointer;
+    color: white;
   }
   
   .dropdown-item:hover {
-    background-color: #a1a4a8;
+    background: #2b2b5f;
+    color: white;
   }
   
   .dropdown:hover .dropdown-menu {

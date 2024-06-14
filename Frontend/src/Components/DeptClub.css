@@ -5,6 +5,10 @@
     flex-wrap: wrap;
 }
 
+.dept{
+    min-height: 100vh;
+}
+
 .dept-club{
     margin: 0.5em;
     width: 8em;

@@ -1,50 +1,75 @@
-
-
 .event-details-container {
-    display: flex;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  text-align: center;
+}
+
+.event-details {
+  background: #aaa;
+  width: 100%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.event-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.event-info {
+  margin-bottom: 20px;
+}
+
+.info-item {
+  margin-bottom: 10px;
+}
+
+.info-label {
+  font-weight: bold;
+}
+
+.register-btn {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.register-btn:hover {
+  background-color: #0056b3;
+}
+
+.registered-members {
+  background: #aaa;
+  width: 100%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.member-email {
+  margin-bottom: 5px;
+}
+
+@media only screen and (min-width: 768px) {
+  .event-details-container {
+    flex-direction: row;
     justify-content: space-between;
-    align-items: flex-start;
   }
-  
+
   .event-details {
-    width: 65%;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    width: 48%;
   }
-  
-  .event-details ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .event-details ul li {
-    margin-bottom: 10px;
-  }
-  
-  .event-details input[type="email"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .event-details button {
-    padding: 10px 20px;
-    background-color: #676b70;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
+
   .registered-members {
-    width: 45%;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    width: 48%;
   }
-  
-  .registered-members h1 {
-    margin-top: 0;
-  }
-  
+}

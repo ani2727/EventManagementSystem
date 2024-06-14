@@ -14,8 +14,8 @@ const handleAddClub = async (req, res) => {
 
         const user = await UserModel.findOne({ userName: clubAdmin });
         if (!user) return res.send('InvalidAdmin');
-
-        const newClub = await ClubModel.create({ clubName, description, clubLogo:imageUrl, clubAdmin: user._id });
+        const clubImage = 'https://res.cloudinary.com/dkdslxqqx/image/upload/v1718299296/ei1m1qoxr6h9khiqwqx2.jpg'
+        const newClub = await ClubModel.create({ clubName, description, clubLogo:imageUrl,clubImage,clubAdmin: user._id });
         if (newClub) {
             user.clubs.push({ clubId: newClub._id, isClubAdmin: true, clubName,position:'Co-ordinator'});
             await user.save();
@@ -65,7 +65,6 @@ const handleSignin = async (req, res) => {
 
 const handleSignup = async(req,res) =>{
     const { email,password,studentId,dept,imageUrl} = req.body;
-    console.log(email,password,studentId,dept,imageUrl);
 
     try{
         const user = await UserModel.findOne({userName:email})
@@ -473,11 +472,10 @@ const handleChangeDeptAdmin = async (req, res) => {
   };
   
 const handleChangeClub = async(req,res)=>{
-    const {clubName, description,imageUrl,coverImage,mail,insta,facebook,tagline} = req.body;
+    const {clubName, description,imageUrl,coverImage,mail,insta,facebook,tagline,interviewFor,open} = req.body;
 
     try{
             const club = await ClubModel.findOne({clubName})
-
             if(!club) return res.send('ClubNotExists');
 
             if(description) club.description = description;
@@ -487,7 +485,13 @@ const handleChangeClub = async(req,res)=>{
             if(insta) club.clubInsta = insta;
             if(facebook) club.clubFacebook = facebook;
             if(tagline) club.tagline = tagline;
-            
+            if(open === 'open') {
+                club.interview = true;
+                club.interviewFor = interviewFor;
+            }
+            else if(open === 'close') {
+                club.interview = false;
+            }
             await club.save();
             return res.send('Success');
     }

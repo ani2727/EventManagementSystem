@@ -1,7 +1,6 @@
 import { useState, useRef } from "react";
 import axios from "axios";
 import { Spinner } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import "./AddMember.css"
 
 const AddClub = ()=>
@@ -63,17 +62,12 @@ const AddClub = ()=>
                 alert(err);
         }
     }
-    const [isDropdown, setIsDropdown] = useState(true);
 
     const handleInputChange = (e) => {
         setClubs(e.target.value);
     };
 
-    const toggleInputType = () => {
-        setIsDropdown(!isDropdown);
-        setClubs(''); 
-    };
-
+    
 
     return(
         <div className="manage-clubs">
@@ -82,34 +76,16 @@ const AddClub = ()=>
                     <h1>Add Club</h1>
                 </div>
                 <div>
-                    <label>ClubName</label>
-                    {isDropdown ? (
-                        <select ref={Club} value={clubs} onChange={(e) => setClubs(e.target.value)} required>
-                            <option value="">Select club</option>
-                            <option value="Ecell">Ecell</option>
-                            <option value="TNP">TNP</option>
-                            <option value="MathClub">MathClub</option>
-                            <option value="CodeClub">CodeClub</option>
-                            <option value="HopeHouse">HopeHouse</option>
-                            <option value="DeptClub">DeptClub</option>
-                        </select>
-                    ) : (
-                        <input ref={Club} type="text" value={clubs} onChange={handleInputChange} placeholder="Enter club name" required />
-                    )}
-                    <button onClick={toggleInputType}>
-                        {isDropdown ? 'Use Input Field' : 'Use Dropdown'}
-                    </button>
+                    <input ref={Club} type="text" value={clubs} onChange={handleInputChange} placeholder="Enter club name" required />
                 </div>
                 <div>
-                    <label>Description</label>
                     <textarea ref={Desc} value={desc} onChange={e=>setDescription(e.target.value)} type="text" required placeholder="Enter ClubName"></textarea>
                 </div>
                 <div>
-                    <label>Admin UserName</label>
                     <input type="text" ref={Admin} value={admin} onChange={(e)=>setAdmin(e.target.value)} placeholder="Enter Admin UserName" required/>
                 </div>
                 <div className="file-input-container">
-                    <label>Photo</label>
+                    <label>Club Logo</label>
                     <div>
                         <input ref={fileInputRef} onChange={handleFileChange} id="file-input" type="file"></input>
                         <span onClick={clearFileInput} className="clear-file-input">&#10006;</span>

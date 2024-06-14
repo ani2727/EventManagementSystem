@@ -76,17 +76,15 @@ const Addmember = () => {
             <div className="addmember">
                 <div><h1>Add member</h1></div>
                 <div>
-                    <label>Name</label>
-                    <input ref={Name} placeholder="Enter member Name" value={name} onChange={(e) => setName(e.target.value)} type="text" required="" />
+                    <input ref={Name} placeholder="Member Name" value={name} onChange={(e) => setName(e.target.value)} type="text" required="" />
                 </div>
                 <div>
-                    <label>Position</label>
-                    <input ref={Position} placeholder="Enter member Position" value={memberPosition} onChange={(e) => setmemberPosition(e.target.value)} type="text" required="" />
+                    <input ref={Position} placeholder="Member Position" value={memberPosition} onChange={(e) => setmemberPosition(e.target.value)} type="text" required="" />
                 </div>
                 <button onClick={handleSubmit}>Submit</button>
                 <div className="deletemember">
-                    <input ref={deleteId} value={deleteID} onChange={(e) => setDeleteID(e.target.value)} type="text" placeholder="Ex: B190000" />
-                    <button onClick={handleDeletemember}>Delete member</button>
+                    <div><input ref={deleteId} value={deleteID} onChange={(e) => setDeleteID(e.target.value)} type="text" placeholder="Ex: B190000" /></div>
+                    <div><button onClick={handleDeletemember}>Delete</button></div>
                 </div>
             </div>
         </div>

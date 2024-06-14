@@ -6,10 +6,10 @@ const ClubEvents = ({clubData}) =>
 {
     const [posters,setPosters] = useState([]);
     const navigate = useNavigate();
+    const clubName = clubData.clubName;
 
     useEffect(()=>
     {
-        const clubName = 'Ecell'
         const fetch = async()=>{
             try{
                 const result = await axios.get(`http://localhost:3001/get/club/events?clubName=${clubName}`)
@@ -21,7 +21,7 @@ const ClubEvents = ({clubData}) =>
         }
         fetch();
 
-    },[])
+    },[clubName])
 
     const handlePoster = (poster) => 
     {
