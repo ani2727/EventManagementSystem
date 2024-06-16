@@ -31,6 +31,8 @@ const Profile = () => {
                 const result = await axios.post('http://localhost:3001/change/userprofile',{imageUrl,userName:userData.userName,password:Password.current.value})
                 if(result.data === "Success") 
                 {
+                    userData.imageUrl = imageUrl;
+                    localStorage.setItem('userInfo',JSON.stringify(userData));
                     alert("Changed Successfully");
                 }
                 else alert("Sorry! Try uploading again")

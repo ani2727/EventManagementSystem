@@ -51,14 +51,14 @@ const Footer = ({clubData})=>
         <div className="follow-us">
             <h4>Follow us</h4>
             <ul>
-                <li><a href={`${clubData.clubInsta}`}><FaInstagram className='icon' size={30}/></a></li>
-                <li><a href={`${clubData.clubFacebook}`}><FaLinkedin className='icon' size={30}/></a></li>
+                <li><a href={`${clubData.clubInsta}`} target='__blank'><FaInstagram className='icon' size={30}/></a></li>
+                <li><a href={`${clubData.clubFacebook}`} target='__blank'><FaLinkedin className='icon' size={30}/></a></li>
             </ul>
         </div>
         <div className="ecell-contactus">
             <h4>Contact Us</h4>
             <ul>
-              <li><a href={`mailto:${clubData.clubMail}`}><MdEmail className='icon' size={30}/></a></li>
+              <li><a href={`mailto:${clubData.clubMail}`} ><MdEmail className='icon' size={30}/></a></li>
             </ul>
         </div>
         <div className="share-thoughts">

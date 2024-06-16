@@ -1,43 +1,31 @@
-// import React, {useState,useRef} from "react";
-// import axios from "axios";
-// import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
 
-// const Signup = () => 
-// {
-//     const [Emails,setEmail] = useState('');
-//     const [Passwords,setPassword] = useState('');
-//     const [StudentIds,setStudentId] = useState('');
-//     const [Depts,setDept] = useState('');
+const Signup = () => {
+    const [isPopupOpen, setPopupOpen] = useState(false);
 
-//     const imageUrl = 'https://res.cloudinary.com/dkdslxqqx/image/upload/v1717658764/iwlasfaj6duzq9qw55hy.webp';
+    const openPopup = () => {
+        setPopupOpen(true);
+    }
 
-//     const Email = useRef();
-//     const Password = useRef();
-//     const StudentId = useRef();
-//     const Dept = useRef();
-//     const navigate = useNavigate();
+    const closePopup = () => {
+        setPopupOpen(false);
+    }
 
-    
-//     return (
-//         <div class="login-container">
-//                 <h2>Login</h2>
-//                 <form id="login-form">
-//                     <div className="form-group">
-//                         <input type="text" ref={Email} value={Emails} onChange={e=>setEmail(e.target.value)} placeholder="Username" required />
-//                     </div>
-//                     <div className="form-group">
-//                         <input type="password" ref={Password} value={Passwords} onChange={e=>setPassword(e.target.value)} placeholder="Password" required />
-//                     </div>
-//                     <div className="form-group">
-//                         <input type="text" ref={StudentId} value={StudentIds} onChange={e=>setStudentId(e.target.value)} placeholder="Student Id" required />
-//                     </div>
-//                     <div className="form-group">
-//                         <input type="text" ref={Dept} value={Depts} onChange={e=>setDept(e.target.value)} placeholder="Department" required />
-//                     </div>
-//                     <button  type="submit">SignUp</button>
-//                 </form>
-//             </div>
-//     )
-// }
+    return (
+        <div className='popup-container'>
+            <button type='button' className="popup-btn" onClick={openPopup}>Submit</button>
+            {isPopupOpen && (
+                <div className="popup open-popup">
+                    <img src='404-tick.png' alt='Success' />
+                    <h2>Thank You!</h2>
+                    <p>Your details have been successfully submitted. Thanks</p>
+                    <button type='button' className="popup-btn" onClick={closePopup}>OK</button>
+                </div>
+            )}
+        </div>
+    )
+}
 
-// export default Signup;
+export default Signup;
+
+// mongodb+srv://katrothanil:Anil123@@eventmanagementcluster.g8lo3a0.mongodb.net/

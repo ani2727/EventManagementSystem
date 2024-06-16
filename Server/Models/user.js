@@ -54,7 +54,6 @@ const DeptAdminSchema = mongoose.Schema(
     {
         dept:{
             type:String,
-            
             required:true,
         },
         admin:{
@@ -128,6 +127,10 @@ const EventSchema = new mongoose.Schema(
         },
         description: {
             type:String,
+        },
+        eventMode:{
+            type:String,
+            required:true,
         }
     })
 
@@ -221,6 +224,10 @@ const DeptEventsSchema = new mongoose.Schema(
         },
         description: {
             type:String,
+        },
+        eventMode:{
+            type:String,
+            required:true,
         }
     })
 

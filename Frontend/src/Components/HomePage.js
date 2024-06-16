@@ -2,9 +2,7 @@ import Carousal from "./Carousal.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./HomePage.css"
 import { FiSearch } from "react-icons/fi";
-import { FaInstagram } from "react-icons/fa6";
-import { RiTwitterXFill } from "react-icons/ri";
-import { FaWhatsapp } from "react-icons/fa";
+import { FaInstagram, FaLinkedin } from "react-icons/fa6";
 import { Link,useNavigate } from "react-router-dom";
 import { useEffect ,useState} from "react";
 import axios from "axios";
@@ -16,8 +14,9 @@ import getUserInfo from "../utils/userInfo.js";
 const HomePage = ()=>
 {
 
-    const [posters,setPosters] = useState([]);
+    const [onlineposters,setOnlinePosters] = useState([]);
     const [searchtext,setSearchtext] = useState('');
+    const [offlineposters,setOfflinePosters] = useState([])
     const [clubs,setClubs] = useState([]);
 
     const searchText = useRef(null);
@@ -31,11 +30,14 @@ const HomePage = ()=>
         const search = searchText.current.value.toLowerCase();
 
         if(search.trim() === '') {
-            setPosters(posters);
+            setOnlinePosters(onlineposters);
+            setOfflinePosters(offlineposters)
         }
         else {
-            const result = posters.filter(poster => poster.eventName.toLowerCase().includes(search));
-            setPosters(result);
+            let result = onlineposters.filter(poster => poster.eventName.toLowerCase().includes(search));
+            setOnlinePosters(result);
+            result = offlineposters.filter(poster => poster.eventName.toLowerCase().includes(search));
+            setOfflinePosters(result);
         }
 
     }
@@ -44,13 +46,23 @@ const HomePage = ()=>
         const fetch = async () =>
         {
             try{
-                await axios.get(`http://localhost:3001/get/upcoming/events`)
+                await axios.get(`http://localhost:3001/get/onlineupcoming/events`)
                 .then(res => {
-                    setPosters(res.data);
+                    setOnlinePosters(res.data);
                 })
             }
             catch(err) {
-                console.log(err);
+                alert("Error Retrieving Online Events")
+            }
+
+            try{
+                await axios.get(`http://localhost:3001/get/offlineupcoming/events`)
+                .then(res => {
+                    setOfflinePosters(res.data);
+                })
+            }
+            catch(err) {
+                alert("Error Retrieving Offline Events");
             }
 
             try{
@@ -58,7 +70,7 @@ const HomePage = ()=>
                 setClubs(result.data.result);
             }
             catch(err) {
-                alert("Error accessing clubs");
+                alert("Error Retrieving clubs");
             }
 
         }
@@ -135,9 +147,9 @@ const HomePage = ()=>
             <div className="upcomingevents">
                 <div><h1>Upcoming Events</h1></div>
                 <div className="upcoming-events-posters">
-                    {posters.length > 0 ?
+                    {offlineposters.length > 0 ?
                     (
-                        posters.map((poster,index) => (
+                        offlineposters.map((poster,index) => (
                             <div key={index} className="poster-card"><img src={poster.imageUrl} alt=""/></div>
                         ))
                         
@@ -153,9 +165,9 @@ const HomePage = ()=>
             <div className="online-events">
                 <div><h1 style={{textAlign:'center'}}>Online Events</h1></div>
                     <div className="online-events-posters">
-                        {posters.length > 0 ?
+                        {onlineposters.length > 0 ?
                         (
-                            posters.map((poster,index) => (
+                            onlineposters.map((poster,index) => (
                                 <div key={index} className="poster-card"><img src={poster.imageUrl} alt=""/></div>
                             ))
                             
@@ -221,9 +233,8 @@ const HomePage = ()=>
                 <div className="followus">
                     <ul>
                         <h2 className="footer-head">Follow Us</h2>
-                        <li><FaInstagram/></li>
-                        <li><RiTwitterXFill/></li>
-                        <li><FaWhatsapp /></li>
+                        <li><a href="https://www.instagram.com/rgukt_panda" target="__blank"><FaInstagram className="icon" /></a></li>
+                        <li><a href="https://in.linkedin.com/company/training-placement-office-rgukt-basar" target="__blank"><FaLinkedin className="icon" /></a></li>
                     </ul>
                 </div>
             </div>

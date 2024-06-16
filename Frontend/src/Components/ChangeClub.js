@@ -93,7 +93,6 @@ const ChangeClub = ()=>
         };
 
     const handleAddClub = async () => {
-        alert(open)
         try {
             const res = await axios.post('http://localhost:3001/change/change/club', { clubName:clubData.clubName, description, imageUrl,coverImage,insta,facebook,mail,tagline,interviewFor:Interview.current.value,open});
     
@@ -156,7 +155,7 @@ const ChangeClub = ()=>
                 <div>
                     <input ref={Facebook} value={facebook} onChange={(e)=>setFacebook(e.target.value)} type="text" placeholder="LinkedIn"></input>
                 </div>
-                <button onClick={handleAddClub}>Add </button>
+                <button onClick={handleAddClub}>Update </button>
             </div>
             <div className="addmember">
                 <h1>Interview Openings</h1>

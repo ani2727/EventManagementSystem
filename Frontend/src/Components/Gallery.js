@@ -116,7 +116,7 @@ const Gallery = ({clubData})=>
                     ) : 
                     (
                             <Carousel.Item className="carousel-item">
-                                <img className="gallery-image"  src="rgukt-logo.jpeg" alt="No images available" style={{ width: '58%',marginLeft:'250px',marginTop:'30px'}}/>
+                                <img className="gallery-image"  src="https://cdn.telanganatoday.com/wp-content/uploads/2022/06/RGUKT-3.jpg" alt="No images available" style={{ width: '80%',height:'550px',marginLeft:'0px',marginTop:'0.5em'}}/>
                             </Carousel.Item>
                     )}
             </Carousel>

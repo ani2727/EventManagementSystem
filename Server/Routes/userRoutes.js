@@ -3,11 +3,11 @@ const router = express.Router();
 const {handleSignin,handleSignup,handleGetAdmins, handleAddAdmins,
     handleDeleteMember,handleAddMember, handleGetClubMembers,
     handleGetGallery,handleAddGallery,handleAddEvent, handleDeptAddEvent,
-     handleGetDeptEvents,handleGetClubEvents, handleGetUpcomingEvents,
+     handleGetDeptEvents,handleGetClubEvents, handleGetOfflineUpcomingEvents,
      handleGetClubPosters,handleEventRegister,handleGetRegisteredUsers,
      handleDeleteEvent,handleGetClubAdmins,handleGetDeptAdmins,handleDeleteAdmin,
     handleAddClub,handleGetClubs,handleChangeDeptAdmin, handleChangeClubAdmin,
-    handleChangeClub,handleChangeUserProfile} = require("../Controllers/userController")
+    handleChangeClub,handleChangeUserProfile, handleGetOnlineUpcomingEvents} = require("../Controllers/userController")
 
 
 router.route("/signin").post(handleSignin)
@@ -24,7 +24,8 @@ router.route("/event").post(handleAddEvent);
 router.route("/dept/event").post(handleDeptAddEvent)
 router.route("/dept/club/events").get(handleGetDeptEvents)
 router.route("/club/events").get(handleGetClubEvents)
-router.route("/upcoming/events").get(handleGetUpcomingEvents)
+router.route("/offlineupcoming/events").get(handleGetOfflineUpcomingEvents)
+router.route("/onlineupcoming/events").get(handleGetOnlineUpcomingEvents)
 router.route("/club/posters").get(handleGetClubPosters)
 router.route("/events").post(handleEventRegister)
 router.route("/users").get(handleGetRegisteredUsers)

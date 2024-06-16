@@ -20,9 +20,13 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser())
 
-mongoose.connect("mongodb://127.0.0.1:27017/EventManagement")
-.then(res => console.log("MongoDB Connected"))
-.catch(err => console.log("MongoDB Connection Error"))
+const dbUrl = "mongodb+srv://anil:anil123@cluster0.dvkvxb1.mongodb.net/EventManagement"
+
+
+mongoose.connect(dbUrl)
+.then(()=>console.log("MongoDB connected"))
+.catch((e)=>console.log("MongoDB Connection Error",e))
+
 
 
 app.use("/auth",userRoutes)
@@ -70,3 +74,6 @@ const PORT = 3001;
 app.listen(PORT,()=>{
     console.log(`Server is Running at ${PORT}`);
 })
+
+
+// z7rzqrdZavxWYhAv

@@ -176,7 +176,6 @@ const DeptClub = () =>
                     </ul>
                 </div>
             </nav>
-            {/* <Navbar clubData={clubData} /> */}
             <Carousel className="carousel dept-carousal" style={{width:'100%',borderRadius:'0px',height:'600px'}}>
                 {galleryImages.length > 0 ? 
                     (
@@ -188,7 +187,7 @@ const DeptClub = () =>
                     ) : 
                     (
                             <Carousel.Item className="carousel-item">
-                                <img className="gallery-image"  src="./defaultImage.jpg" alt="No images available" style={{ width: '58%',marginLeft:'250px',marginTop:'30px'}}/>
+                                <img className="gallery-image"  src="https://cdn.telanganatoday.com/wp-content/uploads/2022/06/RGUKT-3.jpg" alt="No images available" style={{ width: '800px',height:'550px',marginLeft:'0',marginTop:'10px'}}/>
                             </Carousel.Item>
                     )}
             </Carousel>

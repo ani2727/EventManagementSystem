@@ -74,7 +74,7 @@ const handleSignup = async(req,res) =>{
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        const User = await UserModel.create({userName:email,password:hashedPassword,studentId,dept,imageUrl,isAdmin})
+        const User = await UserModel.create({userName:email,password:hashedPassword,studentId,dept,imageUrl,isSuperAdmin:isAdmin})
 
         generateToken(User._id,res)
 
@@ -195,29 +195,26 @@ const handleAddGallery = async(req,res) => {
 
 const handleAddEvent = async(req,res) => 
 {
-    const {eventName,clubName,tagline,venue,date,time,imageUrl,description,facultyCoordinator,facultyCoordinatorEmail,studentCoordinator,studentCoordinatorEmail} = req.body;
+    const {eventName,clubName,tagline,venue,date,time,imageUrl,description,facultyCoordinator,facultyCoordinatorEmail,studentCoordinator,studentCoordinatorEmail,eventMode} = req.body;
     try{
-        await EventModel.create({eventName,clubName,tagline,venue,date,time,imageUrl,facultyCoordinator,facultyCoordinatorEmail,studentCoordinator,studentCoordinatorEmail,description})
-        res.status(200).json({message:"Success"})
+        await EventModel.create({eventName,clubName,tagline,venue,date,time,imageUrl,facultyCoordinator,facultyCoordinatorEmail,studentCoordinator,studentCoordinatorEmail,description,eventMode:eventMode.toLowerCase()})
+        res.status(200).send("Success")
     }
     catch(err) {
-        res.status(500).json({message:"Failure"});
+        res.status(500).send("Failure")
     }
 }
 
 const handleDeptAddEvent = async (req, res) => {
     const {
-        eventName,clubName,tagline,venue,date,time,imageUrl,description,facultyCoordinator,
-        facultyCoordinatorEmail,studentCoordinator,studentCoordinatorEmail,branch
-    } = req.body;
-
-    if (!eventName || !clubName || !imageUrl || !venue || !date || !time || !branch || !facultyCoordinator || !facultyCoordinatorEmail || !studentCoordinator || !studentCoordinatorEmail) {
-        return res.status(400).send("Missing required fields" );
-    }
+        eventName, clubName, tagline, venue, date, time, imageUrl, description, facultyCoordinator,
+        facultyCoordinatorEmail, studentCoordinator, studentCoordinatorEmail, branch, eventMode
+        } = req.body;
 
     try {
-        const result = await DeptEventsModel.create({eventName,clubName,tagline,venue,date,time,
-            imageUrl,facultyCoordinator,facultyCoordinatorEmail,studentCoordinator,studentCoordinatorEmail,description,branch
+        const result = await DeptEventsModel.create({
+            eventName, clubName, tagline, venue, date, time, imageUrl, description, facultyCoordinator,
+            facultyCoordinatorEmail, studentCoordinator, studentCoordinatorEmail, branch, eventMode: eventMode.toLowerCase()
         });
 
         if (result) {
@@ -226,9 +223,14 @@ const handleDeptAddEvent = async (req, res) => {
             return res.status(500).send('Failure');
         }
     } catch (err) {
-        return res.status(500).send({ message: "Internal Server Error", error: err.message });
+        return res.status(500).json({ 
+            message: "Internal Server Error", 
+            error: err.message 
+        });
     }
 };
+
+
 
 
 const handleGetDeptEvents = async(req,res) => 
@@ -251,39 +253,55 @@ const handleGetDeptEvents = async(req,res) =>
     } 
 }
 
-const handleGetClubEvents = async(req,res) => 
-{
+const handleGetClubEvents = async (req, res) => {
     try {
-
-        const {clubName} = req.query;
-        const currentDate = new Date();
-        const formattedCurrentDate = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`;
-        const result = await EventModel.find({ date: { $gte: formattedCurrentDate },clubName}).sort({ Date: 1 });
+        const { clubName } = req.query;
+        
+        const result = await EventModel.find({ clubName }).sort({ createdAt: 1 });
 
         return res.send(result);
     } 
-    catch (err) 
-    {
-        res.status(500).send("Error"); 
-    } 
+    catch (err) {
+        res.status(500).send("Error");
+    }
 }
 
-const handleGetUpcomingEvents = async(req,res) => 
-{
+
+const handleGetOnlineUpcomingEvents = async (req, res) => {
     try {
         const currentDate = new Date();
-
         const formattedCurrentDate = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`;
 
-        const result = await EventModel.find({ date: { $gte: formattedCurrentDate }}).sort({ Date: 1 });
+        const eventResults = await EventModel.find({ eventMode: 'online||Online', date: { $gte: formattedCurrentDate } }).sort({ createdAt: 1 });
+        const deptEventResults = await DeptEventsModel.find({ eventMode: 'online||Online', date: { $gte: formattedCurrentDate } }).sort({ createdAt: 1 });
 
-        return res.send(result);
+        const combinedResults = eventResults.concat(deptEventResults);
+
+        return res.send(combinedResults);
     } 
-    catch (err) 
-    {
-        res.status(500).send("Error"); 
-    } 
+    catch (err) {
+        res.status(500).send("Error");
+    }
 }
+
+const handleGetOfflineUpcomingEvents = async (req, res) => {
+    try {
+        const currentDate = new Date();
+        const formattedCurrentDate = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`;
+
+        const eventResults = await EventModel.find({ eventMode: 'offline||Offline', date: { $gte: formattedCurrentDate } }).sort({ createdAt: 1 });
+        const deptEventResults = await DeptEventsModel.find({ eventMode: 'offline||Offline', date: { $gte: formattedCurrentDate } }).sort({ createdAt: 1 });
+
+        const combinedResults = eventResults.concat(deptEventResults);
+
+        return res.send(combinedResults);
+    } 
+    catch (err) {
+        res.status(500).send("Error");
+    }
+}
+
+
 
 const handleGetClubPosters = async(req,res) => {
     try{
@@ -526,7 +544,7 @@ const handleChangeUserProfile = async(req,res)=>
 module.exports = {handleSignin,handleSignup,handleGetAdmins,
     handleAddAdmins,handleAddMember,handleDeleteMember,handleGetClubMembers,
     handleGetGallery,handleAddGallery,handleAddEvent,handleDeptAddEvent,
-    handleGetDeptEvents,handleGetClubEvents,handleGetUpcomingEvents,handleGetClubPosters,
+    handleGetDeptEvents,handleGetClubEvents,handleGetOnlineUpcomingEvents,handleGetOfflineUpcomingEvents,handleGetClubPosters,
     handleEventRegister,handleGetRegisteredUsers,handleDeleteEvent,handleGetClubAdmins,
     handleGetDeptAdmins,handleDeleteAdmin,handleAddClub, handleGetClubs, handleChangeDeptAdmin,
     handleChangeClubAdmin,handleChangeClub,handleChangeUserProfile}

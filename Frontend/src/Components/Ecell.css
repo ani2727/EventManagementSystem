@@ -96,6 +96,7 @@
 .ecell-member img {
     width: 80%;
     margin-top: 1em;
+    border-radius: 50%;
 }
 
 .team-ecell button{

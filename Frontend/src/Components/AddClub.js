@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import axios from "axios";
 import { Spinner } from "react-bootstrap";
 import "./AddMember.css"
+import { useNavigate } from "react-router-dom";
 
 const AddClub = ()=>
 {
@@ -16,6 +17,7 @@ const AddClub = ()=>
     const Club = useRef();
     const Desc = useRef();
     const Admin = useRef();
+    const navigate = useNavigate();
 
     const handleFileChange = (e) => {
         setSelectedFile(e.target.files[0]);
@@ -53,7 +55,10 @@ const AddClub = ()=>
                 await axios.post('http://localhost:3001/add/club',{clubName,description,imageUrl,clubAdmin})
                 .then(res=>{
                     if(res.data === "ClubExists") alert("A Club Already Exists with this Name")
-                    else if(res.data === "Success") alert("Club Added Successfully")
+                    else if(res.data === "Success") {
+                        alert("Club Added Successfully")
+                        navigate("/")
+                    }
                     else alert("Try again")
                 })
                 .catch(err=>alert("Error while adding a club"))
