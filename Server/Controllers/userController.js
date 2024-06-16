@@ -335,7 +335,7 @@ const handleEventRegister = async(req,res) => {
 const handleGetRegisteredUsers = async(req,res)=>{
     try{
         const {clubName,eventName} = req.query;
-        const members = await RegistrationModel.find({clubName,eventName});
+        const members = await RegistrationModel.find({eventName});
         return res.send({message:"Success",members});
     }
     catch(err) {

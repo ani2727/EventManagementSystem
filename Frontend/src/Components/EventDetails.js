@@ -8,8 +8,7 @@ const defaultImageUrl = 'https://res.cloudinary.com/dkdslxqqx/image/upload/v1717
 
 const EventDetails = () => {
   const location = useLocation();
-  const [posterData, setPosterData] = useState(location.state?.posterData);
-  const [clubData, setClubData] = useState(location.state?.clubData);
+  const posterData = location.state?.posterData;
   const [members, setMembers] = useState([]);
   const navigate = useNavigate();
 
@@ -27,6 +26,7 @@ const EventDetails = () => {
 
   const closePopup = () => {
     setPopupOpen(false);
+    navigate(-1)
   }
 
   const userData = getUserInfo();
@@ -45,10 +45,8 @@ const EventDetails = () => {
         if (res.data.message === "Success") 
         {
           openPopup('Thank You!', 'Registration Successful!','https://res.cloudinary.com/dkdslxqqx/image/upload/v1718458077/404-tick_e51zjo.png');
-          
         } 
         else {
-          console.log(res.data.message);
           openPopup('', 'You have already registered for this event','https://res.cloudinary.com/dkdslxqqx/image/upload/v1718458077/404-tick_e51zjo.png');
         }
       } catch (err) {
