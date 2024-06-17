@@ -26,7 +26,7 @@ app.use(cors(
 app.use(express.json());
 app.use(cookieParser())
 
-const dbUrl = "mongodb+srv://anil:anil123@@cluster0.dvkvxb1.mongodb.net/EventManagement?retryWrites=true&w=majority&appName=Cluster0"
+const dbUrl = "mongodb+srv://anil:anil123@cluster0.dvkvxb1.mongodb.net/EventManagement?retryWrites=true&w=majority&appName=Cluster0"
 
 
 mongoose.connect(dbUrl)
