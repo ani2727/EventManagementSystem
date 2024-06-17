@@ -33,8 +33,8 @@ mongoose.connect(dbUrl)
 .then(()=>console.log("MongoDB connected"))
 .catch((e)=>console.log("MongoDB Connection Error",e))
 
-app.get("/",(req,res)=>{
-  res.json("Hello");
+app.get("/",cors(),(req,res)=>{
+  res.json({message:"Server"});
 })
 
 
