@@ -392,7 +392,6 @@ const handleGetDeptAdmins = async (req, res) => {
         const admins = await Promise.all(adminPromises);
         return res.send(admins);
     } catch (err) {
-        console.log(err);
         return res.status(500).send('Error');
     }
 };
