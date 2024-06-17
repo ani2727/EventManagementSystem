@@ -16,16 +16,26 @@ cloudinary.config({
 
 
 const app = express();
-app.use(cors());
+app.use(cors(
+    {
+      origin:[""],
+      methods:["POST","GET"],
+      credentials:true,
+    }  
+));
 app.use(express.json());
 app.use(cookieParser())
 
-const dbUrl = "mongodb+srv://anil:anil123@cluster0.dvkvxb1.mongodb.net/EventManagement"
+const dbUrl = "mongodb+srv://anil:anil123@@cluster0.dvkvxb1.mongodb.net/EventManagementretryWrites=true&w=majority&appName=Cluster0"
 
 
 mongoose.connect(dbUrl)
 .then(()=>console.log("MongoDB connected"))
 .catch((e)=>console.log("MongoDB Connection Error",e))
+
+app.get("/",(req,res)=>{
+  res.json("Hello");
+})
 
 
 
