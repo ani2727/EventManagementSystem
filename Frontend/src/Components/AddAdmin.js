@@ -19,7 +19,7 @@ const AddAdmin = () =>
 
         if (!validDepts.includes(dept)) {
             try {
-                const res = await axios.post('http://localhost:3001/change/changeclub/admin', { userName, dept });
+                const res = await axios.post('https://eventmanagementsystem-uvm3.onrender.com/change/changeclub/admin', { userName, dept });
                 if (res.data === 'Success') {
                 alert('Admin Changed Successfully');
                 } else {
@@ -32,7 +32,7 @@ const AddAdmin = () =>
         else {
             try
             {
-                const res = await axios.post('http://localhost:3001/change/changedept/admin',{userName,dept})
+                const res = await axios.post('https://eventmanagementsystem-uvm3.onrender.com/change/changedept/admin',{userName,dept})
                 if(res.data === "Success") alert("Admin Changed Succesfully");
                 else alert("Admin Not Changed");
             }

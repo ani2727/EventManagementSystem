@@ -46,7 +46,7 @@ const HomePage = ()=>
         const fetch = async () =>
         {
             try{
-                await axios.get(`http://localhost:3001/get/onlineupcoming/events`)
+                await axios.get(`https://eventmanagementsystem-uvm3.onrender.com/get/onlineupcoming/events`)
                 .then(res => {
                     setOnlinePosters(res.data);
                 })
@@ -56,7 +56,7 @@ const HomePage = ()=>
             }
 
             try{
-                await axios.get(`http://localhost:3001/get/offlineupcoming/events`)
+                await axios.get(`https://eventmanagementsystem-uvm3.onrender.com/get/offlineupcoming/events`)
                 .then(res => {
                     setOfflinePosters(res.data);
                 })
@@ -66,7 +66,7 @@ const HomePage = ()=>
             }
 
             try{
-                const result = await axios.get('http://localhost:3001/get/clubs')
+                const result = await axios.get('https://eventmanagementsystem-uvm3.onrender.com/get/clubs')
                 setClubs(result.data.result);
             }
             catch(err) {

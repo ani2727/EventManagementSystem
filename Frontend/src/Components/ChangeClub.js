@@ -46,7 +46,7 @@ const ChangeClub = ()=>
             setUploading(true);
           const formData = new FormData();
           formData.append('image', selectedFile);
-          await axios.post(`http://localhost:3001/api/image`, formData)
+          await axios.post(`https://eventmanagementsystem-uvm3.onrender.com/api/image`, formData)
           .then(res => {
                 setImageUrl(res.data);
                 
@@ -94,7 +94,7 @@ const ChangeClub = ()=>
 
     const handleAddClub = async () => {
         try {
-            const res = await axios.post('http://localhost:3001/change/change/club', { clubName:clubData.clubName, description, imageUrl,coverImage,insta,facebook,mail,tagline,interviewFor:Interview.current.value,open});
+            const res = await axios.post('https://eventmanagementsystem-uvm3.onrender.com/change/change/club', { clubName:clubData.clubName, description, imageUrl,coverImage,insta,facebook,mail,tagline,interviewFor:Interview.current.value,open});
     
             if (res.data === "ClubNotExists") {
                 alert("No Club present with the entered ClubName");

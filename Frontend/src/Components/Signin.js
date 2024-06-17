@@ -42,7 +42,7 @@ const Signin = () => {
             alert("Please fill all the details properly");
         } else {
             try {
-                const result = await axios.post("http://localhost:3001/auth/signup", { email, password, studentId, dept, imageUrl: defaultImageUrl });
+                const result = await axios.post("https://eventmanagementsystem-uvm3.onrender.com/auth/signup", { email, password, studentId, dept, imageUrl: defaultImageUrl });
                 if (result.data === "UserExists") {
                     openPopup("OOPS!","UserName Exists. Try again",'https://png.pngtree.com/png-vector/20221215/ourmid/pngtree-wrong-icon-png-image_6525689.png')
                 } else {
@@ -62,7 +62,7 @@ const Signin = () => {
         const password = Passwords.current.value;
 
         try {
-            const res = await axios.post("https://event-management-system-delta.vercel.app/auth/signin", { email, password });
+            const res = await axios.post("https://eventmanagementsystem-uvm3.onrender.com/auth/signin", { email, password });
             localStorage.setItem('userInfo', JSON.stringify(res.data));
             openPopup("Thank You",'Welcome back! You have successfully signed in.', 'https://res.cloudinary.com/dkdslxqqx/image/upload/v1718458077/404-tick_e51zjo.png');
         } catch (err) {

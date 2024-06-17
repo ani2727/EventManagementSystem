@@ -27,7 +27,7 @@ const AddClub = ()=>
             setUploading(true);
           const formData = new FormData();
           formData.append('image', selectedFile);
-          await axios.post(`http://localhost:3001/api/image`, formData)
+          await axios.post(`https://eventmanagementsystem-uvm3.onrender.com/api/image`, formData)
           .then(res => {
                 setImageUrl(res.data);
                 
@@ -52,7 +52,7 @@ const AddClub = ()=>
         const clubAdmin = Admin.current.value;
 
         try{
-                await axios.post('http://localhost:3001/add/club',{clubName,description,imageUrl,clubAdmin})
+                await axios.post('https://eventmanagementsystem-uvm3.onrender.com/add/club',{clubName,description,imageUrl,clubAdmin})
                 .then(res=>{
                     if(res.data === "ClubExists") alert("A Club Already Exists with this Name")
                     else if(res.data === "Success") {

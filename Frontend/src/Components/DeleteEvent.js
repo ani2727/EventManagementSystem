@@ -31,7 +31,7 @@ const DeleteEvent = () => {
                 branch = userData && userData.dept;
             }
 
-            const res = await axios.post("http://localhost:3001/delete/deleteevents", { eventName, clubName, date, branch });
+            const res = await axios.post("https://eventmanagementsystem-uvm3.onrender.com/delete/deleteevents", { eventName, clubName, date, branch });
             if (res.data === "Success") {
                 alert("Delete Successfully");
                 if (clubData && clubData.clubName !== 'DeptClub') {

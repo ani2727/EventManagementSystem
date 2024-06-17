@@ -16,9 +16,16 @@ cloudinary.config({
 
 
 const app = express();
-app.use(cors());
 app.use(express.json());
 app.use(cookieParser())
+
+const corsOptions = {
+  origin:"https://eventoes-rguktb.netlify.app",
+  optionsSuccessStatus:200
+};
+
+app.use(cors(corsOptions));
+
 
 const dbUrl = "mongodb+srv://anil:anil123@cluster0.dvkvxb1.mongodb.net/EventManagement?retryWrites=true&w=majority&appName=Cluster0"
 

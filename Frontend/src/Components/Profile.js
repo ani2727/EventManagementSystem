@@ -28,7 +28,7 @@ const Profile = () => {
         else{
             try
             {
-                const result = await axios.post('http://localhost:3001/change/userprofile',{imageUrl,userName:userData.userName,password:Password.current.value})
+                const result = await axios.post('https://eventmanagementsystem-uvm3.onrender.com/change/userprofile',{imageUrl,userName:userData.userName,password:Password.current.value})
                 if(result.data === "Success") 
                 {
                     userData.imageUrl = imageUrl;

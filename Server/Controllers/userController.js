@@ -40,9 +40,10 @@ const handleGetClubs = async(req,res) =>{
 }
 
 const handleSignin = async (req, res) => {
-    const { email, password } = req.body;
+    
 
     try {
+        const { email, password } = req.body;
         const user = await UserModel.findOne({ userName: email });
 
         if (user) {
@@ -64,9 +65,10 @@ const handleSignin = async (req, res) => {
 
 
 const handleSignup = async(req,res) =>{
-    const { email,password,studentId,dept,imageUrl} = req.body;
 
     try{
+        const { email,password,studentId,dept,imageUrl} = req.body;
+
         const user = await UserModel.findOne({userName:email})
         if(user) return res.send('UserExists')
         const isAdmin = false;
@@ -195,8 +197,9 @@ const handleAddGallery = async(req,res) => {
 
 const handleAddEvent = async(req,res) => 
 {
-    const {eventName,clubName,tagline,venue,date,time,imageUrl,description,facultyCoordinator,facultyCoordinatorEmail,studentCoordinator,studentCoordinatorEmail,eventMode} = req.body;
     try{
+        const {eventName,clubName,tagline,venue,date,time,imageUrl,description,facultyCoordinator,facultyCoordinatorEmail,studentCoordinator,studentCoordinatorEmail,eventMode} = req.body;
+
         await EventModel.create({eventName,clubName,tagline,venue,date,time,imageUrl,facultyCoordinator,facultyCoordinatorEmail,studentCoordinator,studentCoordinatorEmail,description,eventMode:eventMode.toLowerCase()})
         res.status(200).send("Success")
     }
@@ -398,8 +401,8 @@ const handleGetDeptAdmins = async (req, res) => {
 
 const handleDeleteAdmin = async(req,res) => {
     
-    const {adminOf,id} = req.body;
     try{
+            const {adminOf,id} = req.body;
             const user = await AdminModel.findOne({adminOf:{ $in: adminOf },id})
             if(!user) return res.send("AdminNotExists")
 
@@ -489,9 +492,10 @@ const handleChangeDeptAdmin = async (req, res) => {
   };
   
 const handleChangeClub = async(req,res)=>{
-    const {clubName, description,imageUrl,coverImage,mail,insta,facebook,tagline,interviewFor,open} = req.body;
 
     try{
+        const {clubName, description,imageUrl,coverImage,mail,insta,facebook,tagline,interviewFor,open} = req.body;
+
             const club = await ClubModel.findOne({clubName})
             if(!club) return res.send('ClubNotExists');
 
@@ -520,8 +524,9 @@ const handleChangeClub = async(req,res)=>{
 const handleChangeUserProfile = async(req,res)=>
 {
     
-    const {imageUrl,userName,password} = req.body;
     try{
+        const {imageUrl,userName,password} = req.body;
+
         const user = await UserModel.findOne({userName});
 
         if(imageUrl) user.imageUrl = imageUrl;

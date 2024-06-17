@@ -46,11 +46,11 @@ const Gallery = ({clubData})=>
             setUploading(true);
             const formData = new FormData();
             formData.append('image',selectedFile);
-            await axios.post(`http://localhost:3001/api/image`,formData)
+            await axios.post(`https://eventmanagementsystem-uvm3.onrender.com/api/image`,formData)
             .then(async(res) =>
             {
                 const imageUrl = res.data;
-                const result = await axios.post(`http://localhost:3001/add/galleryimage`,{clubName,imageUrl})
+                const result = await axios.post(`https://eventmanagementsystem-uvm3.onrender.com/add/galleryimage`,{clubName,imageUrl})
                 setUploading(false);
                 if(result.data === "Success") {
                     alert("Image added Successfully");
@@ -74,7 +74,7 @@ const Gallery = ({clubData})=>
         const fetch = async()=>
         {
             try{
-                await axios.get(`http://localhost:3001/get/gallery?clubName=${clubName}`)
+                await axios.get(`https://eventmanagementsystem-uvm3.onrender.com/get/gallery?clubName=${clubName}`)
                 .then(res=>{
                     setGalleryImages(res.data.gallery);
                 })

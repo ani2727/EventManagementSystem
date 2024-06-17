@@ -22,7 +22,7 @@ const Addmember = () => {
 
         if (userName.length > 0 && position.length > 0 && clubData && clubData.clubName !== 'DeptClub') {
             try {
-                const res = await axios.post("http://localhost:3001/add/member", { userName, clubName: clubData.clubName, position });
+                const res = await axios.post("https://eventmanagementsystem-uvm3.onrender.com/add/member", { userName, clubName: clubData.clubName, position });
                 if (res.data === "UserExists") {
                     alert("User already exists");
                 } else if (res.data === "Success") {
@@ -46,7 +46,7 @@ const Addmember = () => {
         Id = Id.trim();
         if (Id && clubData) {
             try {
-                const res = await axios.post('http://localhost:3001/delete/members', { clubName: clubData.clubName, Id });
+                const res = await axios.post('https://eventmanagementsystem-uvm3.onrender.com/delete/members', { clubName: clubData.clubName, Id });
                 if (res.data === "Success") {
                     alert("Member deleted successfully");
                     navigate('/club', { state: { clubData: clubData } });

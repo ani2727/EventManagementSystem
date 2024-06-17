@@ -10,14 +10,14 @@ const Admins = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const clubadmins = await axios.get("http://localhost:3001/get/club/admins");
+                const clubadmins = await axios.get("https://eventmanagementsystem-uvm3.onrender.com/get/club/admins");
                 setClubAdmins(clubadmins.data);
             } catch (err) {
                 alert(err);
             }
 
             try {
-                const departmentadmins = await axios.get("http://localhost:3001/get/dept/admins");
+                const departmentadmins = await axios.get("https://eventmanagementsystem-uvm3.onrender.com/get/dept/admins");
                 setDepartmentadmins(departmentadmins.data);
             } catch (err) {
                 alert(err);

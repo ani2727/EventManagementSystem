@@ -12,7 +12,7 @@ const ClubEvents = ({clubData}) =>
     {
         const fetch = async()=>{
             try{
-                const result = await axios.get(`http://localhost:3001/get/club/events?clubName=${clubName}`)
+                const result = await axios.get(`https://eventmanagementsystem-uvm3.onrender.com/get/club/events?clubName=${clubName}`)
                 setPosters(result.data);
             }
             catch(err) {

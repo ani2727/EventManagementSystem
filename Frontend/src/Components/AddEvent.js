@@ -288,7 +288,7 @@ const AddEvent = () => {
       setUploading(true);
       const formData = new FormData();
       formData.append('image', selectedFile);
-      const response = await axios.post('http://localhost:3001/api/image', formData);
+      const response = await axios.post('https://eventmanagementsystem-uvm3.onrender.com/api/image', formData);
       setImageUrl(response.data);
     } catch (err) {
       console.error('Error uploading image:', err);
@@ -331,12 +331,12 @@ const AddEvent = () => {
 
     try {
       if (clubName !== 'DeptClub') {
-        await axios.post('http://localhost:3001/add/event', eventDetails);
+        await axios.post('https://eventmanagementsystem-uvm3.onrender.com/add/event', eventDetails);
         alert("Event Added Successfully");
         navigate('/club', { state: { clubData } });
       } else {
         if (userData.isSuperAdmin || (branch === 'PUC' && (userData.dept === 'PUC1' || userData.dept === 'PUC2')) || branch === userData.dept) {
-          const response = await axios.post('http://localhost:3001/add/dept/event', eventDetails);
+          const response = await axios.post('https://eventmanagementsystem-uvm3.onrender.com/add/dept/event', eventDetails);
           if (response.data === "Success") {
             alert("Event Added Successfully");
             navigate('/deptclub', { state: { clubData } });

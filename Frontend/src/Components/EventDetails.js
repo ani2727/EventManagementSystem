@@ -37,7 +37,7 @@ const EventDetails = () => {
     const eventName = posterData?.eventName;
     if (email.length > 0 && email.endsWith("@rgukt.ac.in")) {
       try {
-        const res = await axios.post("http://localhost:3001/register/events", {
+        const res = await axios.post("https://eventmanagementsystem-uvm3.onrender.com/register/events", {
           email,
           eventName,
           clubName,
@@ -62,13 +62,13 @@ const EventDetails = () => {
         const clubName = posterData?.clubName;
         const eventName = posterData?.eventName;
         if (clubName && eventName) {
-          const res = await axios.get(`http://localhost:3001/register/users?clubName=${clubName}&eventName=${eventName}`);
+          const res = await axios.get(`https://eventmanagementsystem-uvm3.onrender.com/register/users?clubName=${clubName}&eventName=${eventName}`);
           if (isMounted) {
             setMembers(res.data.members);
           }
         }
       } catch (err) {
-        console.log(err);
+        alert(err);
       }
     };
 

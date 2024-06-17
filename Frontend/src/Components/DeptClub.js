@@ -58,11 +58,11 @@ const DeptClub = () =>
                 setUploading(true);
                 const formData = new FormData();
                 formData.append('image',selectedFile);
-                await axios.post(`http://localhost:3001/api/image`,formData)
+                await axios.post(`https://eventmanagementsystem-uvm3.onrender.com/api/image`,formData)
                 .then(async(res) =>
                 {
                     const imageUrl = res.data;
-                    await axios.post(`http://localhost:3001/add/galleryimage`,{clubName,imageUrl})
+                    await axios.post(`https://eventmanagementsystem-uvm3.onrender.com/add/galleryimage`,{clubName,imageUrl})
                     .then(res=>alert("Image added Successfully"))
                     .catch(err=>alert("Failed to add Image"))
                     setSelectedFile(null);
@@ -103,14 +103,14 @@ const DeptClub = () =>
     {
 
         try {
-            const result = await axios.get("http://localhost:3001/get/dept/admins");
+            const result = await axios.get("https://eventmanagementsystem-uvm3.onrender.com/get/dept/admins");
             setDepartmentadmins(result.data);
         } catch (err) {
             alert(err);
         }
 
         try{
-            await axios.get(`http://localhost:3001/get/dept/club/events`)
+            await axios.get(`https://eventmanagementsystem-uvm3.onrender.com/get/dept/club/events`)
             .then(res => {
                 setPosters(res.data);
             })
@@ -120,7 +120,7 @@ const DeptClub = () =>
         }
 
         try{
-            await axios.get(`http://localhost:3001/get/gallery?clubName=${clubName}`)
+            await axios.get(`https://eventmanagementsystem-uvm3.onrender.com/get/gallery?clubName=${clubName}`)
             .then(res=>{
                 setGalleryImages(res.data.gallery);
             })
