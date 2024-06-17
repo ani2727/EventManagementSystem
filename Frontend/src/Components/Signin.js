@@ -62,7 +62,7 @@ const Signin = () => {
         const password = Passwords.current.value;
 
         try {
-            const res = await axios.post("https://event-management-system-eosin.vercel.app//auth/signin", { email, password });
+            const res = await axios.post("https://event-management-system-delta.vercel.app/auth/signin", { email, password });
             localStorage.setItem('userInfo', JSON.stringify(res.data));
             openPopup("Thank You",'Welcome back! You have successfully signed in.', 'https://res.cloudinary.com/dkdslxqqx/image/upload/v1718458077/404-tick_e51zjo.png');
         } catch (err) {
