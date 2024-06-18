@@ -17,7 +17,7 @@ cloudinary.config({
 
 const app = express();
 app.use(express.json());
-app.use(cookieParser())
+app.use(cookieParser());
 
 const corsOptions = {
   origin:"https://eventoes-rguktb.netlify.app",

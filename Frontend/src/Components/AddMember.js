@@ -76,7 +76,7 @@ const Addmember = () => {
             <div className="addmember">
                 <div><h1>Add member</h1></div>
                 <div>
-                    <input ref={Name} placeholder="Member Name" value={name} onChange={(e) => setName(e.target.value)} type="text" required="" />
+                    <input ref={Name} placeholder="Member userName" value={name} onChange={(e) => setName(e.target.value)} type="text" required="" />
                 </div>
                 <div>
                     <input ref={Position} placeholder="Member Position" value={memberPosition} onChange={(e) => setmemberPosition(e.target.value)} type="text" required="" />
