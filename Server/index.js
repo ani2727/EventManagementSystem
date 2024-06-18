@@ -27,6 +27,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 
+
 const dbUrl = "mongodb+srv://anil:anil123@cluster0.dvkvxb1.mongodb.net/EventManagement?retryWrites=true&w=majority&appName=Cluster0"
 
 

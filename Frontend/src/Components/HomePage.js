@@ -52,7 +52,7 @@ const HomePage = ()=>
                 })
             }
             catch(err) {
-                alert("Error Retrieving Online Events")
+                
             }
 
             try{
@@ -62,15 +62,15 @@ const HomePage = ()=>
                 })
             }
             catch(err) {
-                alert("Error Retrieving Offline Events");
             }
 
             try{
                 const result = await axios.get('https://eventmanagementsystem-uvm3.onrender.com/get/clubs')
-                setClubs(result.data.result);
+                console.log(result);
+                setClubs(result.data);
             }
             catch(err) {
-                alert("Error Retrieving clubs");
+                alert(err);
             }
 
         }

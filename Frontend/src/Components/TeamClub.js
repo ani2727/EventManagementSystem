@@ -29,7 +29,7 @@ const TeamClub = ({ clubData }) => {
     useEffect(() => {
         const fetch = async () => {
             try {
-                const res = await axios.get(`http://localhost:3001/get/club/members?clubName=${clubName}`);
+                const res = await axios.get(`https://eventmanagementsystem-uvm3.onrender.com/get/club/members?clubName=${clubName}`);
                 setMembers(res.data);
                 console.log(res.data);
             } catch (err) {

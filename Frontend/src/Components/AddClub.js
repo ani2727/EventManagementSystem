@@ -81,13 +81,13 @@ const AddClub = ()=>
                     <h1>Add Club</h1>
                 </div>
                 <div>
-                    <input ref={Club} type="text" value={clubs} onChange={handleInputChange} placeholder="Enter club name" required />
+                    <input ref={Club} type="text" value={clubs} onChange={handleInputChange} placeholder="Club name" required />
                 </div>
                 <div>
-                    <textarea ref={Desc} value={desc} onChange={e=>setDescription(e.target.value)} type="text" required placeholder="Enter ClubName"></textarea>
+                    <textarea ref={Desc} value={desc} onChange={e=>setDescription(e.target.value)} type="text" required placeholder="Describe Club"></textarea>
                 </div>
                 <div>
-                    <input type="text" ref={Admin} value={admin} onChange={(e)=>setAdmin(e.target.value)} placeholder="Enter Admin UserName" required/>
+                    <input type="text" ref={Admin} value={admin} onChange={(e)=>setAdmin(e.target.value)} placeholder="Admin UserName" required/>
                 </div>
                 <div className="file-input-container">
                     <label>Club Logo</label>

@@ -32,7 +32,7 @@ const handleAddClub = async (req, res) => {
 const handleGetClubs = async(req,res) =>{
     try{
             const result = await ClubModel.find({});
-            return res.send({result})
+            return res.send(result)
     }
     catch(err){
         return res.send("Error");
@@ -275,8 +275,8 @@ const handleGetOnlineUpcomingEvents = async (req, res) => {
         const currentDate = new Date();
         const formattedCurrentDate = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`;
 
-        const eventResults = await EventModel.find({ eventMode: 'online||Online', date: { $gte: formattedCurrentDate } }).sort({ createdAt: 1 });
-        const deptEventResults = await DeptEventsModel.find({ eventMode: 'online||Online', date: { $gte: formattedCurrentDate } }).sort({ createdAt: 1 });
+        const eventResults = await EventModel.find({ eventMode: 'online', date: { $gte: formattedCurrentDate } }).sort({ createdAt: 1 });
+        const deptEventResults = await DeptEventsModel.find({ eventMode: 'online', date: { $gte: formattedCurrentDate } }).sort({ createdAt: 1 });
 
         const combinedResults = eventResults.concat(deptEventResults);
 
@@ -292,8 +292,8 @@ const handleGetOfflineUpcomingEvents = async (req, res) => {
         const currentDate = new Date();
         const formattedCurrentDate = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`;
 
-        const eventResults = await EventModel.find({ eventMode: 'offline||Offline', date: { $gte: formattedCurrentDate } }).sort({ createdAt: 1 });
-        const deptEventResults = await DeptEventsModel.find({ eventMode: 'offline||Offline', date: { $gte: formattedCurrentDate } }).sort({ createdAt: 1 });
+        const eventResults = await EventModel.find({ eventMode: 'offline', date: { $gte: formattedCurrentDate } }).sort({ createdAt: 1 });
+        const deptEventResults = await DeptEventsModel.find({ eventMode: 'offline', date: { $gte: formattedCurrentDate } }).sort({ createdAt: 1 });
 
         const combinedResults = eventResults.concat(deptEventResults);
 
@@ -526,7 +526,6 @@ const handleChangeUserProfile = async(req,res)=>
     
     try{
         const {imageUrl,userName,password} = req.body;
-
         const user = await UserModel.findOne({userName});
 
         if(imageUrl) user.imageUrl = imageUrl;

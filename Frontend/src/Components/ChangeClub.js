@@ -66,7 +66,7 @@ const ChangeClub = ()=>
             setUploadings(true);
           const formData = new FormData();
           formData.append('image', selectedFiles);
-          await axios.post(`http://localhost:3001/api/image`, formData)
+          await axios.post(`https://eventmanagementsystem-uvm3.onrender.com/api/image`, formData)
           .then(res => {
                 setCoverImage(res.data);
                 

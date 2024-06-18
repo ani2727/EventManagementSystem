@@ -32,7 +32,7 @@ const AddAdmin = () =>
         else {
             try
             {
-                const res = await axios.post('https://eventmanagementsystem-uvm3.onrender.com/change/changedept/admin',{userName,dept})
+                const res = await axios.post('https://eventmanagementsystem-uvm3.onrender.com/changedept/admin',{userName,dept})
                 if(res.data === "Success") alert("Admin Changed Succesfully");
                 else alert("Admin Not Changed");
             }

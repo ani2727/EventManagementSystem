@@ -46,7 +46,7 @@ const Gallery = ({clubData})=>
             setUploading(true);
             const formData = new FormData();
             formData.append('image',selectedFile);
-            await axios.post(`https://eventmanagementsystem-uvm3.onrender.com/api/image`,formData)
+            await axios.post(`https://eventmanagementsystem-uvm3.onrender.com/sapi/image`,formData)
             .then(async(res) =>
             {
                 const imageUrl = res.data;
