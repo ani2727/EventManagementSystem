@@ -28,7 +28,7 @@ const DeleteEvent = () => {
 
             const res = await axios.post("https://eventmanagementsystem-uvm3.onrender.com/delete/deleteevents", { eventName, clubName, date, branch });
             if (res.data === "Success") {
-                alert("Delete Successfully");
+                alert("Deleted Successfully");
                 if (clubData && clubData.clubName !== 'DeptClub') {
                     navigate(`/club`, { state: { clubData: clubData } });
                 } else {
