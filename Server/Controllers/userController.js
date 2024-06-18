@@ -529,7 +529,7 @@ const handleChangeUserProfile = async(req,res)=>
         const user = await UserModel.findOne({userName});
 
         if(imageUrl) user.imageUrl = imageUrl;
-        if(password) {
+        if(password) {j
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(password, salt);
             user.password = hashedPassword;

@@ -103,14 +103,14 @@ const DeptClub = () =>
     {
 
         try {
-            const result = await axios.get("http://localhost:3001/get/dept/admins");
+            const result = await axios.get("https://eventmanagementsystem-uvm3.onrender.com/get/dept/admins");
             setDepartmentadmins(result.data);
         } catch (err) {
             alert(err);
         }
 
         try{
-            await axios.get(`http://localhost:3001/get/dept/club/events`)
+            await axios.get(`https://eventmanagementsystem-uvm3.onrender.com/get/dept/club/events`)
             .then(res => {
                 setPosters(res.data);
             })
@@ -120,7 +120,7 @@ const DeptClub = () =>
         }
 
         try{
-            await axios.get(`http://localhost:3001/get/gallery?clubName=${clubName}`)
+            await axios.get(`https://eventmanagementsystem-uvm3.onrender.com/get/gallery?clubName=${clubName}`)
             .then(res=>{
                 setGalleryImages(res.data.gallery);
             })
