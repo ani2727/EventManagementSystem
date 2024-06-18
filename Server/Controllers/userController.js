@@ -350,7 +350,7 @@ const handleDeleteEvent = async(req,res) => {
     try{
         const {eventName,clubName,date,branch} = req.body;
        
-        if(branch !== null) 
+        if(clubName === 'DeptClub') 
         {
 
             const result = await DeptEventsModel.findOne({eventName,date,branch})

@@ -10,25 +10,23 @@ const DeleteEvent = () => {
     const [eventname, setEventName] = useState('');
     const [Date, setDate] = useState('');
     const navigate = useNavigate();
-    const [branchs,setBranch] = useState('')
+    // const [branchs,setBranch] = useState('')
 
     const location = useLocation();
     const clubData = location.state ? location.state.clubData : null;
 
     const EventName = useRef();
     const dates = useRef();
-    const Branch = useRef();
+    // const Branch = useRef();
 
     const handleDelete = async () => {
         try {
             const eventName = EventName.current.value;
             const date = dates.current.value;
-            let clubName = '';
+            let clubName = clubData.clubName;
             let branch = null;
-            if (clubData && clubData.clubName !== 'DeptClub') {
-                clubName = clubData.clubName;
-            } else {
-                branch = userData && userData.dept;
+            if (clubData && clubData.clubName === 'DeptClub') {
+                branch = userData.dept;
             }
 
             const res = await axios.post("https://eventmanagementsystem-uvm3.onrender.com/delete/deleteevents", { eventName, clubName, date, branch });
@@ -62,12 +60,12 @@ const DeleteEvent = () => {
                 <div className="eventname">
                     <input className="delete-event-input" type="text" placeholder="Event Name" value={eventname} ref={EventName} onChange={(e) => setEventName(e.target.value)} required />
                 </div>
-                {clubData && clubData.clubName === 'DeptClub' ?
+                {/* {clubData && clubData.clubName === 'DeptClub' ?
                     (
                         <div>
                             <label>Department</label>
                             <select className="delete-event-input" value={branchs} ref={Branch} onChange={(e) => setBranch(e.target.value)} required>
-                                <option>Select</option><option >PUC</option><option >CSE</option><option >ECE</option><option >EEE</option>
+                                <option>Select</option><option >PUC</option><option >CSE</option><option >ECE</option><option >EEE</option><option>CIVIL</option>
                                 <option >MECH</option><option >CHEM</option><option>MME</option>
                             </select>
                         </div>
@@ -75,7 +73,7 @@ const DeleteEvent = () => {
                     (
                         <div></div>
                     )
-                }
+                } */}
                 <div>
                     <input className="delete-event-input" type="date" ref={dates} value={Date} onChange={e => setDate(e.target.value)} required />
                 </div>
