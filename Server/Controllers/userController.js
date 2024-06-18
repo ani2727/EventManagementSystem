@@ -355,6 +355,7 @@ const handleDeleteEvent = async(req,res) => {
 
             const result = await DeptEventsModel.findOne({eventName,date,branch})
             if(!result) return res.send("NotFound")
+            
             await DeptEventsModel.deleteOne({eventName,date,branch})
             return res.send("Success")
         }

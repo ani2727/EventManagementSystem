@@ -24,10 +24,7 @@ const DeleteEvent = () => {
             const eventName = EventName.current.value;
             const date = dates.current.value;
             let clubName = clubData.clubName;
-            let branch = null;
-            if (clubData && clubData.clubName === 'DeptClub') {
-                branch = userData.dept;
-            }
+            let branch = userData.dept;
 
             const res = await axios.post("https://eventmanagementsystem-uvm3.onrender.com/delete/deleteevents", { eventName, clubName, date, branch });
             if (res.data === "Success") {
