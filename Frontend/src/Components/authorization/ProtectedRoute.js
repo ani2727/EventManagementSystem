@@ -20,7 +20,3 @@ export const ProtectedClubs = ({children}) =>
     else if(userData) return <Navigate to="/"/> 
     else return <Navigate to="/signin"/>
 }
-
-export const ProtectedModifyClub = ({children}) =>{
-        return children;
-}

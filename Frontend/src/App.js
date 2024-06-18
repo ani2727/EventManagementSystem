@@ -36,7 +36,7 @@ const App = ()=>{
             <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute>} />
             <Route path="/addclub" element={<ProtectedClubs><AddClub /></ProtectedClubs>} />
             <Route path="/admins" element={<ProtectedClubs><Admins /></ProtectedClubs>} />
-            <Route path="/changeclub" element={<ProtectedClubs><ChangeClub /></ProtectedClubs>} />
+            <Route path="/changeclub" element={<ChangeClub />} />
           </Routes>
       </BrowserRouter>
       
