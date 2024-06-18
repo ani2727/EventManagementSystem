@@ -22,5 +22,5 @@ export const ProtectedClubs = ({children}) =>
 }
 
 export const ProtectedModifyClub = ({children}) =>{
-    if(userData && userData.isSuperAdmin) return children;
+        return children;
 }
