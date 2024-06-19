@@ -204,6 +204,8 @@ const HomePage = ()=>
                         <li>About</li>
                         <li>Team</li>
                         <li>Partner with us</li>
+                        <p>&copy; 2024 Eventoes. All rights reserved.</p>
+
                     </ul>
                 </div>
                 <div className="footer-gettingstarted">
@@ -231,7 +233,6 @@ const HomePage = ()=>
                     </ul>
                 </div>
             </div>
-            <p>&copy; 2024 Eventoes. All rights reserved.</p>
         </div>
         
     ) 
