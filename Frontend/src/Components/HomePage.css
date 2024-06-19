@@ -95,6 +95,7 @@ button:hover{
 .eventos img{
     text-align: center;
     border-radius: 50%;    
+    width: 50%;
 }
 
 .carousal{
