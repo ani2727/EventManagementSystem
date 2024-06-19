@@ -135,7 +135,7 @@ const HomePage = ()=>
             </div>
             <div className="home-body">
                 <div className="eventos">
-                    <div className="eventos-img"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIO73uGyQvDwF3vOPwU8eDffhD14TKo24_9g&s"  alt=""/></div>
+                    <div className="eventos-img"><img src="eventoes-img.png"  alt=""/></div>
                     <div className="eventos-text"><p>An event management system (EMS) is a comprehensive software solution designed to streamline the planning, organization, 
                         and execution of events of all sizes and types. Whether it's a corporate conference, a wedding, a concert, or a community 
                         fundraiser, an EMS serves as the backbone for ensuring the smooth and successful orchestration of every detail involved.
