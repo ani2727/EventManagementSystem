@@ -52,7 +52,7 @@ const HomePage = ()=>
                 })
             }
             catch(err) {
-                
+                alert(err);
             }
 
             try{
@@ -62,6 +62,7 @@ const HomePage = ()=>
                 })
             }
             catch(err) {
+                alert(err);
             }
 
             try{
@@ -199,13 +200,10 @@ const HomePage = ()=>
             <div className="footer-section">
                 <div className="footer-info">
                     <ul>
-                        <h2 className="footer-head">Info</h2>
-                        <li>Formats</li>
-                        <li>Compression</li>
-                        <li>Pricing</li>
-                        <li>Formats</li>
-                        <li>Compression</li>
-                        <li>Pricing</li>
+                        <h2 className="footer-head">Eventoes</h2>
+                        <li>About</li>
+                        <li>Team</li>
+                        <li>Partner with us</li>
                     </ul>
                 </div>
                 <div className="footer-gettingstarted">
@@ -214,20 +212,15 @@ const HomePage = ()=>
                         <li>Online Events</li>
                         <li>Offline Events</li>
                         <li>Connect with us</li>
-                        <li>Events</li>
-                        <li>Elements</li>
                     </ul>
                 </div>
                 <div className="Resources">
                     <ul>
-                        <h2 className="footer-head">Resources</h2>
-                        <li>API</li>
-                        <li>Form Validation</li>
-                        <li>Accessibility</li>
-                        <li>Market Place</li>
-                        <li>Form Validation</li>
-                        <li>Accessibility</li>
-                        <li>Market Place</li>
+                        <h2 className="footer-head">Legal</h2>
+                        <li>Terms & Conditions</li>
+                        <li>Cookie Policy</li>
+                        <li>Privacy Policy</li>
+                        <li></li>
                     </ul>
                 </div>
                 <div className="followus">
@@ -238,6 +231,7 @@ const HomePage = ()=>
                     </ul>
                 </div>
             </div>
+            <p>&copy; 2024 Eventoes. All rights reserved.</p>
         </div>
         
     ) 
