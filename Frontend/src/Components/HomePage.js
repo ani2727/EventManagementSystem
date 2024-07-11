@@ -146,7 +146,7 @@ const HomePage = ()=>
                 <div className="carousal"><Carousal/></div>
             </div>
             <div className="upcomingevents">
-                <div><h1>Upcoming Online Events</h1></div>
+                <div><h1>Upcoming Offline Events</h1></div>
                 <div className="upcoming-events-posters">
                     {offlineposters.length > 0 ?
                     (
@@ -157,7 +157,7 @@ const HomePage = ()=>
                     )
                     :
                     (
-                        <div style={{margin:'auto'}}><h4>No Upcoming Events</h4></div>
+                        <div style={{margin:'auto'}}><h4>No Upcoming offline Events</h4></div>
                     )
                     }
                     
@@ -175,7 +175,7 @@ const HomePage = ()=>
                         )
                         :
                         (
-                            <div style={{margin:'auto'}}><h4>No Online Events</h4></div>
+                            <div style={{margin:'auto'}}><h4>No Upcoming online Events</h4></div>
                         )
                         }
                     </div>

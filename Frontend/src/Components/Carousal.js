@@ -5,18 +5,16 @@ import "./Carousal.css"
 function Carousal() {
   return (
     <Carousel className="carousel">
-      <Carousel.Item className="carousel-item">
-        <img  src="./Slide1.JPG" alt="First slide" />
-        
-      </Carousel.Item>
+      
       <Carousel.Item className="carousel-item"> 
-       <img  src="./Slide2.JPG" alt="Second slide" />
+       <img  src="https://i.postimg.cc/rFt1MfB3/rgukt-logo.jpg" alt="Second slide" />
         
       </Carousel.Item>
       <Carousel.Item className="carousel-item">
-        <img  src="./Slide3.JPG" alt="Third slide" />
+        <img  src="https://i.postimg.cc/Nj3PQyC7/vcsir.jpg" alt="First slide" />
         
       </Carousel.Item>
+      
     </Carousel>
   );
 }
