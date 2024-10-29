@@ -8,7 +8,6 @@ Welcome to the Event Management System! This project is built using the MERN sta
 - [Technologies Used](#-technologies-used)
 - [Getting Started](#-getting-started)
 - [Database Schemas](#-database-schemas)
-- [Contributing](#-contributing)
 - [License](#-license)
 
 ## 🚀 Features
@@ -40,8 +39,6 @@ Welcome to the Event Management System! This project is built using the MERN sta
 ### Clone the Repository
 
 git clone https://github.com/ani2727/EventManagementSystem.git
-cd event-management-system
-
 
 ### 🗄 Database Schemas
 User Schema: Manages user information and roles.
@@ -49,15 +46,6 @@ Event Schema: Contains details about events.
 Club Schema: Manages club information.
 Gallery Schema: Stores images related to clubs and events.
 
-### 🤝 Contributing
-We welcome contributions! Please fork the repository and create a pull request.
-
-Fork the repository
-Create a new branch (git checkout -b feature-branch)
-Make your changes
-Commit your changes (git commit -m 'Add new feature')
-Push to the branch (git push origin feature-branch)
-Open a pull request
 
 ### 📝 License
 This project is licensed under the MIT License.
