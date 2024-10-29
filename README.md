@@ -4,12 +4,12 @@ Welcome to the Event Management System! This project is built using the MERN sta
 
 ## 📦 Table of Contents
 
-- [Features](#features-)
-- [Technologies Used](#technologies-used-)
-- [Getting Started](#getting-started-)
-- [Database Schemas](#database-schemas-)
-- [Contributing](#contributing-)
-- [License](#license-)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Getting Started](#getting-started)
+- [Database Schemas](#database-schemas)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## 🚀 Features
 
@@ -34,9 +34,6 @@ Welcome to the Event Management System! This project is built using the MERN sta
   - Express
   - MongoDB
   - Cloudinary for image storage
-  - Multer for file uploads
-  - CORS for cross-origin requests
-  - Cookie-parser for handling cookies
 
 ## 🌱 Getting Started
 
